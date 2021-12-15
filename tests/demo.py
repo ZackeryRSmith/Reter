@@ -1,4 +1,6 @@
-from reter import captureKey, indicator
+import sys
+sys.path.append('../')
+from reter.reter import captureKey, indicator
 import os
 
 varList = ["Hello", "World", "Peekaboo", "Rain", "Sleet"]

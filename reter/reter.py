@@ -29,6 +29,8 @@ from typing import (
     Union,
     cast,
 )
+import contextlib
+import io
 
 
 ########################################
@@ -370,14 +372,35 @@ class Cursor:
     """
     Terminal cursor.
     """
-    def __init__(self, posx, posy):
-        """ Constructor to initialize the object
+    def __init__(self, posx, posy, visibility: Optional[bool]=True):
+        """ 
+        Constructor to initialize the object
         
         :param int posx: Begining x position for cursor
         :param int posy: Begining y position for cursor
+        :param bool visibility: True = Shown, False = Hidden
         """
         self.posx = posx
         self.posy = posy
+        self.visibility = visibility
+        if self.visibility:
+            sys.stdout.write("\x1b[?25h")
+        else:
+            sys.stdout.write("\x1b[?25l")
+
+
+    def changeVisibility(self, visibility):
+        """
+        Changes the visibility of cursor
+
+        :param bool visibility: True = Shown, False = Hidden
+        """
+        self.visibility = visibility
+        if self.visibility:
+            sys.stdout.write("\x1b[?25h")
+        else:
+            sys.stdout.write("\x1b[?25l")
+
 
     def setPos(self, x, y):
         """
@@ -388,7 +411,8 @@ class Cursor:
         """
         self.posx = x
         self.posy = y
-        print('\033[%s;%sH' % (self.posx, self.posy))        
+        sys.stdout.write('\033[%s;%sH' % (self.posx, self.posy))        
+
 
     def move(self, x, y):
         """
@@ -409,6 +433,15 @@ class Cursor:
         elif self.posy < 0:
             sys.stdout.write('\x1b[%sB' % (int(str(self.posy)[1:])))  # Removes negative number with splicing
         sys.stdout.flush()  # Update line
+
+
+    def align(self, position):
+        """
+        """
+        if position=="left":
+            self.move(-100, 0)
+        elif position=="right":
+            self.move(100, 0)
 
 
 """ Yeah... there is a better way to do this
@@ -501,10 +534,37 @@ def captureInput(blind: Optional[bool]=False, limit: Optional[int]=9223372036854
 # IOCHOICE
 ########################################
 
-def choices(choices):
+def choices(cursor, choices):
     """
     """
-    pass
+    # Print options
+    #for i in choices:
+    #    print(i, end="\n")
+
+    cursor.changeVisibility(False)
+    lines = len(choices)
+    for index, option in enumerate(choices):
+        # Make sure only the needed amount of lines are created
+        if index==lines-1:
+            print(option, index, end='', flush=True)
+        elif index!=lines:
+            print(option, index)
+        elif index==lines:
+            print(option, index, end='', flush=True)
+        # Realign cursor
+        cursor.align("left")
+
+    while True:
+        stripped = "Hello World".rstrip()
+        sys.stdout.write(REVERSED + stripped + EOC)
+        cursor.align("left")
+        key = captureKey()
+        if key == UPARROW:
+            cursor.move(0, 1)
+        elif key == DOWNARROW:
+            cursor.move(0, -1)
+        else:
+            pass
 
 
 ########################################
@@ -513,6 +573,9 @@ def choices(choices):
 
 def main():
     cursor = Cursor(0, 0)
+    #choices(cursor, ["Hello", "World", "Green", "Eggs"])
+    """ ANSI cursor movement test
+    """
     while True:
         key = captureKey()
         if key == LEFTARROW:
