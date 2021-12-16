@@ -8,10 +8,10 @@ Readme will be created if this project *really* goes somewhere. Or if I just fee
 <br />
 <div align="center">
   <a href="https://github.com/ZackeryRSmith/Reter/">
-    <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/Reter.jpg" alt="Reter logo" width="360" height="180">
+    <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/Reter.jpg" alt="Reter logo" width="240" height="240">
   </a>
 
-<h3 align="center">Rob</h3>
+<h3 align="center">Reter</h3>
 
   <p align="center">
     Reter making <b>simple</b> things simple 
