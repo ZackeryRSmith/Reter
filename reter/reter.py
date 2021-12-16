@@ -29,8 +29,7 @@ from typing import (
     Union,
     cast,
 )
-import contextlib
-import io
+import subprocess
 
 
 ########################################
@@ -402,6 +401,12 @@ class Cursor:
             sys.stdout.write("\x1b[?25l")
 
 
+    def getPos(self):
+        # Broken who knows why
+        # \x1b[6n
+        pass        
+
+
     def setPos(self, x, y):
         """
         Sets the position of cursor. If you are looking for changing the value and not setting the value look towards .move().
@@ -437,6 +442,13 @@ class Cursor:
 
     def align(self, position):
         """
+        Align cursor position with preset position E.g. "left" will put the cursor to the left side. "tright" will place the cursor in the
+        top right of the screen
+
+        :param string position: The position to go to I.e. 
+                                           "tleft" "tmiddle" "tright"
+                                            "left" "middle" "right"
+                                           "bleft" "bmiddle" "bright"
         """
         if position=="left":
             self.move(-100, 0)
@@ -491,7 +503,7 @@ def captureInput(blind: Optional[bool]=False, limit: Optional[int]=9223372036854
     :param bool blind: If true input will not be shown when typing. Default is false
     :param int limit: You may set a limit to the number of characters that can be used. Good for passwords and such. Default is 9223372036854775807
     :rtype: String
-    :return: Returns a string (String is used to ignore escape character and ANSI in general.. also maybe because it makes my life easy...)
+    :return: Returns a string (String is used to ignore escape characters and ANSI in general.. also maybe because it makes my life easy...)
     """
     stringToReturn = ""
     cursor = Cursor(0, 0)
@@ -531,37 +543,58 @@ def captureInput(blind: Optional[bool]=False, limit: Optional[int]=9223372036854
 
 
 ########################################
-# IOCHOICE
+# listBox
 ########################################
 
-def choices(cursor, choices):
+def listBox(cursor, choices):
     """
     """
-    # Print options
-    #for i in choices:
-    #    print(i, end="\n")
-
     cursor.changeVisibility(False)
     lines = len(choices)
     for index, option in enumerate(choices):
         # Make sure only the needed amount of lines are created
         if index==lines-1:
-            print(option, index, end='', flush=True)
+            print(option, end='', flush=True)
         elif index!=lines:
-            print(option, index)
+            print(option)
         elif index==lines:
-            print(option, index, end='', flush=True)
-        # Realign cursor
-        cursor.align("left")
+            print(option, end='', flush=True)
+    # Realign cursor
+    cursor.move(0, len(choices)-1)
+    cursor.align("left")
 
+    startingLine = 1
+    currentLine = 1
     while True:
-        stripped = "Hello World".rstrip()
+        stripped = choices[currentLine-1].rstrip()
         sys.stdout.write(REVERSED + stripped + EOC)
         cursor.align("left")
         key = captureKey()
         if key == UPARROW:
+            if currentLine-1 <= 0:  # Make sure current line and cursor don't move any further
+                continue  
+            elif currentLine==0:
+                currentLine+=1
+                cursor.move(0, -1)
+                continue
+            currentLine-=1
+            # Reset selection highlight
+            sys.stdout.write(EOC + stripped + EOC)
+            cursor.align("left")
+            
             cursor.move(0, 1)
         elif key == DOWNARROW:
+            if currentLine+1 >= len(choices)+1:  # Make sure current line and cursor don't move any further
+                continue
+            elif currentLine > len(choices):
+                currentLine-=1
+                cursor.move(0, 1)
+                continue
+            currentLine+=1
+            # Reset selection highlight
+            sys.stdout.write(EOC + stripped + EOC)
+            cursor.align("left")
+            
             cursor.move(0, -1)
         else:
             pass
@@ -573,9 +606,9 @@ def choices(cursor, choices):
 
 def main():
     cursor = Cursor(0, 0)
-    #choices(cursor, ["Hello", "World", "Green", "Eggs"])
+    #print(cursor.getPos())
+    listBox(cursor, ["Hello", "World", "Green", "Eggs"])
     """ ANSI cursor movement test
-    """
     while True:
         key = captureKey()
         if key == LEFTARROW:
@@ -588,7 +621,7 @@ def main():
             cursor.move(0, -1)
         else:
             pass
-
+    """
 
 ########################################
 # RUN - FOR DEBUGGING REASONS
