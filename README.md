@@ -3,6 +3,8 @@ Readme will be created if this project *really* goes somewhere. Or if I just fee
 
 ![](http://ForTheBadge.com/images/badges/made-with-python.svg)
 
+![](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)
+
 
 <!-- TOP OF README ANCHOR -->
 <a name="top"></a>
