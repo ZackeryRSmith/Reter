@@ -449,6 +449,20 @@ def captureInput(blind: Optional[bool]=False, limit: Optional[int]=9223372036854
 
 
 ########################################
+# SCREEN
+########################################
+
+class Screen:
+    def __init__(self, cursor, height, width):
+        self.cursor = cursor
+        self.height = height
+        self.width = width
+
+    def setBorder(self, theme={"topLeftCorner": "+", "botLeftCorner": "+", "topRightCorner": "+", "botRightCorner": "+", "connections": "-"}):
+        pass
+
+
+########################################
 # MAIN - FOR DEBUGGING REASONS
 ########################################
 
