@@ -1,3 +1,10 @@
+__author__ = "Zackery Smith"
+__email__ = "zackery.smith82307@gmail.com"
+__copyright__ = "Copyright © 2020 Zackery Smith. All rights reserved."
+__license__ = "GNU GPL-3.0"
+__version_info__ = (0, 0, 1)
+__version__ = ".".join(map(str, __version_info__))
+
 import sys
 sys.path.append("../../")
 from reter.reter import (
