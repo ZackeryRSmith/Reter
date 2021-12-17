@@ -31,3 +31,6 @@ Readme will be created if this project *really* goes somewhere. Or if I just fee
     <a href="https://github.com/ZackeryRSmith/Reter/issues">Request Feature</a>
   </p>
 </div>
+
+
+## Examples
