@@ -37,9 +37,34 @@ Readme will be created if this project *really* goes somewhere. Or if I just fee
 Here are some examples of Reter found in other modules
 
 ### Bo-Boxes
-Bo-Boxes is a python module created using Reter. Bo-Boxes allows the end-user to create combo boxes in the Unix Shell working on almost every terminal.
+Bo-Boxes is a python module created using Reter. Bo-Boxes allows the end-user to create combo boxes in the Unix Shell working on almost every terminal. Bo-Boxes has a end-user theming system allowing you to customize all the combo-boxes looks. The images shown below are the default theme!
+
+#### Terminator
+<sub>List Box</sub>
+
+![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/terminator-listboxes.png)
 
 #### Xterm
 <sub>List Box</sub>
 
 ![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/xterm-listboxes.png)
+
+#### Gnome
+<sub>List Box</sub>
+
+![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/gnome-listboxes.png)
+
+#### Konsole
+<sub>List Box</sub>
+
+![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/konsole-listboxes.png)
+
+#### RXVT
+<sub>List Box</sub>
+
+![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/rxvt-listboxes.png)
+
+#### Yakuake
+<sub>List Box</sub>
+
+![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/yakuake-listboxes.png)
