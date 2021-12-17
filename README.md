@@ -40,4 +40,6 @@ Here are some examples of Reter found in other modules
 Bo-Boxes is a python module created using Reter. Bo-Boxes allows the end-user to create combo boxes in the Unix Shell working on almost every terminal.
 
 #### Xterm
-![]()
+<sub>List Box</sub>
+
+![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/xterm-listboxes.png)
