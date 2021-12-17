@@ -37,6 +37,11 @@ Readme will be created if this project *really* goes somewhere. Or if I just fee
 Here are some examples of Reter found in other modules
 
 ### Bo-Boxes
+<div align="center">
+  <a href="https://github.com/ZackeryRSmith/Bo-Boxes/">
+    <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/Bo-Boxes.jpg" alt="Bo-Boxes logo" width="240" height="240">
+  </a>
+
 Bo-Boxes is a python module created using Reter. Bo-Boxes allows the end-user to create combo boxes in the Unix Shell working on almost every terminal. Bo-Boxes has a end-user theming system allowing you to customize all the combo-boxes looks. The images shown below are the default theme!
 
 #### Terminator
