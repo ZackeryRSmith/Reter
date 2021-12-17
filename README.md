@@ -72,4 +72,5 @@ Bo-Boxes is a python module created using Reter. Bo-Boxes allows the end-user to
 ### Cures
 Cures is a open-source python module created using reter. Cures is the open-source equivalent to Curses, a closed-source not up-to-date module. Cures like Curses is a python module for providing the programmer with an abstraction of a display containing multiple non-overlapping windows of text. If that sounds complex don't worry, images are shown below with what 
 >providing the programmer with an abstraction of a display containing multiple non-overlapping windows of text
+
 Really means! 
