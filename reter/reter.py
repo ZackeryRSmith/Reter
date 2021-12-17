@@ -1,8 +1,3 @@
-""" Issue 3 (Enhancement)
-Issue: It would be nice to have a "prefab" system where actions of things can be set. Lets say if I hit a char limit in captureInput(), instead
-of breaking and stopping there you would be able to add code where it just blocks you from typing more. I can't really think of a good way to
-implement something like this.
-"""
 #!/usr/bin/env python
 ###########################################################################     
 #                                                                         #     
@@ -69,85 +64,6 @@ import subprocess
 ########################################
 # CONSTANTS
 ########################################
-
-# Aa
-aKEY       = (b'a')
-AKEY       = (b'A')
-# Bb
-bKEY       = (b'b')
-BKEY       = (b'B')
-# Cc
-cKEY       = (b'c')
-CKEY       = (b'C')
-# Dd
-dKEY       = (b'd')
-DKEY       = (b'D')
-# Ee
-eKEY       = (b'e')
-EKEY       = (b'E')
-# Ff
-fKEY       = (b'f')
-FKEY       = (b'F')
-# Gg
-gKEY       = (b'g')
-GKEY       = (b'G')
-# Hh
-hKEY       = (b'h')
-HKEY       = (b'H') 
-# Ii
-iKEY       = (b'i')
-IKEY       = (b'I')
-# Jj
-jKEY       = (b'j')
-JKEY       = (b'J')
-# Kk
-kKEY       = (b'k')
-KKEY       = (b'K')
-# Ll
-lKEY       = (b'l')
-LKEY       = (b'L')
-# Mm
-mKEY       = (b'm')
-MKEY       = (b'M')
-# Nn
-nKEY       = (b'n')
-NKEY       = (b'N')
-# Oo
-oKEY       = (b'o')
-OKEY       = (b'O')
-# Pp
-pKEY       = (b'p')
-PKEY       = (b'P')
-# Qq
-qKEY       = (b'q')
-QKEY       = (b'Q')
-# Rr
-rKEY       = (b'r')
-RKEY       = (b'R')
-# Ss
-sKEY       = (b's')
-SKEY       = (b'S')
-# Tt
-tKEY       = (b't')
-TKEY       = (b'T')
-# Uu
-uKEY       = (b'u')
-UKEY       = (b'U')
-# Vv
-vKEY       = (b'v')
-VKEY       = (b'V')
-# Ww
-wKEY       = (b'w')
-WKEY       = (b'W')
-# Xx
-xKEY       = (b'x')
-XKEY       = (b'X')
-# Yy
-yKEY       = (b'y')
-YKEY       = (b'Y')
-# Zz
-zKEY       = (b'z')
-ZKEY       = (b'Z')
 
 # Number keys
 ONEKEY     = (b'1')
@@ -254,105 +170,6 @@ class indicator:
     def parse(rawCharacter):
         return str(rawCharacter).replace("b", "", 1).replace("'", "")
 
-    class letter:
-        """ Issue 2 (ENHANCEMENT)
-        Issue: There is most likely a better way to do this. I would like to not have this in the first place (I will create a function
-        that makes this redundant). It's kinda hard to to have this though, nobody want to do `if key==b'a'` to check if the key pressed is
-        equal to "a".
-        """
-        # Aa
-        a = aKEY
-        A = AKEY
-        # Bb
-        b = bKEY
-        B = BKEY
-        # Cc
-        c = cKEY
-        C = CKEY
-        # Dd
-        d = dKEY
-        D = DKEY
-        # Ee
-        e = eKEY
-        E = EKEY
-        # Ff
-        f = fKEY
-        F = FKEY
-        # Gg
-        g = gKEY
-        G = GKEY
-        # Hh
-        h = hKEY
-        H = HKEY
-        # Ii
-        i = iKEY
-        I = IKEY
-        # Jj
-        j = jKEY
-        J = JKEY
-        # Kk
-        k = kKEY
-        K = KKEY
-        # Ll
-        l = lKEY
-        L = LKEY
-        # Mm
-        m = mKEY
-        M = MKEY
-        # Nn
-        n = nKEY
-        N = NKEY
-        # Oo
-        o = oKEY
-        O = OKEY
-        # Pp
-        p = pKEY
-        P = PKEY
-        # Qq
-        q = qKEY
-        Q = QKEY
-        # Rr
-        r = rKEY
-        R = RKEY
-        # Ss
-        s = sKEY
-        S = SKEY
-        # Tt
-        t = tKEY
-        T = TKEY
-        # Uu
-        u = uKEY
-        U = UKEY
-        # Vv
-        v = vKEY
-        V = VKEY
-        # Ww
-        w = wKEY
-        W = WKEY
-        # Xx
-        x = xKEY
-        X = XKEY
-        # Yy
-        y = yKEY
-        Y = YKEY
-        # Zz
-        z = zKEY
-        Z = ZKEY
-    
-    class number:
-        """
-        Stores what a number means. This allows the end user to type `number.one` and let it be understood.
-        """
-        one = ONEKEY
-        two = TWOKEY
-        three = THREEKEY
-        four = FOURKEY
-        five = FIVEKEY
-        six = SIXKEY
-        seven = SEVENKEY
-        eight = EIGHTKEY
-        nine = NINEKEY
-        zero = ZEROKEY
 
     class arrow:
         """
@@ -363,6 +180,7 @@ class indicator:
         right = RIGHTARROW
         left = LEFTARROW
     
+
     class escape:
         """
         Store some extra escape chars. This allows the end user to type `arrow.up` and let it be understood
@@ -373,6 +191,7 @@ class indicator:
         xmit = XMIT
         etx = ETX
     
+
     class color:
         class fg:
             # Black
