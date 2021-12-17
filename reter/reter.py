@@ -580,7 +580,7 @@ def captureInput(blind: Optional[bool]=False, limit: Optional[int]=9223372036854
 # listBox
 ########################################
 
-def listBox(cursor, choices, theme: Optional[dict]={"pady": 1, "bullet": None, "bulletSelection": ">", "bulletSpacing": " ", "selectionHighlight": REVERSED, "highlightBullet": False, "selectionTextColor": None, "textColor": None, "bulletColor": None, "bulletSelectionColor": FGRED}):
+def listBox(cursor, choices, theme: Optional[dict]={"pady": 0, "bullet": None, "bulletSelection": ">", "bulletSpacing": " ", "selectionHighlight": REVERSED, "highlightBullet": False, "selectionTextColor": None, "textColor": None, "bulletColor": None, "bulletSelectionColor": FGRED}):
     """
     Creates selection list of objects.
 
