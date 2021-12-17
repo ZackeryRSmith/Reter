@@ -58,3 +58,13 @@ Bo-Boxes is a python module created using Reter. Bo-Boxes allows the end-user to
 <sub>List Box</sub>
 
 ![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/konsole-listboxes.png)
+
+#### RXVT
+<sub>List Box</sub>
+
+![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/rxvt-listboxes.png)
+
+#### Yakuake
+<sub>List Box</sub>
+
+![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/yakuake-listboxes.png)
