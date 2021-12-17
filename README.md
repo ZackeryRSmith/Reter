@@ -36,7 +36,7 @@ Readme will be created if this project *really* goes somewhere. Or if I just fee
 ## Examples
 Here are some examples of Reter found in other modules
 
-### Bo-Boxes
+<h3 align="center">Reter</h3>
 <div align="center">
   <a href="https://github.com/ZackeryRSmith/Bo-Boxes/">
     <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/Bo-Boxes.jpg" alt="Bo-Boxes logo" width="240" height="240">
