@@ -580,7 +580,7 @@ def captureInput(blind: Optional[bool]=False, limit: Optional[int]=9223372036854
 # listBox
 ########################################
 
-def listBox(cursor, choices, theme: Optional[dict]={"pady": 0, "bullet": None, "bulletSelection": ">", "bulletSpacing": " ", "selectionHighlight": REVERSED, "highlightBullet": False, "selectionTextColor": None, "textColor": None}):
+def listBox(cursor, choices, theme: Optional[dict]={"pady": 1, "bullet": None, "bulletSelection": ">", "bulletSpacing": " ", "selectionHighlight": REVERSED, "highlightBullet": False, "selectionTextColor": None, "textColor": None, "bulletColor": None, "bulletSelectionColor": FGRED}):
     """
     Creates selection list of objects.
 
@@ -616,7 +616,7 @@ def listBox(cursor, choices, theme: Optional[dict]={"pady": 0, "bullet": None, "
     while True:
         stripped = choices[currentLine-1].rstrip()
         # Current selected line theming
-        sys.stdout.write((("" if theme["selectionHighlight"] == None else theme["selectionHighlight"]) if theme["highlightBullet"] == True else "")+(" " if theme["bulletSelection"] == None else theme["bulletSelection"]) + ("" if theme["bulletSpacing"] == None else theme["bulletSpacing"]) + ("" if theme["selectionHighlight"] == None else theme["selectionHighlight"]) + ("" if theme["selectionTextColor"] == None else theme["selectionTextColor"])
+        sys.stdout.write((("" if theme["selectionHighlight"] == None else theme["selectionHighlight"]) if theme["highlightBullet"] == True else "")+(" " if theme["bulletSelection"] == None else ("" if theme["bulletSelectionColor"] == None else theme["bulletSelectionColor"]) + theme["bulletSelection"]) + ("" if theme["bulletSelectionColor"] == None else EOC) + ("" if theme["bulletSpacing"] == None else theme["bulletSpacing"]) + ("" if theme["selectionHighlight"] == None else theme["selectionHighlight"]) + ("" if theme["selectionTextColor"] == None else theme["selectionTextColor"])
  + stripped + EOC)
         
         cursor.align("left")
@@ -670,7 +670,7 @@ def listBox(cursor, choices, theme: Optional[dict]={"pady": 0, "bullet": None, "
 
 def main():
     cursor = Cursor(0, 0)
-    print("%s was selected!" % (listBox(cursor, ["Thats", "The", "Demo!"])))
+    print("%s was selected!" % (listBox(cursor, ["Entry1", "Entry2", "Entry3"])))
 
 ########################################
 # RUN - FOR DEBUGGING REASONS
