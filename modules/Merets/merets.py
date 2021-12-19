@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 ###########################################################################     
 #                                                                         #     
-#                          Reter (Retry Terminal)                         #     
-#                                      ~ Lets try this again..            #     
+#                          Merets (Rets are cool)                         #     
+#                                      ~ An experemental terminal         #     
 #                                                                         #     
 #  Copyright (c) 2020, Zackery .R. Smith <zackery.smith82307@gmail.com>.  #     
 #                                                                         #     
@@ -35,7 +35,6 @@ __version_info__ = (0, 0, 1)
 __version__ = ".".join(map(str, __version_info__))
 
 import sys
-sys.path.append("../../")
 from reter.reter import (
     indicator,
     Cursor,
@@ -63,7 +62,7 @@ from typing import (
 # listBox
 ########################################
 
-def listBox(cursor, choices, cycleCursor: Optional[bool]=True, clearScreen: Optional[bool]=False, clearMenuOnExit: Optional[bool]=False, cursorIndex: Optional[int]=0, theme: Optional[dict]={"pady": 0, "bullet": None, "bulletSelection": ">", "bulletSpacing": " ", "selectionHighlight": indicator.color.formatting.reverse, "highlightBullet": False, "selectionTextColor": None, "textColor": None, "bulletColor": None, "bulletSelectionColor": indicator.color.fg.red}):
+def listBox(cursor, choices, theme: Optional[dict]={"pady": 0, "bullet": None, "bulletSelection": ">", "bulletSpacing": " ", "selectionHighlight": indicator.color.formatting.reverse, "highlightBullet": False, "selectionTextColor": None, "textColor": None, "bulletColor": None, "bulletSelectionColor": indicator.color.fg.red}):
     """
     Creates selection list of objects.
 

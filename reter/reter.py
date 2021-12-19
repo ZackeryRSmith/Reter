@@ -59,6 +59,7 @@ from typing import (
     cast,
 )
 import subprocess
+import re
 
 
 ########################################
@@ -323,10 +324,38 @@ class Cursor:
 
 
     def getPos(self):
-        # Broken who knows why
-        # \x1b[6n
-        pass        
+        """
+        Obtains position of cursor. This can be funky on some terminal emulators, for me my daily driver Terminator, you need to change up some
+        setting to get this code to work! If a non-supported terminal is found in-use a diffrent method of getting mouse position will be used.
+        
+        :param bool updatePos: Auto Updates cursor position after fetching row and col
 
+        :rtype: tuple of int's
+        :return: Returns (column, row)
+        """
+        # \x1b[6n
+        #sys.stdout.write("\033[6n")
+        #rawPos = sys.stdin.buffer.raw.read(7)
+        #cleanedPos = re.match(bytes('\[.*R', encoding='utf8'), rawPos)
+        #finalPos = str(cleanedPos.group()).replace("[", "").replace(";", ",").replace("R", "", 1)
+        OldStdinMode = termios.tcgetattr(sys.stdin)
+        _ = termios.tcgetattr(sys.stdin)
+        _[3] = _[3] & ~(termios.ECHO | termios.ICANON)
+        termios.tcsetattr(sys.stdin, termios.TCSAFLUSH, _)
+        try:
+            _ = ""
+            sys.stdout.write("\x1b[6n")
+            sys.stdout.flush()
+            while not (_ := _ + sys.stdin.read(1)).endswith('R'):
+                True
+            res = re.match(r".*\[(?P<y>\d*);(?P<x>\d*)R", _)
+        finally:
+            termios.tcsetattr(sys.stdin, termios.TCSAFLUSH, OldStdinMode)
+        if(res):
+            return (res.group("x"), res.group("y"))
+            return (-1, -1)
+
+        
 
     def setPos(self, x, y):
         """
@@ -453,12 +482,31 @@ def captureInput(blind: Optional[bool]=False, limit: Optional[int]=9223372036854
 ########################################
 
 class Screen:
-    def __init__(self, cursor, height, width):
+    def __init__(self, cursor, height: Optional[int]=None, width: Optional[int]=None):
         self.cursor = cursor
-        self.height = height
-        self.width = width
+        self.height = self.getDimensions("y") if height == None else height
+        self.width = self.getDimensions("x") if width == None else width
 
     def setBorder(self, theme={"topLeftCorner": "+", "botLeftCorner": "+", "topRightCorner": "+", "botRightCorner": "+", "connections": "-"}):
+        pass
+
+    def getDimensions(self, xory: Optional[str]=None, positiveyLimit: Optional[int]=None, negativeyLimit: Optional[int]=None, positivexLimit: Optional[int]=None, negativexLimit: Optional[int]=None):
+        """
+        Gets current screen dimentions using a funny little trick. No this does not use SIGWINCH but output will be the same never the less.
+        Smart code has been implemented to auto create a positiveyLimit, this can be removed by setting a value to positiveyLimit.
+
+        :param string xory: If "x" the returned value just be x and vice versa. If xory equal to NoneType then x and y will be returned.
+        :param int positiveyLimit: This will set the dimentions limit on positive y direction
+        :param int negativeyLimit: This will set the dimentions limit on negative y direction
+        :param int positivexLimit: This will set the dimentions limit on positive x direction
+        :param int negativexLimit: This will set the dimentions limit on negative x direction
+        
+        :rtype: int
+        :return: Return varies depending on the value of `xory` but by default (x, y) will be returned.
+        """
+        pass
+
+    def setDimensions(self, x, y):
         pass
 
 
@@ -468,7 +516,7 @@ class Screen:
 
 def main():
     cursor = Cursor(0, 0)
-    #print("%s was selected!" % (listBox(cursor, ["Entry1", "Entry2", "Entry3"], {"pady": 0, "bullet": "○", "bulletSelection": "●", "bulletSpacing": " ", "selectionHighlight": None, "highlightBullet": False, "selectionTextColor": None, "textColor": None, "bulletColor": None, "bulletSelectionColor": None})))
+    print(cursor.getPos())
 
 ########################################
 # RUN - FOR DEBUGGING REASONS
