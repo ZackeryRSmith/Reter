@@ -341,7 +341,8 @@ class Cursor:
         Obtains position of cursor. This can be funky on some terminal emulators, for me my daily driver Terminator you must change up some
         settings to get this code to work! This may be the same for your end-user. Make sure you keep this in mind while using getPos()!
         
-        :param bool updatePos: Auto Updates cursor position after fetching row and col
+        :param str xory: Choose what to return "x", or "y". Default None (Meaning it will return both x and y)
+        :param bool updatePos: Auto Updates cursor position after fetching row and col. Default is True
 
         :rtype: tuple of int's
         :return: Returns (column, row)
@@ -441,7 +442,8 @@ class Screen:
         if linkCursor:
             # Link cursor to screen
             self.cursor.link()
-    
+
+
     def setBorder(self, theme={"topLeftCorner": "+", "botLeftCorner": "+", "topRightCorner": "+", "botRightCorner": "+", "connections": "-"}):
         pass
 
@@ -533,6 +535,42 @@ class Screen:
 
 
 ########################################
+# LINE
+########################################
+
+class Line(Screen):
+    def __init__(self, cursor):
+        self.cursor = cursor
+                   
+
+    def returnLineNumber(self):
+        """
+        Gets current line number
+        
+        :rtype: int
+        :return: Returns current line number cursor sits on
+        """
+        return self.cursor.getPos("y")
+
+
+    def chunkIt(self, lineNumber: Optional[int]=None):
+        """
+        The chunkIt function will split by a pattern (kinda like str.split()), it will store these chunks as Chunk(). The chunk object can
+        be moved, and minuplated to how you like. For more clarification here is an example. Lets say we have some text printed on the
+        terminal I.e. "The quick brown fox" we can take this and chuck by whitespace by using chunkIt like so, chunkIt(1, " ") would return
+        4 chunk objects I.e. "The", "quick", "brown", and "fox". These can then be manupulated (Anything from color to deletion)! 
+
+        NOTE:: Any chunk manupulated will be placed back in the same place on the same line, this is unless the end-user decides to change 
+        said position!
+
+        :param int lineNumber: Line in which to chunk. By default it will chunk where the cursor is located
+        """
+        if lineNumber == None:
+            lineNumber = self.returnLineNumber()
+        
+
+
+########################################
 # CAPTURE KEY
 ########################################
 
@@ -610,7 +648,9 @@ def captureInput(blind: Optional[bool]=False, limit: Optional[int]=9223372036854
 def main():
     cursor = Cursor(0, 0)
     screen = Screen(cursor)
-    
+    line = Line(cursor)
+    print(line.returnLineNumber())
+
 
 ########################################
 # RUN - FOR DEBUGGING REASONS
