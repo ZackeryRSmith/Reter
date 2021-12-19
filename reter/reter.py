@@ -158,8 +158,13 @@ EOC            = "\u001b[0m"
 # ERRORS
 ########################################
 
-class Error(Exception):  # Not currently being used but I see needs for this in the future.
+class Error(Exception):
     """Base class for other exceptions"""
+    pass
+
+
+class IllegalArgumentError(Error, ValueError):
+    """Called when a argument unbeknown to us gets passed"""
     pass
 
 
@@ -263,8 +268,8 @@ class indicator:
 
 class Getch:
     """
-    Getch (Get character) will grab an input from the user. Taking in 3 characters max! This limit must be satisfied in one button press, this
-    allows capturing of single key presses and escape character under 3 characters I.e. ^C
+    Getch (Get character) will grab an input from the user. Taking in 3 characters max! Getch gets satisfied in one button press, this
+    allows capturing of single key presses but still allowing escape characters, or any escape character under 3 characters I.e. ^C
     """
     def __call__(self):
         """
@@ -310,6 +315,14 @@ class Cursor:
             sys.stdout.write("\x1b[?25l")
 
 
+    def link(self):
+        """
+        Links cursor object to a screen object. This will auto restrict the cursor to the screen dimensions, if this is not what you are looking
+        for set `linkCursor=False` when creating a Screen object!
+        """
+        pass
+
+
     def changeVisibility(self, visibility):
         """
         Changes the visibility of cursor
@@ -323,39 +336,41 @@ class Cursor:
             sys.stdout.write("\x1b[?25l")
 
 
-    def getPos(self):
+    def getPos(self, xory: Optional[str]=None, updatePos: Optional[bool]=True):
         """
-        Obtains position of cursor. This can be funky on some terminal emulators, for me my daily driver Terminator, you need to change up some
-        setting to get this code to work! If a non-supported terminal is found in-use a diffrent method of getting mouse position will be used.
+        Obtains position of cursor. This can be funky on some terminal emulators, for me my daily driver Terminator you must change up some
+        settings to get this code to work! This may be the same for your end-user. Make sure you keep this in mind while using getPos()!
         
         :param bool updatePos: Auto Updates cursor position after fetching row and col
 
         :rtype: tuple of int's
         :return: Returns (column, row)
         """
-        # \x1b[6n
-        #sys.stdout.write("\033[6n")
-        #rawPos = sys.stdin.buffer.raw.read(7)
-        #cleanedPos = re.match(bytes('\[.*R', encoding='utf8'), rawPos)
-        #finalPos = str(cleanedPos.group()).replace("[", "").replace(";", ",").replace("R", "", 1)
         OldStdinMode = termios.tcgetattr(sys.stdin)
         _ = termios.tcgetattr(sys.stdin)
-        _[3] = _[3] & ~(termios.ECHO | termios.ICANON)
+        _[3] = _[3] & ~(termios.ECHO | termios.ICANON)  # Disable echo, and stop the terminal from waiting for key press
         termios.tcsetattr(sys.stdin, termios.TCSAFLUSH, _)
         try:
             _ = ""
-            sys.stdout.write("\x1b[6n")
-            sys.stdout.flush()
-            while not (_ := _ + sys.stdin.read(1)).endswith('R'):
-                True
-            res = re.match(r".*\[(?P<y>\d*);(?P<x>\d*)R", _)
+            sys.stdout.write("\x1b[6n")  # Write mouse position silently
+            sys.stdout.flush()  # Allows the write() code above this line to be read
+            while not (_ := _ + sys.stdin.read(1)).endswith('R'):  # If you are confussed on this look at stackoverflow.com/questions/26000198/what-does-colon-equal-in-python-mean
+                pass
+            res = re.match(r".*\[(?P<y>\d*);(?P<x>\d*)R", _)  # Creates groups for values using regex
         finally:
-            termios.tcsetattr(sys.stdin, termios.TCSAFLUSH, OldStdinMode)
-        if(res):
-            return (res.group("x"), res.group("y"))
-            return (-1, -1)
-
-        
+            termios.tcsetattr(sys.stdin, termios.TCSAFLUSH, OldStdinMode)  # Re-enables "echo"
+        if res:
+            if updatePos:
+                self.posx = res.group("x")
+                self.posy = res.group("y")
+            if xory == None:
+                return (res.group("x"), res.group("y"))  # Returns (x, y)
+            elif xory == "x":
+                return res.group("x")
+            elif xory == "y":
+                return res.group("y")
+            else:
+                raise IllegalArgumentError('"%s" is an illegal argument!' % (xory) + " Come on dude... it's in the variable name..")
 
     def setPos(self, x, y):
         """
@@ -404,6 +419,114 @@ class Cursor:
             self.move(-100, 0)
         elif position=="right":
             self.move(100, 0)
+
+
+########################################
+# SCREEN
+########################################
+
+class Screen:
+    def __init__(self, cursor, height: Optional[int]=None, width: Optional[int]=None, linkCursor: Optional[bool]=False, autoCalibrate: Optional[bool]=True):
+        self.cursor = cursor
+        if autoCalibrate:
+            self.height = self.getDimensions(returnFormat="y") if height == None else height
+            self.width = self.getDimensions(returnFormat="x") if width == None else width
+        else:
+            self.height = height
+            self.width = width
+        
+        if linkCursor:
+            # Link cursor to screen
+            self.cursor.link()
+    
+    def setBorder(self, theme={"topLeftCorner": "+", "botLeftCorner": "+", "topRightCorner": "+", "botRightCorner": "+", "connections": "-"}):
+        pass
+
+    def returnDimensions(self, returnFormat: Optional[str]="WxH"):
+        """
+        Returns current set dimentions for screen object. To update dimentions or fetch new ones use getDimensions().
+
+        :param str returnFormat: The format in which to be retuned in
+        """
+        if returnFormat == "WxH":
+            return str(self.width)+"x"+str(self.height)
+
+    def getDimensions(self, returnFormat: Optional[str]="WxH", clearScreen: Optional[bool]=True, xory: Optional[str]=None, positiveyLimit: Optional[int]=None, negativeyLimit: Optional[int]=None, positivexLimit: Optional[int]=None, negativexLimit: Optional[int]=None):
+        """
+        Gets current screen dimentions using a funny little trick. No this does not use SIGWINCH but output will be the same never the less.
+        Smart code has been implemented to auto create a positiveyLimit, this can be removed by setting a value to positiveyLimit.
+        
+        :param str returnFormat: The format in which to be retuned in
+        :param bool clearScreen: If false screen will not be cleared when checking dimentions. This can cause some weird visual bugs if not expected and delt with manuly!!
+        :param string xory: If "x" the returned value just be x and vice versa. If xory equal to NoneType then x and y will be returned.
+        :param int positiveyLimit: This will set the dimentions limit on positive y direction
+        :param int negativeyLimit: This will set the dimentions limit on negative y direction
+        :param int positivexLimit: This will set the dimentions limit on positive x direction
+        :param int negativexLimit: This will set the dimentions limit on negative x direction
+        
+        :rtype: Return varies depending on the value of `xory` but by default a tuple will be returned.
+        :return: Return varies depending on the value of `xory` but by default (x, y) will be returned.
+        """
+        if clearScreen:
+            os.system("clear")
+        
+        # Get init position
+        initPos = self.cursor.getPos()
+        
+        # Get +y 
+        posY = self.cursor.move(0, 999)
+        posY = self.cursor.getPos("y", False)
+        
+        # Move back to init position
+        self.cursor.setPos(initPos[0], initPos[1])
+        
+        # Get -y
+        negY = self.cursor.move(0, -999)
+        negY = self.cursor.getPos("y", False)
+        
+        # Move back to init position
+        self.cursor.setPos(initPos[0], initPos[1])
+        
+        # Get +x (also known as right)
+        posX = self.cursor.move(999, 0)
+        posX = self.cursor.getPos("x", False)
+        
+        # Move back to init position
+        self.cursor.setPos(initPos[0], initPos[1])
+        
+        # Get -x (also known as left)
+        negX = self.cursor.move(-999, 0)
+        negX = self.cursor.getPos("x", False)
+ 
+        # Move back to init position
+        self.cursor.setPos(initPos[0], initPos[1])
+        
+        if returnFormat == "WxH":
+            return str(posX)+"x"+str(negY)
+        
+        elif returnFormat == "HxW":
+            return str(posX)+"x"+str(negY)
+        
+        elif returnFormat == "xy":
+            return (posX, negY)
+        
+        elif returnFormat == "yx":
+            return (negY, posX)
+ 
+        elif returnFormat == "x":
+            return posX
+
+        elif returnFormat == "y":
+            return negY
+
+        elif returnFormat == None:
+            return posY, negY, posX, negX
+        
+        else:
+            return posY, negY, posX, negX
+
+    def setDimensions(self, x, y):
+        pass
 
 
 ########################################
@@ -478,45 +601,13 @@ def captureInput(blind: Optional[bool]=False, limit: Optional[int]=9223372036854
 
 
 ########################################
-# SCREEN
-########################################
-
-class Screen:
-    def __init__(self, cursor, height: Optional[int]=None, width: Optional[int]=None):
-        self.cursor = cursor
-        self.height = self.getDimensions("y") if height == None else height
-        self.width = self.getDimensions("x") if width == None else width
-
-    def setBorder(self, theme={"topLeftCorner": "+", "botLeftCorner": "+", "topRightCorner": "+", "botRightCorner": "+", "connections": "-"}):
-        pass
-
-    def getDimensions(self, xory: Optional[str]=None, positiveyLimit: Optional[int]=None, negativeyLimit: Optional[int]=None, positivexLimit: Optional[int]=None, negativexLimit: Optional[int]=None):
-        """
-        Gets current screen dimentions using a funny little trick. No this does not use SIGWINCH but output will be the same never the less.
-        Smart code has been implemented to auto create a positiveyLimit, this can be removed by setting a value to positiveyLimit.
-
-        :param string xory: If "x" the returned value just be x and vice versa. If xory equal to NoneType then x and y will be returned.
-        :param int positiveyLimit: This will set the dimentions limit on positive y direction
-        :param int negativeyLimit: This will set the dimentions limit on negative y direction
-        :param int positivexLimit: This will set the dimentions limit on positive x direction
-        :param int negativexLimit: This will set the dimentions limit on negative x direction
-        
-        :rtype: int
-        :return: Return varies depending on the value of `xory` but by default (x, y) will be returned.
-        """
-        pass
-
-    def setDimensions(self, x, y):
-        pass
-
-
-########################################
 # MAIN - FOR DEBUGGING REASONS
 ########################################
 
 def main():
     cursor = Cursor(0, 0)
-    print(cursor.getPos())
+    screen = Screen(cursor)
+
 
 ########################################
 # RUN - FOR DEBUGGING REASONS
