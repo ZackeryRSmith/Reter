@@ -310,9 +310,9 @@ class Cursor:
         self.posy = posy
         self.visibility = visibility
         if self.visibility:
-            sys.stdout.write("\x1b[?25h")
+            self.changeVisibility(True)
         else:
-            sys.stdout.write("\x1b[?25l")
+            self.changeVisibility(False)
 
 
     def link(self):
@@ -415,10 +415,13 @@ class Cursor:
                                             "left" "middle" "right"
                                            "bleft" "bmiddle" "bright"
         """
+        # Align can be fixed. Mainly with the screen object being able to calabrate screen size. No more guessing! But how to get that value
+        # Well who knows, it's a good thought though
+        
         if position=="left":
-            self.move(-100, 0)
+            self.move(-999, 0)
         elif position=="right":
-            self.move(100, 0)
+            self.move(999, 0)
 
 
 ########################################
@@ -607,7 +610,7 @@ def captureInput(blind: Optional[bool]=False, limit: Optional[int]=9223372036854
 def main():
     cursor = Cursor(0, 0)
     screen = Screen(cursor)
-
+    
 
 ########################################
 # RUN - FOR DEBUGGING REASONS
