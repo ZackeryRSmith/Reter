@@ -169,30 +169,6 @@ class IllegalArgumentError(Error, ValueError):
 
 
 ########################################
-# LOGGER
-########################################
-
-class Logger(object):
-    def __init__(self):
-        self.cachedScreen = ""
-        self.terminal = sys.stdout
-
-        #self.log = open("logfile.log", "a")
-   
-    def write(self, message):
-        sys.stdout = Logger()
-        self.terminal.write(message)
-        self.cachedScreen += str(message)+"\n"  
-        sys.stdout = sys.__stdout__
-        print(message)
-
-    def flush(self):
-        # this flush method is needed for python 3 compatibility.
-        # this handles the flush command by doing nothing.
-        pass    
-
-
-########################################
 # INDICATOR
 ########################################
 
