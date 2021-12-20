@@ -476,7 +476,7 @@ class Screen:
     
     def write(self, message):
         self.terminal.write(message)
-        self.cachedScreen += message+"\n"
+        self.cachedScreen += message
     
     def read(self, n: int=...) -> str:
         sys.__stdout__.read(n)
@@ -582,6 +582,14 @@ class Screen:
     def setDimensions(self, x, y):
         pass
 
+    def wipe(self):
+        """
+        Cleans off screen of all text. Be warned this also cleans the cachedScreen variable, if needed you may save cachedScreen to another
+        variable... It's a double cache how fun!!
+        """
+        self.cachedScreen = ""
+        os.system("clear")
+
 
 # I could reposition this in the code after I figure out what to do with it
 ########################################
@@ -605,9 +613,9 @@ class Chunk:
 # LINE
 ########################################
 
-class Line(Screen):
-    def __init__(self, terminal):
-        self.terminal = terminal
+class Line:
+    def __init__(self, cursor):
+        self.cursor = cursor
                    
 
     def returnLineNumber(self):
@@ -627,6 +635,10 @@ class Line(Screen):
         terminal I.e. "The quick brown fox" we can take this and chuck by whitespace by using chunkIt like so, chunkIt(1, " ") would return
         4 chunk objects I.e. "The", "quick", "brown", and "fox". These can then be manupulated (Anything from color to deletion)! 
 
+        WARNING:: chunkIt uses the cachedScreen variable to get it's data! cachedScreen is not perfect and requires the end-user to maintain a
+        stable structure!! Look at the wiki for best practices and how to get back on track if you *MUST* get off track to do something.
+        I hope the logging system will be more stable at a later date but for now this is how it must be.
+
         NOTE:: Any chunk manupulated will be placed back in the same place on the same line, this is unless the end-user decides to change 
         said position!
 
@@ -634,6 +646,7 @@ class Line(Screen):
         """
         if lineNumber == None:
             lineNumber = self.returnLineNumber()
+        #rawValue = 
 
 
 ########################################
@@ -727,9 +740,10 @@ def start():
     """Automaticly setups reter for user"""
     cursor = Cursor(0, 0)
     screen = Screen(cursor)
-    sys.stdout = screen
     line = Line(cursor)
-    return screen, line, cursor
+    sys.stdout = screen
+    terminal = Terminal(screen, line, cursor)
+    return terminal
 
 
 ########################################
@@ -737,11 +751,10 @@ def start():
 ########################################
 
 def main():
-    cursor = Cursor(0, 0)
-    screen = Screen(cursor)
-    sys.stdout = screen
-    line = Line(cursor)
-    print(line.chunkIt(lineNumber=1, pattern=" "))
+    terminal = start()
+    #print("The quick brown fox")
+    #print("Cool beans")
+    print(terminal.line.chunkIt())
 
 
 ########################################
