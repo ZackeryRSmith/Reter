@@ -60,6 +60,7 @@ from typing import (
 )
 import subprocess
 import re
+import io
 
 
 ########################################
@@ -153,7 +154,6 @@ REVERSED       = "\u001b[7m"
 EOC            = "\u001b[0m"
 
 
-
 ########################################
 # ERRORS
 ########################################
@@ -166,6 +166,30 @@ class Error(Exception):
 class IllegalArgumentError(Error, ValueError):
     """Called when a argument unbeknown to us gets passed"""
     pass
+
+
+########################################
+# LOGGER
+########################################
+
+class Logger(object):
+    def __init__(self):
+        self.cachedScreen = ""
+        self.terminal = sys.stdout
+
+        #self.log = open("logfile.log", "a")
+   
+    def write(self, message):
+        sys.stdout = Logger()
+        self.terminal.write(message)
+        self.cachedScreen += str(message)+"\n"  
+        sys.stdout = sys.__stdout__
+        print(message)
+
+    def flush(self):
+        # this flush method is needed for python 3 compatibility.
+        # this handles the flush command by doing nothing.
+        pass    
 
 
 ########################################
@@ -431,6 +455,8 @@ class Cursor:
 
 class Screen:
     def __init__(self, cursor, height: Optional[int]=None, width: Optional[int]=None, linkCursor: Optional[bool]=False, autoCalibrate: Optional[bool]=True):
+        self.terminal = sys.stdout  # Allows us to track printed text
+        self.cachedScreen = ""
         self.cursor = cursor
         if autoCalibrate:
             self.height = self.getDimensions(returnFormat="y") if height == None else height
@@ -442,10 +468,32 @@ class Screen:
         if linkCursor:
             # Link cursor to screen
             self.cursor.link()
+    
+
+    ###
+    # LOGGER
+    ###
+    
+    def write(self, message):
+        self.terminal.write(message)
+        self.cachedScreen += message+"\n"
+    
+    def read(self, n: int=...) -> str:
+        sys.__stdout__.read(n)
+
+    def flush(self) -> None:
+        # this flush method is needed for python 3 compatibility.
+        # this handles the flush command by running flush via old options.
+        sys.__stdout__.flush()
+
+    ###          
+    # END OF LOGGER
+    ###
 
 
     def setBorder(self, theme={"topLeftCorner": "+", "botLeftCorner": "+", "topRightCorner": "+", "botRightCorner": "+", "connections": "-"}):
         pass
+
 
     def returnDimensions(self, returnFormat: Optional[str]="WxH"):
         """
@@ -456,11 +504,11 @@ class Screen:
         if returnFormat == "WxH":
             return str(self.width)+"x"+str(self.height)
 
+
     def getDimensions(self, returnFormat: Optional[str]="WxH", clearScreen: Optional[bool]=True, xory: Optional[str]=None, positiveyLimit: Optional[int]=None, negativeyLimit: Optional[int]=None, positivexLimit: Optional[int]=None, negativexLimit: Optional[int]=None):
         """
         Gets current screen dimentions using a funny little trick. No this does not use SIGWINCH but output will be the same never the less.
         Smart code has been implemented to auto create a positiveyLimit, this can be removed by setting a value to positiveyLimit.
-        
         :param str returnFormat: The format in which to be retuned in
         :param bool clearScreen: If false screen will not be cleared when checking dimentions. This can cause some weird visual bugs if not expected and delt with manuly!!
         :param string xory: If "x" the returned value just be x and vice versa. If xory equal to NoneType then x and y will be returned.
@@ -530,8 +578,27 @@ class Screen:
         else:
             return posY, negY, posX, negX
 
+
     def setDimensions(self, x, y):
         pass
+
+
+# I could reposition this in the code after I figure out what to do with it
+########################################
+# CHUNK
+########################################
+
+class Chunk:
+    """"""
+    def __init__(self, position, value):
+        self.position = position
+        self.value = value
+    
+
+    def returnValue(self):
+        """
+        """
+        return self.value
 
 
 ########################################
@@ -539,8 +606,8 @@ class Screen:
 ########################################
 
 class Line(Screen):
-    def __init__(self, cursor):
-        self.cursor = cursor
+    def __init__(self, terminal):
+        self.terminal = terminal
                    
 
     def returnLineNumber(self):
@@ -553,7 +620,7 @@ class Line(Screen):
         return self.cursor.getPos("y")
 
 
-    def chunkIt(self, lineNumber: Optional[int]=None):
+    def chunkIt(self, pattern, lineNumber: Optional[int]=None):
         """
         The chunkIt function will split by a pattern (kinda like str.split()), it will store these chunks as Chunk(). The chunk object can
         be moved, and minuplated to how you like. For more clarification here is an example. Lets say we have some text printed on the
@@ -567,7 +634,18 @@ class Line(Screen):
         """
         if lineNumber == None:
             lineNumber = self.returnLineNumber()
-        
+
+
+########################################
+# TERMINAL
+########################################
+
+class Terminal:
+    """Glues Screen, Line, Cursor into one big thing"""
+    def __init__(self, screen, line, cursor):
+        self.screen = screen
+        self.line = line
+        self.cursor = cursor
 
 
 ########################################
@@ -642,14 +720,28 @@ def captureInput(blind: Optional[bool]=False, limit: Optional[int]=9223372036854
 
 
 ########################################
+# START
+########################################
+
+def start():
+    """Automaticly setups reter for user"""
+    cursor = Cursor(0, 0)
+    screen = Screen(cursor)
+    sys.stdout = screen
+    line = Line(cursor)
+    return screen, line, cursor
+
+
+########################################
 # MAIN - FOR DEBUGGING REASONS
 ########################################
 
 def main():
     cursor = Cursor(0, 0)
     screen = Screen(cursor)
+    sys.stdout = screen
     line = Line(cursor)
-    print(line.returnLineNumber())
+    print(line.chunkIt(lineNumber=1, pattern=" "))
 
 
 ########################################

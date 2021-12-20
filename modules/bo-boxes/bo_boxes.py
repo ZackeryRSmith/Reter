@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 ###########################################################################     
 #                                                                         #     
-#                          Reter (Retry Terminal)                         #     
-#                                      ~ Lets try this again..            #     
+#                          Bo-Boxes (Wombo, combo!)                       #     
+#                                      ~ Creating some nice boxes!        #     
 #                                                                         #     
 #  Copyright (c) 2020, Zackery .R. Smith <zackery.smith82307@gmail.com>.  #     
 #                                                                         #     
@@ -38,6 +38,7 @@ import sys
 sys.path.append("../../")
 from reter.reter import (
     indicator,
+    start,
     Cursor,
     captureKey
 )
@@ -70,8 +71,6 @@ def listBox(cursor, choices, cycleCursor: Optional[bool]=True, clearScreen: Opti
     :rtype: String
     :return: Returns selection 
     """
-    # Wow this looks complex, most of it is turnary operaters that allow you to create theming
-
     # Create "padx". It is a bit of a challenge to create so I left it out for now.
     
     # Create y padding (top)
@@ -106,7 +105,11 @@ def listBox(cursor, choices, cycleCursor: Optional[bool]=True, clearScreen: Opti
         key = captureKey()
         if key == indicator.arrow.up:
             if currentLine-1 <= 0:  # Make sure current line and cursor don't move any further
-                continue  
+                if cycleCursor:  # It can repeat if cycleCursor is true
+                    currentLine+=len(choices)
+                    cursor.move(0, -len(choices))
+                else:
+                    continue
             elif currentLine==0:
                 currentLine+=1
                 cursor.move(0, -1)
@@ -117,9 +120,14 @@ def listBox(cursor, choices, cycleCursor: Optional[bool]=True, clearScreen: Opti
             cursor.align("left")
             
             cursor.move(0, 1)
+
         elif key == indicator.arrow.down:
             if currentLine+1 >= len(choices)+1:  # Make sure current line and cursor don't move any further
-                continue
+                if cycleCursor:  # It can repeat if cycleCursor is true
+                    currentLine-=len(choices)
+                    cursor.move(0, len(choices))
+                else:
+                    continue
             elif currentLine > len(choices):
                 currentLine-=1
                 cursor.move(0, 1)
