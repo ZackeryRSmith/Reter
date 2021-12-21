@@ -60,7 +60,7 @@ from typing import (
 )
 import subprocess
 import re
-import io
+import warnings
 
 
 ########################################
@@ -158,14 +158,44 @@ EOC            = "\u001b[0m"
 # ERRORS
 ########################################
 
+'''
 class Error(Exception):
     """Base class for other exceptions"""
-    pass
+    def __init__(self, errorName, codeInQuestion, fixes: Optional[str]=None, info: Optional[str]=None):
+        self.errorName = errorName
+        self.codeInQuestion = codeInQuestion
+        self.fixes = fixes
+        self.info = info
+
+    def raise(self):
+        print("Oops.. it seems an issue has occurred:\n"+self.errorName+"\n+-----------------------------------+")
+        print("""
+Code in question
+`
+%s
+`
+------------------------------------+""" % (self.codeInQuestion))
+        if self.fixes != None:
+            print("""
+Potential fixes
+`
+%s
+`
+------------------------------------+""" % (self.fixes))
+        if self.info != None:
+            print("""
+Has the issue been found
+`
+
+`
++-----------------------------------+""")    
 
 
-class IllegalArgumentError(Error, ValueError):
+
+class IllegalArgumentError(Error):
     """Called when a argument unbeknown to us gets passed"""
     pass
+'''
 
 
 ########################################
@@ -350,16 +380,17 @@ class Cursor:
         :return: Returns (column, row)
         """
         OldStdinMode = termios.tcgetattr(sys.stdin)
-        _ = termios.tcgetattr(sys.stdin)
-        _[3] = _[3] & ~(termios.ECHO | termios.ICANON)  # Disable echo, and stop the terminal from waiting for key press
+        settings = termios.tcgetattr(sys.stdin)
+        settings[3] = settings[3] & ~(termios.ECHO | termios.ICANON)  # Disable echo, and stop the terminal from waiting for key press
         termios.tcsetattr(sys.stdin, termios.TCSAFLUSH, _)
         try:
-            _ = ""
+            temp = ""
             sys.stdout.write("\x1b[6n")  # Write mouse position silently
             sys.stdout.flush()  # Allows the write() code above this line to be read
-            while not (_ := _ + sys.stdin.read(1)).endswith('R'):  # If you are confussed on this look at stackoverflow.com/questions/26000198/what-does-colon-equal-in-python-mean
+            # ESC[hight;widthR
+            while not (temp := temp + sys.stdin.read(1)).endswith('R'):  # If you are confussed on this look at stackoverflow.com/questions/26000198/what-does-colon-equal-in-python-mean
                 pass
-            res = re.match(r".*\[(?P<y>\d*);(?P<x>\d*)R", _)  # Creates groups for values using regex
+            res = re.match(r".*\[(?P<y>\d*);(?P<x>\d*)R", temp)  # Creates groups for values using regex
         finally:
             termios.tcsetattr(sys.stdin, termios.TCSAFLUSH, OldStdinMode)  # Re-enables "echo"
         if res:
@@ -602,11 +633,23 @@ class Chunk:
         """
         initPos = cursor.getPos()
         stripped = self.value.rstrip()
-        cursor.setPos(self.position[1]+1, self.position[0])
+        cursor.setPos(self.position[1]+1, self.position[0]) 
         # stdout.write() issue. https://github.com/ZackeryRSmith/Reter/issues/2
         #sys.stdout.write(("" if fg == None else fg)+("" if bg == None else bg)+stripped+indicator.colour.formatting.eoc)
         print(("" if fg == None else fg)+("" if bg == None else bg)+stripped+indicator.colour.formatting.eoc)
         cursor.setPos(initPos[0], initPos[1])
+
+
+    def setPos(self):
+        """
+        """
+        pass
+
+
+    def move(self):
+        """
+        """
+        pass
 
 
     def returnValue(self):
@@ -621,6 +664,7 @@ class Chunk:
         Returns position of value stored in chunk
         """
         return self.position
+
 
 
 ########################################
@@ -642,7 +686,7 @@ class Line:
         return self.cursor.getPos("y")
 
 
-    def chunkIt(self, screen, pattern, maxChunk: Optional[int]=None, lineNumber: Optional[int]=None):
+    def chunkIt(self, screen, pattern, lineNumber, maxChunk: Optional[int]=None):
         """
         The chunkIt function will split by a pattern (kinda like str.split()), it will store these chunks as Chunk(). The chunk object can
         be moved, and minuplated to how you like. For more clarification here is an example. Lets say we have some text printed on the
@@ -660,7 +704,11 @@ class Line:
         """
         if lineNumber == None:
             lineNumber = self.returnLineNumber()
-        rawValue = screen.cachedScreen.split("\n")[lineNumber-1]
+        try:
+            rawValue = screen.cachedScreen.split("\n")[lineNumber-1]
+        except AttributeError:
+            sys.exit(indicator.colour.formatting.bold+indicator.colour.formatting.underline+"Hey it seems you did not pass a screen object... You have passed a '%s' object" % (type(screen)))
+
         # Check for regex
         try:
             # Do some manual checks for re
@@ -789,14 +837,7 @@ def main():
     terminal = start()
     print("The quick brown fox")
     print("Cool beans")
-    lineOne = terminal.line.chunkIt(screen=terminal.screen, pattern=" ", lineNumber=1)
-    lineOne[0].setColour(cursor=terminal.cursor, bg=indicator.colour.formatting.reverse)
-    lineOne[1].setColour(cursor=terminal.cursor, fg=indicator.colour.fg.lightblue, bg=indicator.colour.formatting.reverse)
-    lineOne[2].setColour(cursor=terminal.cursor, fg=indicator.colour.fg.magenta)
-    lineOne[3].setColour(cursor=terminal.cursor, bg=indicator.colour.bg.red)
-    lineTwo = terminal.line.chunkIt(screen=terminal.screen, pattern=" ", lineNumber=2)
-    lineTwo[0].setColour(cursor=terminal.cursor, bg=indicator.colour.bg.lightyellow)
-    lineTwo[1].setColour(cursor=terminal.cursor, fg=indicator.colour.formatting.underline, bg=indicator.colour.formatting.reverse)
+    chunks = terminal.line.chunkIt(terminal.screen, " ", 1)
 
 
 ########################################
