@@ -604,7 +604,7 @@ class Line:
         return self.cursor.getPos("y")
 
 
-    def chunkIt(self, pattern, lineNumber: Optional[int]=None):
+    def chunkIt(self, screen, pattern, lineNumber: Optional[int]=None):
         """
         The chunkIt function will split by a pattern (kinda like str.split()), it will store these chunks as Chunk(). The chunk object can
         be moved, and minuplated to how you like. For more clarification here is an example. Lets say we have some text printed on the
@@ -622,7 +622,22 @@ class Line:
         """
         if lineNumber == None:
             lineNumber = self.returnLineNumber()
-        #rawValue = 
+        rawValue = screen.cachedScreen.split("\n")[lineNumber-1]
+        # Check for regex
+        try:
+            # Do some manual checks for re
+            if pattern.isspace():
+                raise re.error("Falsely raised error")
+            isRe = re.compile(pattern)
+        except re.error:
+            isRe = False
+        
+        if isRe:
+            pass
+        else:
+            for letter in rawValue:
+                if letter in pattern[0:1]:
+                    pass
 
 
 ########################################
@@ -630,7 +645,7 @@ class Line:
 ########################################
 
 class Terminal:
-    """Glues Screen, Line, Cursor into one big thing"""
+    """Glues Screen, Line, Cursor into one object"""
     def __init__(self, screen, line, cursor):
         self.screen = screen
         self.line = line
@@ -669,7 +684,7 @@ def captureInput(blind: Optional[bool]=False, limit: Optional[int]=9223372036854
     :param bool blind: If true input will not be shown when typing. Default is false
     :param int limit: You may set a limit to the number of characters that can be used. Good for passwords and such. Default is 9223372036854775807
     :rtype: String
-    :return: Returns a string (String is used to ignore escape characters and ANSI in general.. also maybe because it makes my life easy...)
+    :return: Returns a string (String is used to ignore escape characters and ANSI in general.. also it makes my life easy...)
     """
     stringToReturn = ""
     cursor = Cursor(0, 0)
@@ -728,9 +743,9 @@ def start():
 
 def main():
     terminal = start()
-    #print("The quick brown fox")
-    #print("Cool beans")
-    print(terminal.line.chunkIt())
+    print("The quick brown fox")
+    print("Cool beans")
+    print(terminal.line.chunkIt(terminal.screen, " ", 1))
 
 
 ########################################
