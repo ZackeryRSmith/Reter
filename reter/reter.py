@@ -224,7 +224,8 @@ class indicator:
             # White
             white = FGWHITE 
             lightwhite = FGLIGHTWHITE 
-        
+ 
+
         class bg:
             # Black
             black = BGBLACK
@@ -251,6 +252,7 @@ class indicator:
             white = BGWHITE  
             lightwhite = BGLIGHTWHITE 
         
+
         class formatting:
             # Bold
             bold = BOLD
@@ -365,11 +367,11 @@ class Cursor:
                 self.posx = res.group("x")
                 self.posy = res.group("y")
             if xory == None:
-                return (res.group("x"), res.group("y"))  # Returns (x, y)
+                return (int(res.group("x")), int(res.group("y")))  # Returns (x, y)
             elif xory == "x":
-                return res.group("x")
+                return int(res.group("x"))
             elif xory == "y":
-                return res.group("y")
+                return int(res.group("y"))
             else:
                 raise IllegalArgumentError('"%s" is an illegal argument!' % (xory) + " Come on dude... it's in the variable name..")
 
@@ -383,7 +385,7 @@ class Cursor:
         """
         self.posx = x
         self.posy = y
-        sys.stdout.write('\033[%s;%sH' % (self.posx, self.posy))        
+        sys.stdout.write('\033[%s;%sH' % (self.posy, self.posx))        
 
     
     def returnPos(self):
@@ -461,13 +463,16 @@ class Screen:
         self.terminal.write(message)
         self.cachedScreen += message
     
+
     def read(self, n: int=...) -> str:
         sys.__stdout__.read(n)
+
 
     def flush(self) -> None:
         # this flush method is needed for python 3 compatibility.
         # this handles the flush command by running flush via old options.
         sys.__stdout__.flush()
+
 
     ###          
     # END OF REDIRECT
@@ -550,10 +555,10 @@ class Screen:
             return (negY, posX)
  
         elif returnFormat == "x":
-            return posX
+            return int(posX)
 
         elif returnFormat == "y":
-            return negY
+            return int(negY)
 
         elif returnFormat == None:
             return posY, negY, posX, negX
@@ -565,6 +570,7 @@ class Screen:
     def setDimensions(self, x, y):
         pass
 
+
     def wipe(self):
         """
         Cleans off screen of all text. Be warned this also cleans the cachedScreen variable, if needed you may save cachedScreen to another
@@ -574,7 +580,7 @@ class Screen:
         os.system("clear")
 
 
-# I could reposition this in the code after I figure out what to do with it
+# I could reposition this in the code, this is after I know what requires the Chunk object.
 ########################################
 # CHUNK
 ########################################
@@ -594,12 +600,14 @@ class Chunk:
         :param str fg: Foreground colour
         :param str bg: Background colour
         """
+        initPos = cursor.getPos()
         stripped = self.value.rstrip()
-        cursor.setPos(self.position[1], self.position[0])
+        cursor.setPos(self.position[1]+1, self.position[0])
         # stdout.write() issue. https://github.com/ZackeryRSmith/Reter/issues/2
         #sys.stdout.write(("" if fg == None else fg)+("" if bg == None else bg)+stripped+indicator.colour.formatting.eoc)
         print(("" if fg == None else fg)+("" if bg == None else bg)+stripped+indicator.colour.formatting.eoc)
-        
+        cursor.setPos(initPos[0], initPos[1])
+
 
     def returnValue(self):
         """
@@ -782,10 +790,7 @@ def main():
     print("The quick brown fox")
     print("Cool beans")
     chunks = terminal.line.chunkIt(screen=terminal.screen, pattern=" ", lineNumber=1)
-    print(chunks[1].__dict__)
-    chunks[1].setColour(cursor=terminal.cursor, fg=indicator.colour.fg.black, bg=indicator.colour.bg.green)
-    while True:
-        pass
+    chunks[0].setColour(cursor=terminal.cursor, fg=indicator.colour.fg.black, bg=indicator.colour.bg.green)
 
 
 ########################################
