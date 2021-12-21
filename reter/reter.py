@@ -150,7 +150,7 @@ BOLD           = "\u001b[1m"
 UNDERLINE      = "\u001b[4m"
 # Reverse (Not text! Reverses the BG Colour!)
 REVERSED       = "\u001b[7m"                                
-# End of color
+# End of colour
 EOC            = "\u001b[0m"
 
 
@@ -198,7 +198,7 @@ class indicator:
         etx = ETX
     
 
-    class color:
+    class colour:
         class fg:
             # Black
             black = FGBLACK
@@ -258,7 +258,7 @@ class indicator:
             underline = UNDERLINE
             # Reverse (Not text! Reverses the BG Colour!)
             reverse = REVERSED                          
-            # End of color
+            # End of colour
             eoc = EOC
 
 
@@ -373,6 +373,7 @@ class Cursor:
             else:
                 raise IllegalArgumentError('"%s" is an illegal argument!' % (xory) + " Come on dude... it's in the variable name..")
 
+
     def setPos(self, x, y):
         """
         Sets the position of cursor. If you are looking for changing the value and not setting the value look towards .move().
@@ -384,6 +385,12 @@ class Cursor:
         self.posy = y
         sys.stdout.write('\033[%s;%sH' % (self.posx, self.posy))        
 
+    
+    def returnPos(self):
+        """
+        """
+        return (self.posx, self.posy)
+
 
     def move(self, x, y):
         """
@@ -394,15 +401,15 @@ class Cursor:
         """
         self.posx = x
         self.posy = y
-        if self.posx > 0:
+        if self.posx > 0:  # +
             sys.stdout.write('\x1b[%sC' % (self.posx))
-        elif self.posx < 0:
+        elif self.posx < 0:  # -
             sys.stdout.write('\x1b[%sD' % (int(str(self.posx)[1:])))  # Removes negative number with splicing
         
-        if self.posy > 0:
-            sys.stdout.write('\x1b[%sA' % (self.posy))
-        elif self.posy < 0:
-            sys.stdout.write('\x1b[%sB' % (int(str(self.posy)[1:])))  # Removes negative number with splicing
+        if self.posy > 0:  # +
+            sys.stdout.write('\x1b[%sB' % (self.posy))
+        elif self.posy < 0:  # -
+            sys.stdout.write('\x1b[%sA' % (int(str(self.posy)[1:])))  # Removes negative number with splicing
         sys.stdout.flush()  # Update line
 
 
@@ -447,7 +454,7 @@ class Screen:
     
 
     ###
-    # LOGGER
+    # STDOUT REDIRECT
     ###
     
     def write(self, message):
@@ -463,7 +470,7 @@ class Screen:
         sys.__stdout__.flush()
 
     ###          
-    # END OF LOGGER
+    # END OF REDIRECT
     ###
 
 
@@ -573,16 +580,39 @@ class Screen:
 ########################################
 
 class Chunk:
-    """"""
+    """DOCSTRING NOT CREATED YET!"""
     def __init__(self, position, value):
         self.position = position
         self.value = value
     
 
+    def setColour(self, cursor, fg: Optional[str]=None, bg: Optional[str]=None):
+        """
+        Sets an entire chunks colour. FG and BG are supported.. additional slots may be added in the future!
+
+        :param object cursor: Cusor object, with a terminal object you can just pass `terminal.cursor`
+        :param str fg: Foreground colour
+        :param str bg: Background colour
+        """
+        stripped = self.value.rstrip()
+        cursor.setPos(self.position[1], self.position[0])
+        # stdout.write() issue. https://github.com/ZackeryRSmith/Reter/issues/2
+        #sys.stdout.write(("" if fg == None else fg)+("" if bg == None else bg)+stripped+indicator.colour.formatting.eoc)
+        print(("" if fg == None else fg)+("" if bg == None else bg)+stripped+indicator.colour.formatting.eoc)
+        
+
     def returnValue(self):
         """
+        Returns value stored in chunk
         """
         return self.value
+    
+
+    def returnPosition(self):
+        """
+        Returns position of value stored in chunk
+        """
+        return self.position
 
 
 ########################################
@@ -604,15 +634,15 @@ class Line:
         return self.cursor.getPos("y")
 
 
-    def chunkIt(self, screen, pattern, lineNumber: Optional[int]=None):
+    def chunkIt(self, screen, pattern, maxChunk: Optional[int]=None, lineNumber: Optional[int]=None):
         """
         The chunkIt function will split by a pattern (kinda like str.split()), it will store these chunks as Chunk(). The chunk object can
         be moved, and minuplated to how you like. For more clarification here is an example. Lets say we have some text printed on the
         terminal I.e. "The quick brown fox" we can take this and chuck by whitespace by using chunkIt like so, chunkIt(1, " ") would return
-        4 chunk objects I.e. "The", "quick", "brown", and "fox". These can then be manupulated (Anything from color to deletion)! 
+        4 chunk objects I.e. "The", "quick", "brown", and "fox". These can then be manupulated (Anything from colour to deletion)! 
 
         WARNING:: chunkIt uses the cachedScreen variable to get it's data! cachedScreen is not perfect and requires the end-user to maintain a
-        stable structure!! Look at the wiki for best practices and how to get back on track if you *MUST* get off track to do something.
+        stable code structure!! Look at the wiki for best practices and how to get back on track if you *MUST* get off track to do something.
         I hope the logging system will be more stable at a later date but for now this is how it must be.
 
         NOTE:: Any chunk manupulated will be placed back in the same place on the same line, this is unless the end-user decides to change 
@@ -635,9 +665,15 @@ class Line:
         if isRe:
             pass
         else:
-            for letter in rawValue:
-                if letter in pattern[0:1]:
-                    pass
+            # Uses "".split() to split string (Taking the easy way out.. this code is subject to change!)
+            splitValue = (rawValue.split(pattern) if maxChunk == None else rawValue.split(pattern, maxChunk))
+            # Convert list of strings to a list of chunk objects
+            for index, item in enumerate(splitValue):
+                # Get positions of items on screen
+                for match in re.finditer(splitValue[index], rawValue):  # A wee bit of re
+                    position = (lineNumber, match.start(), match.end())
+                splitValue[index] = Chunk(position, item)
+            return splitValue
 
 
 ########################################
@@ -745,7 +781,11 @@ def main():
     terminal = start()
     print("The quick brown fox")
     print("Cool beans")
-    print(terminal.line.chunkIt(terminal.screen, " ", 1))
+    chunks = terminal.line.chunkIt(screen=terminal.screen, pattern=" ", lineNumber=1)
+    print(chunks[1].__dict__)
+    chunks[1].setColour(cursor=terminal.cursor, fg=indicator.colour.fg.black, bg=indicator.colour.bg.green)
+    while True:
+        pass
 
 
 ########################################
