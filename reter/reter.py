@@ -425,9 +425,9 @@ class Cursor:
                                             "left" "middle" "right"
                                            "bleft" "bmiddle" "bright"
         """
-        # Align can be fixed. Mainly with the screen object being able to calabrate screen size. No more guessing! But how to get that value
-        # Well who knows, it's a good thought though
-        
+        # Align still needs to be finished. With the knowledge and stuff implemented now this can be done right! I will get around to this...
+        # That is when I need the cursor.align function..
+
         if position=="left":
             self.move(-999, 0)
         elif position=="right":
@@ -790,7 +790,10 @@ def main():
     print("The quick brown fox")
     print("Cool beans")
     chunks = terminal.line.chunkIt(screen=terminal.screen, pattern=" ", lineNumber=1)
-    chunks[0].setColour(cursor=terminal.cursor, fg=indicator.colour.fg.black, bg=indicator.colour.bg.green)
+    chunks[0].setColour(cursor=terminal.cursor, bg=indicator.colour.formatting.reverse)
+    chunks[1].setColour(cursor=terminal.cursor, fg=indicator.colour.fg.lightblue, bg=indicator.colour.formatting.reverse)
+    chunks[2].setColour(cursor=terminal.cursor, fg=indicator.colour.fg.magenta)
+    chunks[3].setColour(cursor=terminal.cursor, bg=indicator.colour.bg.red)
 
 
 ########################################
