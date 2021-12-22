@@ -382,7 +382,7 @@ class Cursor:
         OldStdinMode = termios.tcgetattr(sys.stdin)
         settings = termios.tcgetattr(sys.stdin)
         settings[3] = settings[3] & ~(termios.ECHO | termios.ICANON)  # Disable echo, and stop the terminal from waiting for key press
-        termios.tcsetattr(sys.stdin, termios.TCSAFLUSH, _)
+        termios.tcsetattr(sys.stdin, termios.TCSAFLUSH, settings)
         try:
             temp = ""
             sys.stdout.write("\x1b[6n")  # Write mouse position silently
@@ -434,14 +434,14 @@ class Cursor:
         """
         self.posx = x
         self.posy = y
-        if self.posx > 0:  # +
+        if self.posx >= 0:  # +
             sys.stdout.write('\x1b[%sC' % (self.posx))
-        elif self.posx < 0:  # -
+        else:  # -
             sys.stdout.write('\x1b[%sD' % (int(str(self.posx)[1:])))  # Removes negative number with splicing
         
-        if self.posy > 0:  # +
+        if self.posy >= 0:  # +
             sys.stdout.write('\x1b[%sB' % (self.posy))
-        elif self.posy < 0:  # -
+        else:  # -
             sys.stdout.write('\x1b[%sA' % (int(str(self.posy)[1:])))  # Removes negative number with splicing
         sys.stdout.flush()  # Update line
 
@@ -484,7 +484,7 @@ class Screen:
         if linkCursor:
             # Link cursor to screen
             self.cursor.link()
-    
+
 
     ###
     # STDOUT REDIRECT
@@ -621,7 +621,8 @@ class Chunk:
     def __init__(self, position, value):
         self.position = position
         self.value = value
-    
+        self.formatting = {}
+
 
     def setColour(self, cursor, fg: Optional[str]=None, bg: Optional[str]=None):
         """
@@ -638,6 +639,12 @@ class Chunk:
         #sys.stdout.write(("" if fg == None else fg)+("" if bg == None else bg)+stripped+indicator.colour.formatting.eoc)
         print(("" if fg == None else fg)+("" if bg == None else bg)+stripped+indicator.colour.formatting.eoc)
         cursor.setPos(initPos[0], initPos[1])
+        self.formatting.update({
+            "colour": {
+                "fg":fg,
+                "bg":bg
+            }
+        })
 
 
     def setPos(self):
@@ -646,11 +653,28 @@ class Chunk:
         pass
 
 
-    def move(self):
+    def move(self, cursor, x, y):
         """
+        Moves a chunk
         """
-        pass
+        # This MUST be re-worked! The amount of quirks I had to deal with in this is CRAZY!! 
 
+        # Move cursor to ending chunk position
+        cursor.setPos(self.position[2]+1, self.position[0])
+        # Delete chunk
+        for i in range(self.position[1], self.position[2]):
+            sys.stdout.write("\b")
+            sys.stdout.write(" ")
+            sys.stdout.write("\b")
+        # Move cursor to starting chunk position
+        cursor.setPos(self.position[1]+1, self.position[0])
+        # Move cursor to desired position
+        print(" " if x > 1 else "", end="")  # If x is bigger then 1 some weird things happen. This fixes it
+        cursor.move(x-1, y) if self.position[1] == 0 else cursor.move(x, y)  # Turnary operator fixes some formatting bugs
+        # Place chunk
+        print(("" if self.formatting["colour"]["fg"] == None else self.formatting["colour"]["fg"])+("" if self.formatting["colour"]["bg"] == None else self.formatting["colour"]["bg"])+self.value.rstrip()+indicator.colour.formatting.eoc)
+        # Update self.position
+        self.position = (self.position[0]+y, self.position[1]+x, self.position[2]+x)
 
     def returnValue(self):
         """
@@ -723,6 +747,10 @@ class Line:
         else:
             # Uses "".split() to split string (Taking the easy way out.. this code is subject to change!)
             splitValue = (rawValue.split(pattern) if maxChunk == None else rawValue.split(pattern, maxChunk))
+            # Remove random whitspace items in splitValue
+            removeSpace = [x.strip(' ') for x in splitValue]
+            deleteEmpty = [item for item in removeSpace if item.strip()]
+            splitValue = deleteEmpty
             # Convert list of strings to a list of chunk objects
             for index, item in enumerate(splitValue):
                 # Get positions of items on screen
@@ -819,7 +847,7 @@ def captureInput(blind: Optional[bool]=False, limit: Optional[int]=9223372036854
 # START
 ########################################
 
-def start():
+def init():
     """Automaticly setups reter for user"""
     cursor = Cursor(0, 0)
     screen = Screen(cursor)
@@ -834,10 +862,12 @@ def start():
 ########################################
 
 def main():
-    terminal = start()
+    terminal = init()
     print("The quick brown fox")
     print("Cool beans")
     chunks = terminal.line.chunkIt(terminal.screen, " ", 1)
+    chunks[0].setColour(terminal.cursor, bg=indicator.colour.formatting.reverse)
+    chunks[0].move(terminal.cursor, 0, 2)
 
 
 ########################################
