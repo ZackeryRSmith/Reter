@@ -24,7 +24,7 @@ def main():
     lineOne[1].move(cursor=terminal.cursor, x=0, y=2)
     lineOne[2].move(cursor=terminal.cursor, x=0, y=2)
     lineOne[3].move(cursor=terminal.cursor, x=0, y=2)
-    
+
 
 if __name__=='__main__':
     main()
