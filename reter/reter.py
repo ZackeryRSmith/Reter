@@ -67,6 +67,11 @@ import warnings
 # CONSTANTS
 ########################################
 
+# Terminal info
+__terminal_emulator__ = None  # Set once reter is initialized
+__terminal__ = None  # Set once reter is initialized
+
+
 # Number keys
 ONEKEY     = (b'1')
 TWOKEY     = (b'2')
@@ -158,7 +163,6 @@ EOC            = "\u001b[0m"
 # ERRORS
 ########################################
 
-'''
 class Error(Exception):
     """Base class for other exceptions"""
     def __init__(self, errorName, codeInQuestion, fixes: Optional[str]=None, info: Optional[str]=None):
@@ -166,36 +170,33 @@ class Error(Exception):
         self.codeInQuestion = codeInQuestion
         self.fixes = fixes
         self.info = info
-
-    def raise(self):
-        print("Oops.. it seems an issue has occurred:\n"+self.errorName+"\n+-----------------------------------+")
+        print(FGRED+"Oops.. it seems an issue has occurred:\n\n"+EOC+FGRED+self.errorName+FGYELLOW+"\n+-----------------------------------+"+EOC)
         print("""
-Code in question
-`
+%sCode in question
+%s`
 %s
-`
-------------------------------------+""" % (self.codeInQuestion))
+`%s
+%s------------------------------------+""" % (FGYELLOW, FGCYAN, self.codeInQuestion, EOC, FGYELLOW))
         if self.fixes != None:
             print("""
-Potential fixes
-`
+%sPotential fixes
+%s`
 %s
-`
-------------------------------------+""" % (self.fixes))
+`%s
+%s------------------------------------+""" % (FGYELLOW, FGCYAN, self.fixes, EOC, FGYELLOW))
         if self.info != None:
             print("""
-Has the issue been found
-`
-
-`
-+-----------------------------------+""")    
+%sAdditional info
+%s`
+%s
+`%s""" % ((FGYELLOW, FGCYAN, self.info, EOC)))
+        print("%s+-----------------------------------+%s" % (FGYELLOW, EOC))    
 
 
 
 class IllegalArgumentError(Error):
     """Called when a argument unbeknown to us gets passed"""
     pass
-'''
 
 
 ########################################
@@ -300,7 +301,7 @@ class indicator:
 
 class Getch:
     """
-    Getch (Get character) will grab an input from the user. Taking in 3 characters max! Getch gets satisfied in one button press, this
+    Getch (Get character) will grab an input from the user. Taking in 3 characters max! Getch gets satisfied with one button press, this
     allows capturing of single key presses but still allowing escape characters, or any escape character under 3 characters I.e. ^C
     """
     def __call__(self):
@@ -363,9 +364,9 @@ class Cursor:
         """
         self.visibility = visibility
         if self.visibility:
-            sys.stdout.write("\x1b[?25h")
+            sys.__stdout__.write("\x1b[?25h")
         else:
-            sys.stdout.write("\x1b[?25l")
+            sys.__stdout__.write("\x1b[?25l")
 
 
     def getPos(self, xory: Optional[str]=None, updatePos: Optional[bool]=True):
@@ -385,9 +386,8 @@ class Cursor:
         termios.tcsetattr(sys.stdin, termios.TCSAFLUSH, settings)
         try:
             temp = ""
-            sys.stdout.write("\x1b[6n")  # Write mouse position silently
-            sys.stdout.flush()  # Allows the write() code above this line to be read
-            # ESC[hight;widthR
+            sys.__stdout__.write("\x1b[6n")  # Write mouse position silently
+            sys.__stdout__.flush()  # Allows the write() code above this line to be read
             while not (temp := temp + sys.stdin.read(1)).endswith('R'):  # If you are confussed on this look at stackoverflow.com/questions/26000198/what-does-colon-equal-in-python-mean
                 pass
             res = re.match(r".*\[(?P<y>\d*);(?P<x>\d*)R", temp)  # Creates groups for values using regex
@@ -414,11 +414,18 @@ class Cursor:
         :param int x: x position to set
         :param int y: y position to set
         """
-        self.posx = x
-        self.posy = y
-        sys.stdout.write('\033[%s;%sH' % (self.posy, self.posx))        
+        self.posx = int(x)
+        self.posy = int(y)
+        #-- Why do this you may as well it seemed like ESC[#;#H did not work. This did so I just opted for it
+        #   If you know the reason or can fix it make a pull request, create an issue under enhancement label
+        #   or shoot me an email!
+ 
+        # Get the distance between current postion, and the position to set
+        currentPos = self.getPos()
+        self.move(int(x)-int(currentPos[0]), int(y)-int(currentPos[1]))
+        #sys.__stdout__.write("\x1b[%s;%sH" % (self.posy, self.posx))
 
-    
+
     def returnPos(self):
         """
         """
@@ -434,16 +441,17 @@ class Cursor:
         """
         self.posx = x
         self.posy = y
-        if self.posx >= 0:  # +
-            sys.stdout.write('\x1b[%sC' % (self.posx))
-        else:  # -
-            sys.stdout.write('\x1b[%sD' % (int(str(self.posx)[1:])))  # Removes negative number with splicing
+        # Because of the way ESC[C works 0 must be ingnored.. Thus removing elif is not an option.
+        if self.posx > 0:  # +
+            sys.__stdout__.write('\x1b[%sC' % (self.posx))
+        elif self.posx < 0:  # -
+            sys.__stdout__.write('\x1b[%sD' % (int(str(self.posx)[1:])))  # Removes negative number with splicing
         
-        if self.posy >= 0:  # +
-            sys.stdout.write('\x1b[%sB' % (self.posy))
-        else:  # -
-            sys.stdout.write('\x1b[%sA' % (int(str(self.posy)[1:])))  # Removes negative number with splicing
-        sys.stdout.flush()  # Update line
+        if self.posy > 0:  # +
+            sys.__stdout__.write('\x1b[%sB' % (self.posy))
+        elif self.posy < 0:  # -
+            sys.__stdout__.write('\x1b[%sA' % (int(str(self.posy)[1:])))  # Removes negative number with splicing
+        sys.__stdout__.flush()  # Update line
 
 
     def align(self, position):
@@ -663,9 +671,9 @@ class Chunk:
         cursor.setPos(self.position[2]+1, self.position[0])
         # Delete chunk
         for i in range(self.position[1], self.position[2]):
-            sys.stdout.write("\b")
-            sys.stdout.write(" ")
-            sys.stdout.write("\b")
+            sys.__stdout__.write("\b")
+            sys.__stdout__.write(" ")
+            sys.__stdout__.write("\b")
         # Move cursor to starting chunk position
         cursor.setPos(self.position[1]+1, self.position[0])
         # Move cursor to desired position
@@ -737,7 +745,7 @@ class Line:
         try:
             # Do some manual checks for re
             if pattern.isspace():
-                raise re.error("Falsely raised error")
+                raise re.error("Intentionaly raised error")
             isRe = re.compile(pattern)
         except re.error:
             isRe = False
@@ -747,9 +755,10 @@ class Line:
         else:
             # Uses "".split() to split string (Taking the easy way out.. this code is subject to change!)
             splitValue = (rawValue.split(pattern) if maxChunk == None else rawValue.split(pattern, maxChunk))
-            # Remove random whitspace items in splitValue
+            # Remove random items and whitspace from splitValue
             removeSpace = [x.strip(' ') for x in splitValue]
-            deleteEmpty = [item for item in removeSpace if item.strip()]
+            removeRandom = [x for x in removeSpace if not x.startswith('\x1b')]
+            deleteEmpty = [item for item in removeRandom if item.strip()]
             splitValue = deleteEmpty
             # Convert list of strings to a list of chunk objects
             for index, item in enumerate(splitValue):
@@ -765,11 +774,14 @@ class Line:
 ########################################
 
 class Terminal:
-    """Glues Screen, Line, Cursor into one object"""
+    """Glues Screen, Line, Cursor into one object as well as updating terminal info"""
     def __init__(self, screen, line, cursor):
         self.screen = screen
         self.line = line
         self.cursor = cursor
+
+        # Get terminal, and terminal emulator
+        __terminal_emulator__ = subprocess.check_output('basename "/"$(ps -f -p $(cat /proc/$(echo $$)/stat | cut -d \  -f 4) | tail -1 | sed '+"'s/^.* //')", shell=True)  # Get terminal emulator
 
 
 ########################################
@@ -813,10 +825,10 @@ def captureInput(blind: Optional[bool]=False, limit: Optional[int]=9223372036854
         if len(stringToReturn) >= limit:
             break # Making a more customizable system would be nice
         key = captureKey()
-        if key == RIGHTARROW:
+        if key == indicator.arrow.right:
             cursor.move(1, 0)
             continue
-        elif key == LEFTARROW:
+        elif key == indicator.arrow.left:
             cursor.move(-1, 0)
             continue
         elif key == UPARROW:
@@ -853,7 +865,7 @@ def init():
     screen = Screen(cursor)
     line = Line(cursor)
     sys.stdout = screen
-    terminal = Terminal(screen, line, cursor)
+    terminal = Terminal(screen, line, cursor)    
     return terminal
 
 
@@ -863,11 +875,12 @@ def init():
 
 def main():
     terminal = init()
-    print("The quick brown fox")
-    print("Cool beans")
-    chunks = terminal.line.chunkIt(terminal.screen, " ", 1)
-    chunks[0].setColour(terminal.cursor, bg=indicator.colour.formatting.reverse)
-    chunks[0].move(terminal.cursor, 0, 2)
+    #print("The quick brown fox")
+    #print("Cool beans")
+    #chunks = terminal.line.chunkIt(terminal.screen, " ", 1)
+    #chunks[0].setColour(terminal.cursor, bg=indicator.colour.formatting.reverse)
+    #chunks[0].move(terminal.cursor, 0, 2)
+    print(captureInput())
 
 
 ########################################
