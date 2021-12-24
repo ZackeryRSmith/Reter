@@ -34,12 +34,12 @@ __license__ = "GNU GPL-3.0"
 __version_info__ = (0, 0, 1)
 __version__ = ".".join(map(str, __version_info__))
 
+
 import sys
 sys.path.append("../../")
 from reter.reter import (
     indicator,
-    start,
-    Cursor,
+    init,
     captureKey
 )
 from typing import (
@@ -63,8 +63,13 @@ from typing import (
 ########################################
 # listBox
 ########################################
+#-- Small issues
+# Lag on some terminals
+# Cursor movement is just laggy when it comes to some terminals
+# 'Some terminals' mainly refer to Terminator, and Gnome Terminal
 
-def listBox(cursor, choices, cycleCursor: Optional[bool]=True, clearScreen: Optional[bool]=False, clearMenuOnExit: Optional[bool]=False, cursorIndex: Optional[int]=0, theme: Optional[dict]={"pady": 0, "bullet": None, "bulletSelection": ">", "bulletSpacing": " ", "selectionHighlight": indicator.color.formatting.reverse, "highlightBullet": False, "selectionTextColor": None, "textColor": None, "bulletColor": None, "bulletSelectionColor": indicator.color.fg.red}):
+
+def listBox(terminal, choices, cycleCursor: Optional[bool]=True, clearScreen: Optional[bool]=False, clearMenuOnExit: Optional[bool]=False, cursorIndex: Optional[int]=0, theme: Optional[dict]={"pady": 0, "bullet": None, "bulletSelection": ">", "bulletSpacing": " ", "selectionHighlight": indicator.colour.formatting.reverse, "highlightBullet": False, "selectionTextColor": None, "textColor": None, "bulletColor": None, "bulletSelectionColor": indicator.colour.fg.red}):
     """
     Creates selection list of objects.
 
@@ -73,83 +78,96 @@ def listBox(cursor, choices, cycleCursor: Optional[bool]=True, clearScreen: Opti
     """
     # Create "padx". It is a bit of a challenge to create so I left it out for now.
     
+    # Fix up theme now, reduces the number of conditional checks. Thus speeding up are script, and making it look better!
+    theme = {
+        "pady": theme["pady"],
+        "bullet": ("" if theme["bulletSelection"] == None else " "*len(theme["bulletSelection"])) if theme["bullet"] == None else theme["bullet"],
+        "bulletSelection": " " if theme["bulletSelection"] == None else theme["bulletSelection"],
+        "bulletSpacing": "" if theme["bulletSpacing"] == None else theme["bulletSpacing"],
+        "selectionHighlight": "" if theme["selectionHighlight"] == None else theme["selectionHighlight"],
+        "highlightBullet": "" if theme["highlightBullet"] == False else "" if theme["selectionHighlight"] == None else theme["selectionHighlight"],
+        "selectionTextColor": "" if theme["selectionTextColor"] == None else theme["selectionTextColor"],
+        "textColor": "" if theme["textColor"] == None else theme["textColor"],
+        "bulletColor": "" if theme["bulletColor"] == None else theme["bulletColor"],
+        "bulletSelectionColor": "" if theme["bulletSelectionColor"] == None else theme["bulletSelectionColor"]
+    }
+
     # Create y padding (top)
-    if theme["pady"] != 0 and theme["pady"] > 0:
+    if theme["pady"] > 0:
         print("\n"*theme["pady"], end="", flush=True)
 
-    cursor.changeVisibility(False)
-    lines = len(choices)
-    for index, option in enumerate(choices):
-        # Make sure only the needed amount of lines are created (according to theme)
-        if index==lines-1:
-            print((("" if theme["bulletSpacing"] == None else theme["bulletSpacing"]) if theme["highlightBullet"] == True else (" "*len(theme["bulletSelection"]) if theme["bullet"] == None else theme["bullet"])) + ("" if theme["bulletSpacing"] == None else theme["bulletSpacing"]) + ("" if theme["textColor"] == None else theme["textColor"]) + option, end='', flush=True)
-        
-        elif index!=lines:
-            print((("" if theme["bulletSpacing"] == None else theme["bulletSpacing"]) if theme["highlightBullet"] == True else (" "*len(theme["bulletSelection"]) if theme["bullet"] == None else theme["bullet"])) + ("" if theme["bulletSpacing"] == None else theme["bulletSpacing"]) + ("" if theme["textColor"] == None else theme["textColor"]) + option)
-        
-        elif index==lines:  # Really never used. Kept just incase a user goes beyond other checks
-            print((("" if theme["bulletSpacing"] == None else theme["bulletSpacing"]) if theme["highlightBullet"] == True else (" " if theme["bullet"] == None else theme["bullet"])) + ("" if theme["bulletSpacing"] == None else theme["bulletSpacing"]) + ("" if theme["textColor"] == None else theme["textColor"]) + option, end='', flush=True)
+    terminal.cursor.changeVisibility(False)  # Hide cursor
     
-    # Realign cursor
-    cursor.move(0, len(choices)-1)
-    cursor.align("left")
+    chunkedLines = []
+    for index, item in enumerate(choices):
+        print(theme["bullet"]+theme["bulletSpacing"]+item)  # Print entries in unselected form
+        chunkedLines.append(terminal.line.chunkIt(terminal.screen, theme["bulletSpacing"], index+(len(choices)-1), 1))
 
-    startingLine = 1
-    currentLine = 1
+    # Move cursor to first element
+    terminal.cursor.move(0, -len(choices))
+    initPos = terminal.cursor.getPos()
+
+    # Set init selected line
+    chunkedLines[initPos[1]-(len(choices)-1)][0].setColour(terminal.cursor, theme["bulletSelectionColor"])
+    
+    # Move cursor back to first element
+    terminal.cursor.setPos(initPos[0], initPos[1])
+
     while True:
-        stripped = choices[currentLine-1].rstrip()
-        # Current selected line theming
-        sys.stdout.write((("" if theme["selectionHighlight"] == None else theme["selectionHighlight"]) if theme["highlightBullet"] == True else "")+(" " if theme["bulletSelection"] == None else ("" if theme["bulletSelectionColor"] == None else theme["bulletSelectionColor"]) + theme["bulletSelection"]) + ("" if theme["bulletSelectionColor"] == None else indicator.color.formatting.eoc) + ("" if theme["bulletSpacing"] == None else theme["bulletSpacing"]) + ("" if theme["selectionHighlight"] == None else theme["selectionHighlight"]) + ("" if theme["selectionTextColor"] == None else theme["selectionTextColor"]) + stripped + indicator.color.formatting.eoc)
-        
-        cursor.align("left")
         key = captureKey()
         if key == indicator.arrow.up:
-            if currentLine-1 <= 0:  # Make sure current line and cursor don't move any further
-                if cycleCursor:  # It can repeat if cycleCursor is true
-                    currentLine+=len(choices)
-                    cursor.move(0, -len(choices))
+            if terminal.cursor.getPos("y") <= initPos[1]:
+                if cycleCursor:
+                    chunkedLines[int(terminal.cursor.posy)-(len(choices)-1)][0].setColour(terminal.cursor, fg=indicator.colour.formatting.eoc, bg=indicator.colour.formatting.eoc)
+                    terminal.cursor.move(0, len(choices)-1)
+                    chunkedLines[terminal.cursor.getPos("y")-(len(choices)-1)][0].setColour(terminal.cursor, theme["bulletSelectionColor"])
                 else:
-                    continue
-            elif currentLine==0:
-                currentLine+=1
-                cursor.move(0, -1)
-                continue
-            currentLine-=1
-            # Reset selection highlight (According to theme)
-            sys.stdout.write((indicator.color.formatting.eoc if theme["textColor"] == None else theme["textColor"]) + (" "*len(theme["bulletSelection"]) if theme["bullet"] == None else theme["bullet"]) + ("" if theme["bulletSpacing"] == None else theme["bulletSpacing"]) + stripped + indicator.color.formatting.eoc)
-            cursor.align("left")
-            
-            cursor.move(0, 1)
-
-        elif key == indicator.arrow.down:
-            if currentLine+1 >= len(choices)+1:  # Make sure current line and cursor don't move any further
-                if cycleCursor:  # It can repeat if cycleCursor is true
-                    currentLine-=len(choices)
-                    cursor.move(0, len(choices))
-                else:
-                    continue
-            elif currentLine > len(choices):
-                currentLine-=1
-                cursor.move(0, 1)
-                continue
-            currentLine+=1
-            # Reset selection highlight (According to theme)
-            sys.stdout.write((indicator.color.formatting.eoc if theme["textColor"] == None else theme["textColor"]) + (" "*len(theme["bulletSelection"]) if theme["bullet"] == None else theme["bullet"]) + ("" if theme["bulletSpacing"] == None else theme["bulletSpacing"]) + stripped + indicator.color.formatting.eoc)
-            cursor.align("left")
-            
-            cursor.move(0, -1)
+                    pass
+            else:
+                chunkedLines[int(terminal.cursor.posy)-(len(choices)-1)][0].setColour(terminal.cursor, fg=indicator.colour.formatting.eoc, bg=indicator.colour.formatting.eoc)
+                terminal.cursor.move(0, -1)        
+                chunkedLines[terminal.cursor.getPos("y")-(len(choices)-1)][0].setColour(terminal.cursor, theme["bulletSelectionColor"])
         
-        elif key == indicator.escape.enter:
-            # Fix cursor (position, visibility, and add padding if needed)
-            cursor.move(0, (len(choices)-currentLine)*-1)  # Fix pos
-            if theme["pady"] != 0 and theme["pady"] > 0:
-                print("\n"*theme["pady"], end="", flush=True)
-                cursor.move(0, theme["pady"]*-1)
-            cursor.changeVisibility(True)  # Fix visibility
-            
-            # Remove all special formating
-            print(indicator.color.formatting.eoc, end="\n")
+        elif key == indicator.arrow.down:
+            if terminal.cursor.getPos("y") >= initPos[1]+(len(choices)-1):
+                if cycleCursor:
+                    chunkedLines[int(terminal.cursor.posy)-(len(choices)-1)][0].setColour(terminal.cursor, fg=indicator.colour.formatting.eoc, bg=indicator.colour.formatting.eoc)
+                    terminal.cursor.move(0, -(len(choices)-1))
+                    chunkedLines[terminal.cursor.getPos("y")-(len(choices)-1)][0].setColour(terminal.cursor, theme["bulletSelectionColor"])
+                else:
+                    pass
+            else:
+                chunkedLines[int(terminal.cursor.posy)-(len(choices)-1)][0].setColour(terminal.cursor, fg=indicator.colour.formatting.eoc, bg=indicator.colour.formatting.eoc)
+                terminal.cursor.move(0, 1)
+                chunkedLines[terminal.cursor.getPos("y")-(len(choices)-1)][0].setColour(terminal.cursor, theme["bulletSelectionColor"])
 
-            return choices[currentLine-1]
-        else:
-            pass
+        elif key == indicator.escape.enter:
+            selection = choices[terminal.cursor.getPos("y")-(len(choices)-1)]  # Save selected option
+            terminal.cursor.setPos(0, terminal.cursor.getPos("y")+(len(choices)-choices.index(selection)))  # Move cursor past choices
+            return selection  # Return selected option
+
+    terminal.cursor.changeVisibility(True)  # Show cursor
+    if clearScreen:
+        terminal.screen.wipe()
+    else:
+        terminal.screen.cachedScreen = ""  # Clean cachedScreen
+   
+
+########################################
+# MAIN - FOR DEBUGGING REASONS
+########################################
+
+def main():
+    terminal = init()
+    print("Select an entry!")
+    print("%s Was selected" % (listBox(terminal, ["entry 1", "entry 2", "entry 3"])))
+
+
+########################################
+# RUN - FOR DEBUGGING REASONS
+########################################
+
+if __name__=='__main__':
+    main()
+
+
