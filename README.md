@@ -74,7 +74,8 @@ Bo-Boxes is a python module created using Reter. Bo-Boxes allows the end-user to
 
 ![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/yakuake-listboxes.png)
 <h2></h2>
-  
+
+<!-- Not too sure sure if I will make this
 <h2 align="center">Cures</h2>
 <div align="center">
   <a href="https://github.com/ZackeryRSmith/Cures/">
@@ -85,3 +86,11 @@ Cures is a open-source python module created using reter. Cures is the open-sour
 >providing the programmer with an abstraction of a display containing multiple non-overlapping windows of text
 
 Really means! 
+-->
+
+<h2 align="center">VDTGraphics</h2>
+<div align="center">
+  <a href="https://github.com/ZackeryRSmith/VDTGraphics/">
+    <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/VDTGraphics.jpg" alt="VDTGraphics logo" width="240" height="240">
+  </a>
+  
