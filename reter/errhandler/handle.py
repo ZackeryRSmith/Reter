@@ -1,6 +1,13 @@
+########################################
+# IMPORTS
+########################################
+
+from typing import Optional
+
+
 # Requires style indicator
 ########################################
-# ERRORS
+# ERROR
 ########################################
 
 class Error(Exception):
