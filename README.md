@@ -13,7 +13,7 @@ Readme will be created if this project *really* goes somewhere. Or if I just fee
 <br />
 <div align="center">
   <a href="https://github.com/ZackeryRSmith/Reter/">
-    <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/Reter.jpg" alt="Reter logo" width="240" height="240">
+    <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/Reter/Reter.jpg" alt="Reter logo" width="240" height="240">
   </a>
 
 <h3 align="center">Reter</h3>
@@ -39,7 +39,7 @@ Here are some examples of Reter found in other modules
 <h2 align="center">Bo-Boxes</h2>
 <div align="center">
   <a href="https://github.com/ZackeryRSmith/Bo-Boxes/">
-    <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/Bo-Boxes.jpg" alt="Bo-Boxes logo" width="240" height="240">
+    <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/BoBoxes/Bo-Boxes.jpg" alt="Bo-Boxes logo" width="240" height="240">
   </a>
 
 Bo-Boxes is a python module created using Reter. Bo-Boxes allows the end-user to create combo boxes in the Unix Shell working on almost every terminal. Bo-Boxes has a end-user theming system allowing you to customize all the combo-boxes looks. The images shown below are the default theme, but it can be configured to your liking!
@@ -47,32 +47,32 @@ Bo-Boxes is a python module created using Reter. Bo-Boxes allows the end-user to
 #### Terminator
 <sub>List Box</sub>
 
-![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/terminator-listboxes.png)
+![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/BoBoxes/terminator-listboxes.png)
 
 #### Xterm
 <sub>List Box</sub>
 
-![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/xterm-listboxes.png)
+![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/BoBoxes/xterm-listboxes.png)
 
 #### Gnome
 <sub>List Box</sub>
 
-![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/gnome-listboxes.png)
+![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/BoBoxes/gnome-listboxes.png)
 
 #### Konsole
 <sub>List Box</sub>
 
-![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/konsole-listboxes.png)
+![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/BoBoxes/konsole-listboxes.png)
 
 #### RXVT
 <sub>List Box</sub>
 
-![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/rxvt-listboxes.png)
+![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/BoBoxes/rxvt-listboxes.png)
 
 #### Yakuake
 <sub>List Box</sub>
 
-![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/yakuake-listboxes.png)
+![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/BoBoxes/yakuake-listboxes.png)
 <h2></h2>
 
 <!-- Not too sure sure if I will make this
@@ -91,6 +91,6 @@ Really means!
 <h2 align="center">VDTGraphics</h2>
 <div align="center">
   <a href="https://github.com/ZackeryRSmith/VDTGraphics/">
-    <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/VDTGraphics.jpg" alt="VDTGraphics logo" width="240" height="240">
+    <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/VDTGraphic/VDTGraphic.jpg" alt="VDTGraphics logo" width="240" height="240">
   </a>
   
