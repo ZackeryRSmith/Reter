@@ -2,10 +2,14 @@
 # IMPORTS
 ########################################
 
+import re
 import sys
 import os
 from typing import Optional
 from contextlib import contextmanager
+sys.path.append("../../")  # Go to master
+from reter.style.indicator import indicator
+from reter.cursor.cursor import Cursor 
 
 
 ########################################
@@ -18,42 +22,22 @@ class Screen:
         self.cachedScreen = ""
         self.cursor = cursor
         if autoCalibrate:
-            self.height = self.getDimensions(returnFormat="y") if height == None else height
-            self.width = self.getDimensions(returnFormat="x") if width == None else width
+            self.height = self.getDimensions(returnFormat="lines") if height == None else height
+            self.width = self.getDimensions(returnFormat="columns") if width == None else width
         else:
             self.height = height
             self.width = width
-        
+ 
+        # Does nothing as of now
         if linkCursor:
             # Link cursor to screen
             self.cursor.link()
 
-    ''' Moved a new implementation of this to /terminal/
-    ###
-    # STDOUT REDIRECT
-    ###
-    
-    def write(self, message):
-        self.terminal.write(message)
-        self.cachedScreen += message
-    
 
-    def read(self, n: int=...) -> str:
-        sys.__stdout__.read(n)
-
-
-    def flush(self) -> None:
-        # this flush method is needed for python 3 compatibility.
-        # this handles the flush command by running flush via old options.
-        sys.__stdout__.flush()
-
-
-    ###          
-    # END OF REDIRECT
-    ###
-    '''
-
+    # Not implemented.. not too sure if it every will. Reter is not a graphic lib so there is no need for this
     def setBorder(self, theme={"topLeftCorner": "+", "botLeftCorner": "+", "topRightCorner": "+", "botRightCorner": "+", "connections": "-"}):
+        """
+        """
         pass
 
 
@@ -73,7 +57,7 @@ class Screen:
         
         :param str returnFormat: The format in which to be retuned in
         :param bool clearScreen: If false screen will not be cleared when checking dimensions. This can cause some weird visual bugs if not expected and dealt with manually!!
-        :param string xory: If "x" the returned value just be x and vice versa. If xory equal to NoneType then x and y will be returned.
+        :param string xory: If "x" the returned value just be columns and vice versa. If xory equal to NoneType then (Columns, Lines) will be returned.
         
         :: DEPRECATED
         :param int positiveyLimit: This will set the dimensions limit on positive y direction
@@ -82,25 +66,32 @@ class Screen:
         :param int negativexLimit: This will set the dimensions limit on negative x direction
         
         :rtype: Return varies depending on the value of `xory` but by default a tuple will be returned.
-        :return: Return varies depending on the value of `xory` but by default (x, y) will be returned.
+        :return: Return varies depending on the value of `xory` but by default (Columns, Lines) will be returned.
         """
         if clearScreen:
             os.system("clear")
         terminal_size = os.get_terminal_size()
         if returnFormat == "WxH":
-            return str(terminal)+"x"+str(negY)
+            return str(terminal_size.columns)+"x"+str(terminal_size.lines)
+
         elif returnFormat == "HxW":
-            return str(posX)+"x"+str(negY)
+            return str(terminal_size.lines)+"x"+str(terminal_size.columns)
+        
         elif returnFormat == "xy":
-            return (posX, negY)
+            return (terminal_size.columns, terminal_size.lines)
+        
         elif returnFormat == "yx":
-            return (negY, posX)
+            return (terminal_size.lines, terminal_size.columns)
+        
         elif returnFormat == "x":
-            return int(posX)
+            return terminal_size.columns
+        
         elif returnFormat == "y":
-            return int(negY)
+            return terminal_size.lines
+        
         elif returnFormat == None:
-            return posY, negY, posX, negX
+            return (terminal_size.lines, terminal_size.columns)
+        
         else:
             return posY, negY, posX, negX
 
@@ -118,7 +109,7 @@ class Screen:
         os.system("clear")
 
 
-# May or may not be moved into a diffrent file called line.py
+# May or may not be moved into a diffrent path at some point
 ########################################
 # LINE
 ########################################
@@ -159,6 +150,7 @@ class Line:
         try:
             rawValue = screen.cachedScreen.split("\n")[lineNumber-1]
         except AttributeError:
+            # Fix this error to use custom error handler (/errhandler/)
             sys.exit(indicator.colour.formatting.bold+indicator.colour.formatting.underline+"Hey it seems you did not pass a screen object... You have passed a '%s' object" % (type(screen)))
 
         # Check for regex
@@ -169,8 +161,8 @@ class Line:
             isRe = re.compile(pattern)
         except re.error:
             isRe = False
-        
         if isRe:
+            # Deal with regular expression here
             pass
         else:
             # Uses "".split() to split string (Taking the easy way out.. this code is subject to change!)
@@ -189,10 +181,13 @@ class Line:
             return splitValue
 
     def remove(self, lineNumber):
+        """
+        """
+        # Delete entire chunk (Line deletion needs to be implemented first)
         pass
 
 
-# May or may not be removed or put into another file called chunk.py
+# May or may not be removed or put into another path
 ########################################
 # CHUNK
 ########################################
@@ -238,7 +233,7 @@ class Chunk:
         """
         Moves a chunk
         """
-        # This MUST be re-worked! The amount of quirks I had to deal with in this is CRAZY!! 
+        # This should be re-worked. There were quite of weird bugs that should not be overlooked although patched.
 
         # Move cursor to ending chunk position
         cursor.setPos(self.position[2]+1, self.position[0])
@@ -257,6 +252,7 @@ class Chunk:
         # Update self.position
         self.position = (self.position[0]+y, self.position[1]+x, self.position[2]+x)
 
+
     def returnValue(self):
         """
         Returns value stored in chunk
@@ -267,5 +263,10 @@ class Chunk:
     def returnPosition(self):
         """
         Returns position of value stored in chunk
+        
+        :rtype: tuple of int's
+        :return: Returns (starting_char_position, ending_char_position, line_number)
         """
         return self.position
+
+
