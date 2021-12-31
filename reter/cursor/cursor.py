@@ -3,7 +3,6 @@
 ########################################
 
 import sys
-import os  # May not be needed
 from typing import Optional
 import termios
 import tty
@@ -137,7 +136,7 @@ class Cursor:
         """
         self.posx = x
         self.posy = y
-        # Because of the way ESC[C works 0 must be ingnored.. Thus removing elif is not an option.
+        # Because of the way ESC[C works 0 must be ignored.. Thus removing elif is not an option.
         if self.posx > 0:  # +
             sys.__stdout__.write('\x1b[%sC' % (self.posx))
         elif self.posx < 0:  # -
