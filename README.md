@@ -89,7 +89,7 @@ Start of tested terminals
 - Gnome ( *Ubuntu* )
 - RXVT Color Terminal
 
-This library supports all UNIX terminals; however, not every terminal in the known universe have been tested. If you have used this library for a terminal other than the above list without issues *(or with issues)*, then feel free to contact me *(or create an issue)* It would help drastically and I would really appreciate it!
+This library supports all UNIX terminals and POSIX systems; however, not every terminal in the known universe have been tested. If you have used this library for a terminal other than the above list without issues *(or with issues)*, then feel free to contact me *(or create an issue)* It would help drastically and I would really appreciate it!
 
 
 ## Modules using Reter
