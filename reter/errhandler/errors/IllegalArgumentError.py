@@ -1,4 +1,8 @@
-# Requires handle.py
+import sys
+sys.path.append('../')
+from handle import Error
+
+
 ########################################
 # ILLEGAL ARGUMENT ERROR
 ########################################
