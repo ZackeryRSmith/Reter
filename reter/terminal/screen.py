@@ -6,7 +6,6 @@ import re
 import sys
 import os
 from typing import Optional
-from contextlib import contextmanager
 sys.path.append("../../")  # Go to master
 from reter.style.indicator import indicator
 from reter.cursor.cursor import Cursor 
