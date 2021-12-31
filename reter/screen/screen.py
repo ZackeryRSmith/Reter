@@ -5,6 +5,7 @@
 import sys
 import os
 from typing import Optional
+from contextlib import contextmanager
 
 
 ########################################
@@ -27,7 +28,7 @@ class Screen:
             # Link cursor to screen
             self.cursor.link()
 
-
+    ''' Moved a new implementation of this to /terminal/
     ###
     # STDOUT REDIRECT
     ###
@@ -50,7 +51,7 @@ class Screen:
     ###          
     # END OF REDIRECT
     ###
-
+    '''
 
     def setBorder(self, theme={"topLeftCorner": "+", "botLeftCorner": "+", "topRightCorner": "+", "botRightCorner": "+", "connections": "-"}):
         pass
@@ -58,7 +59,7 @@ class Screen:
 
     def returnDimensions(self, returnFormat: Optional[str]="WxH"):
         """
-        Returns current set dimentions for screen object. To update dimentions or fetch new ones use getDimensions().
+        Returns current set dimensions for screen object. To update dimensions or fetch new ones use getDimensions().
 
         :param str returnFormat: The format in which to be retuned in
         """
@@ -68,80 +69,43 @@ class Screen:
 
     def getDimensions(self, returnFormat: Optional[str]="WxH", clearScreen: Optional[bool]=True, xory: Optional[str]=None, positiveyLimit: Optional[int]=None, negativeyLimit: Optional[int]=None, positivexLimit: Optional[int]=None, negativexLimit: Optional[int]=None):
         """
-        Gets current screen dimentions
+        Gets current screen dimensions
         
         :param str returnFormat: The format in which to be retuned in
-        :param bool clearScreen: If false screen will not be cleared when checking dimentions. This can cause some weird visual bugs if not expected and delt with manuly!!
+        :param bool clearScreen: If false screen will not be cleared when checking dimensions. This can cause some weird visual bugs if not expected and dealt with manually!!
         :param string xory: If "x" the returned value just be x and vice versa. If xory equal to NoneType then x and y will be returned.
-        :param int positiveyLimit: This will set the dimentions limit on positive y direction
-        :param int negativeyLimit: This will set the dimentions limit on negative y direction
-        :param int positivexLimit: This will set the dimentions limit on positive x direction
-        :param int negativexLimit: This will set the dimentions limit on negative x direction
+        
+        :: DEPRECATED
+        :param int positiveyLimit: This will set the dimensions limit on positive y direction
+        :param int negativeyLimit: This will set the dimensions limit on negative y direction
+        :param int positivexLimit: This will set the dimensions limit on positive x direction
+        :param int negativexLimit: This will set the dimensions limit on negative x direction
         
         :rtype: Return varies depending on the value of `xory` but by default a tuple will be returned.
         :return: Return varies depending on the value of `xory` but by default (x, y) will be returned.
         """
         if clearScreen:
             os.system("clear")
-        
-        ''' Old code, replaced by os.get_screen_size()
-        # Get init position
-        initPos = self.cursor.getPos()
-        
-        # Get +y 
-        posY = self.cursor.move(0, 999)
-        posY = self.cursor.getPos("y", False)
-        
-        # Move back to init position
-        self.cursor.setPos(initPos[0], initPos[1])
-        
-        # Get -y
-        negY = self.cursor.move(0, -999)
-        negY = self.cursor.getPos("y", False)
-        
-        # Move back to init position
-        self.cursor.setPos(initPos[0], initPos[1])
-        
-        # Get +x (also known as right)
-        posX = self.cursor.move(999, 0)
-        posX = self.cursor.getPos("x", False)
-        
-        # Move back to init position
-        self.cursor.setPos(initPos[0], initPos[1])
-        
-        # Get -x (also known as left)
-        negX = self.cursor.move(-999, 0)
-        negX = self.cursor.getPos("x", False)
- 
-        # Move back to init position
-        self.cursor.setPos(initPos[0], initPos[1])
-        '''
+        terminal_size = os.get_terminal_size()
         if returnFormat == "WxH":
-            return str(posX)+"x"+str(negY)
-        
+            return str(terminal)+"x"+str(negY)
         elif returnFormat == "HxW":
             return str(posX)+"x"+str(negY)
-        
         elif returnFormat == "xy":
             return (posX, negY)
-        
         elif returnFormat == "yx":
             return (negY, posX)
- 
         elif returnFormat == "x":
             return int(posX)
-
         elif returnFormat == "y":
             return int(negY)
-
         elif returnFormat == None:
             return posY, negY, posX, negX
-        
         else:
             return posY, negY, posX, negX
 
 
-    def setDimensions(self, x, y):
+    def setDimensions(self, columns, lines):
         pass
 
 
