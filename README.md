@@ -33,7 +33,7 @@
 Start of about
 -->
 # Retry Terminal
-**Retry Terminal** alternatively **Terminal Retry** is a pure-python, terminal manipulation library that makes it possible to write text-based interface. It supports all UNIX terminals *hopefully windows at some point* (not all terminals are tested, see [Tested Terminals](#tested-terminals) for more info).
+**Reter** alternatively **Terminal Retry** is a pure-python, terminal manipulation library that makes it possible to write text-based interface. It supports all UNIX terminals *hopefully windows at some point* (not all terminals are tested, see [Tested Terminals](#tested-terminals) for more info).
 
 
 <!--
