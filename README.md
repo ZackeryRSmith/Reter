@@ -77,6 +77,24 @@ Start of features
     - Advanced modifier (SHIFT | ALT | CTRL) support for both mouse and key events and
 
 
+<!--
+Start of tested terminals
+-->
+### Tested Terminals
+
+- Ubuntu Desktop Terminal
+    - Ubuntu 17.10
+    - Pop!_OS ( Ubuntu ) 20.04
+- (Arch, Manjaro) KDE Konsole
+- Linux Mint
+- Alacritty
+- Terminator
+- Gnome
+- RXVT Color Terminal
+
+This library supports all UNIX terminals; however, not every terminal in the known universe have been tested. If you have used this library for a terminal other than the above list without issues *(or with issues)*, then feel free to contact me *(or create an issue)* It would help drastically and I would really appreciate it!
+
+
 ## Modules using Reter
 Here are some examples of Reter found in other modules
 
