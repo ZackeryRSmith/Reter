@@ -32,8 +32,52 @@ Readme will be created if this project *really* goes somewhere. Or if I just fee
   </p>
 </div>
 
+<!--
+Start of about
+-->
+# Retry Terminal
+**Retry Terminal** alternatively **Terminal Retry** is a pure-python, terminal manipulation library that makes it possible to write text-based interface. It supports all UNIX terminals *hopefully windows at some point* (not all terminals are tested, see [Tested Terminals](#tested-terminals) for more info).
 
-## Examples
+
+<!--
+Start of features
+-->
+## Features
+
+- Few dependencies
+- Full control over writing and flushing output buffer
+- Is tty
+- Cursor 
+    - Move the cursor N times (up, down, left, right)
+    - Move to previous / next line
+    - Move to column
+    - Set/get the cursor position
+    - Store the cursor position and restore to it later
+    - Hide/show the cursor
+    - Enable/disable cursor blinking (not all terminals support this feature)
+- Styled output 
+    - Foreground color (16 base colors)
+    - Background color (16 base colors)
+    - 256 (ANSI) color support
+    - RGB color support
+    - Text attributes like bold, italic, underscore, crossed, etc
+- Terminal 
+    - Clear (all lines, current line, from cursor down and up, until new line)
+    - Scroll up, down
+    - Set/get the terminal size
+    - Exit current process
+    - Alternate screen
+    - Raw screen   
+    - Set terminal title
+    - Enable/disable line wrapping
+- Event 
+    - Input Events 
+    - Mouse Events (press, release, position, button, drag)
+    - Terminal Resize Events
+    - Advanced modifier (SHIFT | ALT | CTRL) support for both mouse and key events and
+
+
+## Modules using Reter
 Here are some examples of Reter found in other modules
 
 <h2 align="center">Bo-Boxes</h2>
