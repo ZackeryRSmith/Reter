@@ -2,14 +2,27 @@
 # IMPORTS
 ########################################
 
+import sys
 from typing import Optional
+sys.path.append("../style")
+from indicator import indicator
 
 
-# Requires style indicator
+########################################
+# CONSTANTS
+########################################
+
+FGRED = indicator.colour.fg.red
+FGYELLOW = indicator.colour.fg.yellow
+FGCYAN = indicator.colour.fg.cyan
+EOC = indicator.colour.formatting.eoc
+
+
 ########################################
 # ERROR
 ########################################
 
+# Could be fixed up to look better. I will pretty much copy rust error system...
 class Error(Exception):
     """Base class for other exceptions"""
     def __init__(self, errorName, codeInQuestion, fixes: Optional[str]=None, info: Optional[str]=None):
