@@ -33,14 +33,17 @@ __version_info__ = (0, 0, 1)
 __version__ = ".".join(map(str, __version_info__))
 
 
+# This will stay, imports will be moved when they are needed
+# For now these will stay until I complete the moving proce-
+# -ess!
 ########################################
 # IMPORTS
 ########################################
 
-import sys
-import tty
-import termios
-import os
+import sys  # Move to every path (Most if not all require sys)
+import tty  # Move to /terminal/
+import termios  # Move to /terminal/
+import os  # Move to /screen/, /terminal/  (I know more things use os, but I *know for a fact* terminal and screen need it)
 from typing import (
     Any,
     Callable,
@@ -57,24 +60,23 @@ from typing import (
     Tuple,
     Union,
     cast,
-)
-import subprocess
-import re
-import warnings
+)  # Move to every path
+import subprocess  # /screen/ ?
+import re  # Move to /line/
+import warnings  # Not needed anywhere
 
 
+# Will not be moved.. code under CONSTANTS will be moved to /terminal/
 ########################################
 # CONSTANTS
 ########################################
 
-# Terminal info
+# Terminal info -- Useless as of now!
 __terminal_emulator__ = None  # Set once reter is initialized
 __terminal__ = None  # Set once reter is initialized
 
 
-
-
-
+# Will most likly not stay, if so they will be put in /errors/ or /errhandle/
 ########################################
 # ERRORS
 ########################################
@@ -116,6 +118,8 @@ class IllegalArgumentError(Error):
 
 
 
+# I will figure-out where to put this at some time
+# in the near future.
 ########################################
 # GETCH
 ########################################
