@@ -1,4 +1,13 @@
 ########################################
+# IMPORTS
+########################################
+
+import sys
+import os
+from typing import Optional
+
+
+########################################
 # SCREEN
 ########################################
 
@@ -59,8 +68,8 @@ class Screen:
 
     def getDimensions(self, returnFormat: Optional[str]="WxH", clearScreen: Optional[bool]=True, xory: Optional[str]=None, positiveyLimit: Optional[int]=None, negativeyLimit: Optional[int]=None, positivexLimit: Optional[int]=None, negativexLimit: Optional[int]=None):
         """
-        Gets current screen dimentions using a funny little trick. No this does not use SIGWINCH but output will be the same never the less.
-        Smart code has been implemented to auto create a positiveyLimit, this can be removed by setting a value to positiveyLimit.
+        Gets current screen dimentions
+        
         :param str returnFormat: The format in which to be retuned in
         :param bool clearScreen: If false screen will not be cleared when checking dimentions. This can cause some weird visual bugs if not expected and delt with manuly!!
         :param string xory: If "x" the returned value just be x and vice versa. If xory equal to NoneType then x and y will be returned.
@@ -75,6 +84,7 @@ class Screen:
         if clearScreen:
             os.system("clear")
         
+        ''' Old code, replaced by os.get_screen_size()
         # Get init position
         initPos = self.cursor.getPos()
         
@@ -105,7 +115,7 @@ class Screen:
  
         # Move back to init position
         self.cursor.setPos(initPos[0], initPos[1])
-        
+        '''
         if returnFormat == "WxH":
             return str(posX)+"x"+str(negY)
         
