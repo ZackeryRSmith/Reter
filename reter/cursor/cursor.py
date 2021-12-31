@@ -1,4 +1,16 @@
 ########################################
+# IMPORTS
+########################################
+
+import sys
+import os
+from typing import Optional
+# Replaced for os module (Making my life better)
+#import termios
+#import tty
+
+
+########################################
 # CURSOR
 ########################################
 
@@ -46,8 +58,7 @@ class Cursor:
 
     def getPos(self, xory: Optional[str]=None, updatePos: Optional[bool]=True):
         """
-        Obtains position of cursor. This can be funky on some terminal emulators, for me my daily driver Terminator you must change up some
-        settings to get this code to work! This may be the same for your end-user. Make sure you keep this in mind while using getPos()!
+        Obtains position of cursor.
         
         :param str xory: Choose what to return "x", or "y". Default None (Meaning it will return both x and y)
         :param bool updatePos: Auto Updates cursor position after fetching row and col. Default is True
@@ -55,6 +66,7 @@ class Cursor:
         :rtype: tuple of int's
         :return: Returns (column, row)
         """
+        ''' Replaced by os.get_terminal_size()
         OldStdinMode = termios.tcgetattr(sys.stdin)
         settings = termios.tcgetattr(sys.stdin)
         settings[3] = settings[3] & ~(termios.ECHO | termios.ICANON)  # Disable echo, and stop the terminal from waiting for key press
@@ -68,18 +80,22 @@ class Cursor:
             res = re.match(r".*\[(?P<y>\d*);(?P<x>\d*)R", temp)  # Creates groups for values using regex
         finally:
             termios.tcsetattr(sys.stdin, termios.TCSAFLUSH, OldStdinMode)  # Re-enables "echo"
-        if res:
-            if updatePos:
-                self.posx = res.group("x")
-                self.posy = res.group("y")
-            if xory == None:
-                return (int(res.group("x")), int(res.group("y")))  # Returns (x, y)
-            elif xory == "x":
-                return int(res.group("x"))
-            elif xory == "y":
-                return int(res.group("y"))
-            else:
-                raise IllegalArgumentError('"%s" is an illegal argument!' % (xory) + " Come on dude... it's in the variable name..")
+        '''
+        fd = sys.__stdout__.fileno()
+        terminal_size = os.get_terminal_size(fd)
+        if updatePos:
+            self.posx = terminal_size.columns
+            self.posy = terminal_size.lines
+        if xory == None:
+            return (terminal_size.columns, terminal_size.lines)  # Returns (x, y)
+        elif xory == "x":
+            return terminal_size.columns
+        elif xory == "y":
+            return terminal_size.lines
+        else:
+            pass
+            # Error system not added to all sub-modules yet
+            #raise IllegalArgumentError('"%s" is an illegal argument!' % (xory) + " x or y are the only options for this param")
 
 
     def setPos(self, x, y):
@@ -101,9 +117,15 @@ class Cursor:
         #sys.__stdout__.write("\x1b[%s;%sH" % (self.posy, self.posx))
 
 
-    def returnPos(self):
+    def returnPos(self, currentPos: Optional[bool]=True):
         """
+        Returns cursor position
+
+        :rtype: tuple of int's
+        :return: Returns cursor position saved in object (self) unless currentPos is true. Else current cursor position is calculated then returned
         """
+        if currentPos:
+            self.getPos(updatePos=True)  # Gets current cursor position then updates object (self)
         return (self.posx, self.posy)
 
 
