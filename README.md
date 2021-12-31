@@ -101,37 +101,10 @@ Here are some examples of Reter found in other modules
     <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/BoBoxes/Bo-Boxes.jpg" alt="Bo-Boxes logo" width="240" height="240">
   </a>
 
-Bo-Boxes is a python module created using Reter. Bo-Boxes allows the end-user to create combo boxes in the Unix Shell working on almost every terminal. Bo-Boxes has a end-user theming system allowing you to customize all the combo-boxes looks. The images shown below are the default theme, but it can be configured to your liking!
-
-#### Terminator
-<sub>List Box</sub>
-
-![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/BoBoxes/terminator-listboxes.png)
-
-#### Xterm
-<sub>List Box</sub>
-
-![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/BoBoxes/xterm-listboxes.png)
-
-#### Gnome
-<sub>List Box</sub>
-
-![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/BoBoxes/gnome-listboxes.png)
-
-#### Konsole
-<sub>List Box</sub>
-
-![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/BoBoxes/konsole-listboxes.png)
-
-#### RXVT
-<sub>List Box</sub>
-
-![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/BoBoxes/rxvt-listboxes.png)
-
-#### Yakuake
-<sub>List Box</sub>
-
-![](https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/BoBoxes/yakuake-listboxes.png)
+Bo-Boxes allows the end-user to create combo boxes in the Unix Shell working on almost every terminal. Bo-Boxes has a very modular end-user theming system allowing you to customize to your needs.
+  
+More info on this library can be found at [BoBoxes github](https://github.com/ZackeryRSmith/Bo-Boxes/)
+  
 <h2></h2>
 
 <!-- Not too sure sure if I will make this
@@ -147,9 +120,13 @@ Cures is a open-source python module created using reter. Cures is the open-sour
 Really means! 
 -->
 
-<h2 align="center">VDTGraphics</h2>
+<h2 align="center">VDTGraphic</h2>
 <div align="center">
   <a href="https://github.com/ZackeryRSmith/VDTGraphics/">
     <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/VDTGraphic/VDTGraphic.jpg" alt="VDTGraphics logo" width="240" height="140">
   </a>
+  
+**VDTGraphic** is a python library to build rich terminal user interfaces and dashboards. It is heavily inspired by the Rust library [tui-rs](https://github.com/fdehau/tui-rs)
+  
+More info on this library can be found at [VDTGraphic's github](https://github.com/ZackeryRSmith/VDTGraphics/)
   
