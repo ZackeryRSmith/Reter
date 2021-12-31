@@ -101,7 +101,9 @@ Here are some examples of Reter found in other modules
     <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/BoBoxes/Bo-Boxes.jpg" alt="Bo-Boxes logo" width="240" height="240">
   </a>
 
-Bo-Boxes is a python module created using Reter. Bo-Boxes allows the end-user to create combo boxes in the Unix Shell working on almost every terminal. Bo-Boxes has a very modular end-user theming system allowing you to customize to your needs.
+Bo-Boxes allows the end-user to create combo boxes in the Unix Shell working on almost every terminal. Bo-Boxes has a very modular end-user theming system allowing you to customize to your needs.
+  
+More info on this library can be found at [BoBoxes github](https://github.com/ZackeryRSmith/Bo-Boxes/)
   
 <h2></h2>
 
@@ -126,5 +128,5 @@ Really means!
   
 **VDTGraphics** is a python library to build rich terminal user interfaces and dashboards. It is heavily inspired by the Rust library [tui-rs](https://github.com/fdehau/tui-rs)
   
-Alot more info on this library can be found at [VDTGraphics github](https://github.com/ZackeryRSmith/VDTGraphics/)
+More info on this library can be found at [VDTGraphics github](https://github.com/ZackeryRSmith/VDTGraphics/)
   
