@@ -153,3 +153,7 @@ Really means!
     <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/VDTGraphic/VDTGraphic.jpg" alt="VDTGraphics logo" width="240" height="140">
   </a>
   
+**VDTGraphics** is a python library to build rich terminal user interfaces and dashboards. It is heavily inspired by the Rust library [tui-rs](https://github.com/fdehau/tui-rs)
+  
+Alot more info on this library can be found at [VDTGraphics github](https://github.com/ZackeryRSmith/VDTGraphics/)
+  
