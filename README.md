@@ -91,6 +91,6 @@ Really means!
 <h2 align="center">VDTGraphics</h2>
 <div align="center">
   <a href="https://github.com/ZackeryRSmith/VDTGraphics/">
-    <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/VDTGraphic/VDTGraphic.jpg" alt="VDTGraphics logo" width="240" height="240">
+    <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/VDTGraphic/VDTGraphic.jpg" alt="VDTGraphics logo" width="240" height="140">
   </a>
   
