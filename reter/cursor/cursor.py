@@ -5,9 +5,6 @@
 import sys
 import os
 from typing import Optional
-# Replaced for os module (Making my life better)
-#import termios
-#import tty
 
 
 ########################################
@@ -66,21 +63,6 @@ class Cursor:
         :rtype: tuple of int's
         :return: Returns (column, row)
         """
-        ''' Replaced by os.get_terminal_size()
-        OldStdinMode = termios.tcgetattr(sys.stdin)
-        settings = termios.tcgetattr(sys.stdin)
-        settings[3] = settings[3] & ~(termios.ECHO | termios.ICANON)  # Disable echo, and stop the terminal from waiting for key press
-        termios.tcsetattr(sys.stdin, termios.TCSAFLUSH, settings)
-        try:
-            temp = ""
-            sys.__stdout__.write("\x1b[6n")  # Write mouse position silently
-            sys.__stdout__.flush()  # Allows the write() code above this line to be read
-            while not (temp := temp + sys.stdin.read(1)).endswith('R'):  # If you are confussed on this look at stackoverflow.com/questions/26000198/what-does-colon-equal-in-python-mean
-                pass
-            res = re.match(r".*\[(?P<y>\d*);(?P<x>\d*)R", temp)  # Creates groups for values using regex
-        finally:
-            termios.tcsetattr(sys.stdin, termios.TCSAFLUSH, OldStdinMode)  # Re-enables "echo"
-        '''
         fd = sys.__stdout__.fileno()
         terminal_size = os.get_terminal_size(fd)
         if updatePos:
@@ -121,6 +103,8 @@ class Cursor:
         """
         Returns cursor position
 
+        :param bool currentPos: If true the current cursor position will be calculated, if false returnPos will take from object (self). Default True
+    
         :rtype: tuple of int's
         :return: Returns cursor position saved in object (self) unless currentPos is true. Else current cursor position is calculated then returned
         """
