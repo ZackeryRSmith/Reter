@@ -768,6 +768,9 @@ class Line:
                 splitValue[index] = Chunk(position, item)
             return splitValue
 
+    def remove(self, lineNumber):
+        pass
+
 
 ########################################
 # TERMINAL
