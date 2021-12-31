@@ -3,8 +3,10 @@
 ########################################
 
 import sys
-import os
+import os  # May not be needed
 from typing import Optional
+import termios
+import tty
 
 
 ########################################
@@ -55,7 +57,8 @@ class Cursor:
 
     def getPos(self, xory: Optional[str]=None, updatePos: Optional[bool]=True):
         """
-        Obtains position of cursor.
+        Obtains position of cursor. This can be funky on some terminal emulators, for me my daily driver Terminator you must change up some
+        settings to get this code to work! This may be the same for your end-user. Make sure you keep this in mind while using getPos()!
         
         :param str xory: Choose what to return "x", or "y". Default None (Meaning it will return both x and y)
         :param bool updatePos: Auto Updates cursor position after fetching row and col. Default is True
@@ -63,21 +66,33 @@ class Cursor:
         :rtype: tuple of int's
         :return: Returns (column, row)
         """
-        fd = sys.__stdout__.fileno()
-        terminal_size = os.get_terminal_size(fd)
-        if updatePos:
-            self.posx = terminal_size.columns
-            self.posy = terminal_size.lines
-        if xory == None:
-            return (terminal_size.columns, terminal_size.lines)  # Returns (x, y)
-        elif xory == "x":
-            return terminal_size.columns
-        elif xory == "y":
-            return terminal_size.lines
-        else:
-            pass
-            # Error system not added to all sub-modules yet
-            #raise IllegalArgumentError('"%s" is an illegal argument!' % (xory) + " x or y are the only options for this param")
+        OldStdinMode = termios.tcgetattr(sys.stdin)
+        settings = termios.tcgetattr(sys.stdin)
+        settings[3] = settings[3] & ~(termios.ECHO | termios.ICANON)  # Disable echo, and stop the terminal from waiting for key press
+        termios.tcsetattr(sys.stdin, termios.TCSAFLUSH, settings)
+        try:
+            temp = ""
+            sys.__stdout__.write("\x1b[6n")  # Write mouse position silently
+            sys.__stdout__.flush()  # Allows the write() code above this line to be read
+            while not (temp := temp + sys.stdin.read(1)).endswith('R'):  # If you are confussed on this look at stackoverflow.com/questions/26000198/what-does-colon-equal-in-python-mean
+                pass
+            res = re.match(r".*\[(?P<y>\d*);(?P<x>\d*)R", temp)  # Creates groups for values using regex
+        finally:
+            termios.tcsetattr(sys.stdin, termios.TCSAFLUSH, OldStdinMode)  # Re-enables "echo"
+        if res:
+            if updatePos:
+                self.posx = res.group("x")
+                self.posy = res.group("y")
+            if xory == None:
+                return (int(res.group("x")), int(res.group("y")))  # Returns (x, y)
+            elif xory == "x":
+                return int(res.group("x"))
+            elif xory == "y":
+                return int(res.group("y"))
+            else:
+                # Error class has yet to be added to sub-modules
+                #raise IllegalArgumentError('"%s" is an illegal argument!' % (xory) + " Come on dude... it's in the variable name..")
+                pass
 
 
     def setPos(self, x, y):
