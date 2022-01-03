@@ -9,9 +9,6 @@ from typing import Optional
 import fppaths
 master = fppaths.get_master_path("src")
 fppaths.set_abpath(master)
-from lib.style.indicator import indicator
-from lib.cursor.cursor import Cursor 
-from lib.terminal.terminal import Terminal
 
 
 ########################################
@@ -20,6 +17,9 @@ from lib.terminal.terminal import Terminal
 
 class Screen:
     def __init__(self, cursor, height: Optional[int]=None, width: Optional[int]=None, linkCursor: Optional[bool]=False, autoCalibrate: Optional[bool]=True):
+        # Import here to avoid circular dependencies
+        #from lib.cursor.cursor import Cursor  
+
         self.cursor = cursor
         if autoCalibrate:
             self.height = self.getDimensions(returnFormat="lines") if height == None else height
@@ -116,6 +116,8 @@ class Screen:
 
 class Line:
     def __init__(self, cursor):
+        # Import here to avoid circular dependencies
+        #from lib.cursor.cursor import Cursor  
         self.cursor = cursor
                    
 
@@ -195,6 +197,8 @@ class Line:
 class Chunk:
     """DOCSTRING NOT CREATED YET!"""
     def __init__(self, position, value):
+        # Import here to avoid circular dependencies
+        #from lib.cursor.cursor import Cursor  
         self.position = position
         self.value = value
         self.formatting = {}
@@ -279,11 +283,8 @@ class Chunk:
 ########################################
 
 def main():
-    terminal = Terminal()
-    cursor = Cursor(0, 0)
-    screen = Screen(cursor)
-    line = Line(cursor)
-    terminal.connect(screen, line, cursor)
+    # To avoid circular dependencies I will no longer do testing in the module. :: Only imports when it REALLY needs to
+    pass
 
 
 ########################################
