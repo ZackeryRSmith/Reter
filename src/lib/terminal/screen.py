@@ -36,23 +36,28 @@ class Screen:
         pass
 
 
-    def returnDimensions(self, returnFormat: Optional[str]="WxH"):
+    def returnDimensions(self, returnFormat: Optional[str]="WxH", recalibrateDimensions: Optional[bool]=True):
         """
         Returns current set dimensions for screen object. To update dimensions or fetch new ones use getDimensions().
 
         :param str returnFormat: The format in which to be retuned in
         """
         if returnFormat == "WxH":
-            return str(self.width)+"x"+str(self.height)
+            if recalibrateDimensions:
+                return self.getDimensions("WxH")
+        elif returnFormat == "HxW":
+            if recalibrateDimensions:
+                return self.getDimensions("HxW")
+        else:
+            pass
 
 
-    def getDimensions(self, returnFormat: Optional[str]="WxH", clearScreen: Optional[bool]=True, xory: Optional[str]=None, positiveyLimit: Optional[int]=None, negativeyLimit: Optional[int]=None, positivexLimit: Optional[int]=None, negativexLimit: Optional[int]=None):
+    def getDimensions(self, returnFormat: Optional[str]="WxH", clearScreen: Optional[bool]=True, positiveyLimit: Optional[int]=None, negativeyLimit: Optional[int]=None, positivexLimit: Optional[int]=None, negativexLimit: Optional[int]=None):
         """
         Gets current screen dimensions
         
         :param str returnFormat: The format in which to be retuned in
         :param bool clearScreen: If false screen will not be cleared when checking dimensions. This can cause some weird visual bugs if not expected and dealt with manually!!
-        :param string xory: If "x" the returned value just be columns and vice versa. If xory equal to NoneType then (Columns, Lines) will be returned.
         
         :: DEPRECATED
         :param int positiveyLimit: This will set the dimensions limit on positive y direction
@@ -60,12 +65,14 @@ class Screen:
         :param int positivexLimit: This will set the dimensions limit on positive x direction
         :param int negativexLimit: This will set the dimensions limit on negative x direction
         
-        :rtype: Return varies depending on the value of `xory` but by default a tuple will be returned.
-        :return: Return varies depending on the value of `xory` but by default (Columns, Lines) will be returned.
+        :rtype: By default a string will be returned.
+        :return: Return differs depending on the value of `returnFormat`. By default (Width x Height) will be returned.
         """
         if clearScreen:
             os.system("clear")
         terminal_size = os.get_terminal_size()
+        self.width = terminal_size.columns
+        self.height = terminal_size.lines
         if returnFormat == "WxH":
             return str(terminal_size.columns)+"x"+str(terminal_size.lines)
 
@@ -272,20 +279,3 @@ class Chunk:
     def is_focused(self):
         pass
     
-
-########################################
-# MAIN - FOR DEBUGGING REASONS
-########################################
-
-def main():
-    # To avoid circular dependencies I will no longer do testing in the module. :: Only imports when it REALLY needs to
-    pass
-
-
-########################################
-# RUN - FOR DEBUGGING REASONS
-########################################
-
-if __name__=='__main__':
-    main()
-
