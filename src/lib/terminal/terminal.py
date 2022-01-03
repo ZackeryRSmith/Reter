@@ -75,7 +75,7 @@ class Terminal:
                 # If the line above executes it means we have a valid tty
                 return True
             except:
-               return False
+                return False
         else:
             return False
 
