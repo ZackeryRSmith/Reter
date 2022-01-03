@@ -4,8 +4,7 @@
 
 import sys
 from typing import Optional
-sys.path.append("../style")
-from indicator import indicator
+from lib.style.indicator import indicator
 
 
 ########################################

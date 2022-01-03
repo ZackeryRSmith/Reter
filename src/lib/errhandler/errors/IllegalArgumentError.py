@@ -1,6 +1,5 @@
 import sys
-sys.path.append('../')
-from handle import Error
+from lib.errhandler.handle import Error
 
 
 ########################################
