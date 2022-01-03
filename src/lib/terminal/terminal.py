@@ -12,7 +12,7 @@ class Terminal:
         self.MEMORY = {}
 
 
-    def quick_start(self):
+    def quick_start(self) -> object:
         """
         Creates a Terminal object quickly, and in a unconfigurable manner. Good as long you don't need to over customize a TC object. Will also validate tty.
 
@@ -81,10 +81,19 @@ class Terminal:
 
     
     def set_tc_attr(self):
+        """
+        Set the TC attributes, don't mess around with this unless you know what you are doing! A good amount of knowledge is needed to use this function.
+        """
         pass
     
 
     def get_tc_attr(self):
+        """
+        Obtains terminal control (TC) attributes
+
+        :rtype: list
+        :returns: Returns TCATTR's
+        """
         if self.is_valid_tty():  # Make sure tty is valid
             fd = sys.stdout.fileno()  # Get file descripter
             return termios.tcgetattr(fd)  # Get & return terminal attributes
