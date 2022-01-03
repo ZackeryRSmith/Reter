@@ -45,18 +45,12 @@ class Screen:
             pass
 
 
-    def getDimensions(self, returnFormat: Optional[str]="WxH", clearScreen: Optional[bool]=True, positiveyLimit: Optional[int]=None, negativeyLimit: Optional[int]=None, positivexLimit: Optional[int]=None, negativexLimit: Optional[int]=None):
+    def getDimensions(self, returnFormat: Optional[str]="WxH", clearScreen: Optional[bool]=True):
         """
         Gets current screen dimensions
         
         :param str returnFormat: The format in which to be retuned in
         :param bool clearScreen: If false screen will not be cleared when checking dimensions. This can cause some weird visual bugs if not expected and dealt with manually!!
-        
-        :: DEPRECATED
-        :param int positiveyLimit: This will set the dimensions limit on positive y direction
-        :param int negativeyLimit: This will set the dimensions limit on negative y direction
-        :param int positivexLimit: This will set the dimensions limit on positive x direction
-        :param int negativexLimit: This will set the dimensions limit on negative x direction
         
         :rtype: By default a string will be returned.
         :return: Return differs depending on the value of `returnFormat`. By default (Width x Height) will be returned.
@@ -92,6 +86,8 @@ class Screen:
 
 
     def setDimensions(self, columns, lines):
+        """
+        """
         pass
 
 
@@ -111,8 +107,6 @@ class Screen:
 
 class Line:
     def __init__(self, cursor):
-        # Import here to avoid circular dependencies
-        #from lib.cursor.cursor import Cursor  
         self.cursor = cursor
                    
 
@@ -190,11 +184,7 @@ class Line:
 ########################################
 
 class Chunk:
-    """DOCSTRING NOT CREATED YET!"""
     def __init__(self, position, value):
-        # Import here to avoid circular dependencies
-        #from lib.cursor.cursor import Cursor  
-        self.position = position
         self.value = value
         self.formatting = {}
 
