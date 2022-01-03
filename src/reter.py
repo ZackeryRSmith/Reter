@@ -49,7 +49,8 @@ from lib.cursor.cursor import Cursor
 ########################################
 
 def main():
-    pass
+    terminal = Terminal().quick_start()
+    print(terminal.screen.returnDimensions())
 
 
 ########################################
