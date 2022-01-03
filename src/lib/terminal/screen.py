@@ -6,10 +6,7 @@ import re
 import sys
 import os
 from typing import Optional
-# FPpaths is needed.. I will try to get around this
-#import fppaths
-#master = fppaths.get_master_path("src")
-#fppaths.set_abpath(master)
+from lib.cursor.cursor import Cursor  
 
 
 ########################################
@@ -18,9 +15,6 @@ from typing import Optional
 
 class Screen:
     def __init__(self, cursor, height: Optional[int]=None, width: Optional[int]=None, linkCursor: Optional[bool]=False, autoCalibrate: Optional[bool]=True):
-        # Import here to avoid circular dependencies
-        #from lib.cursor.cursor import Cursor  
-
         self.cursor = cursor
         if autoCalibrate:
             self.height = self.getDimensions(returnFormat="lines") if height == None else height
