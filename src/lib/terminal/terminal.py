@@ -2,6 +2,11 @@ import os
 import sys
 import termios
 import tty
+import fppaths
+# Get ready to import sub-modules later on
+master = fppaths.get_master_path("src")
+fppaths.set_abpath(master)
+
 
 
 class Terminal:
@@ -16,7 +21,14 @@ class Terminal:
         :rtype: object
         :return: Returns Terminal object with all TC objects pre-connected
         """
-        pass
+        from lib.terminal.screen import Screen, Line
+        from lib.cursor.cursor import Cursor 
+        terminal = Terminal()
+        cursor = Cursor(0, 0)
+        screen = Screen(cursor)
+        line = Line(cursor)
+        terminal.connect(screen, line, cursor)
+        return self
 
 
     def cache_tc_attr(self):
