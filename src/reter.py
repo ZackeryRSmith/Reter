@@ -40,6 +40,14 @@ __version__ = ".".join(map(str, __version_info__))
 # IMPORTS
 ########################################
 
+from lib.terminal.terminal import Terminal
+from lib.terminal.screen import Screen
+from lib.style.indicator import indicator
+from lib.errhandler.handle import *
+from lib.cursor.cursor import Cursor
+
+
+''' I am changing what reter.py is used for, this code is still good and valid
 import sys  # Move to every path (Most if not all require sys)
 import tty  # Move to /terminal/
 import termios  # Move to /terminal/
@@ -209,19 +217,14 @@ def init():
     terminal = Terminal(screen, line, cursor)    
     return terminal
 
+'''
 
 ########################################
 # MAIN - FOR DEBUGGING REASONS
 ########################################
 
 def main():
-    terminal = init()
-    #print("The quick brown fox")
-    #print("Cool beans")
-    #chunks = terminal.line.chunkIt(terminal.screen, " ", 1)
-    #chunks[0].setColour(terminal.cursor, bg=indicator.colour.formatting.reverse)
-    #chunks[0].move(terminal.cursor, 0, 2)
-    print(captureInput())
+    pass
 
 
 ########################################
