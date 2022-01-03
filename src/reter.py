@@ -50,7 +50,7 @@ from lib.cursor.cursor import Cursor
 
 def main():
     terminal = Terminal().quick_start()
-    print(terminal.screen.returnDimensions())
+    print(terminal.get_tc_attr())
 
 
 ########################################
