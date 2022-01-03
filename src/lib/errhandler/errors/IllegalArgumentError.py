@@ -1,4 +1,3 @@
-import sys
 from lib.errhandler.handle import Error
 
 
