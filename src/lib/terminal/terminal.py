@@ -2,10 +2,10 @@ import os
 import sys
 import termios
 import tty
-import fppaths
-# Get ready to import sub-modules later on
-master = fppaths.get_master_path("src")
-fppaths.set_abpath(master)
+# FPpaths is needed.. I will try to get around this
+#import fppaths
+#master = fppaths.get_master_path("src")
+#fppaths.set_abpath(master)
 
 
 

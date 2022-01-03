@@ -6,9 +6,10 @@ import re
 import sys
 import os
 from typing import Optional
-import fppaths
-master = fppaths.get_master_path("src")
-fppaths.set_abpath(master)
+# FPpaths is needed.. I will try to get around this
+#import fppaths
+#master = fppaths.get_master_path("src")
+#fppaths.set_abpath(master)
 
 
 ########################################
