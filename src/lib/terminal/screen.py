@@ -23,17 +23,10 @@ class Screen:
             self.height = height
             self.width = width
  
-        # Does nothing as of now
+        # Does nothing as of now - Not needed really, will most likely be removed in final version
         if linkCursor:
             # Link cursor to screen
             self.cursor.link()
-
-
-    # Not implemented.. not too sure if it every will. Reter is not a graphic lib so there is no need for this
-    def setBorder(self, theme={"topLeftCorner": "+", "botLeftCorner": "+", "topRightCorner": "+", "botRightCorner": "+", "connections": "-"}):
-        """
-        """
-        pass
 
 
     def returnDimensions(self, returnFormat: Optional[str]="WxH", recalibrateDimensions: Optional[bool]=True):
