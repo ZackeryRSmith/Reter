@@ -4,7 +4,9 @@ import termios
 import tty
 from lib.terminal.screen import Screen, Line
 from lib.cursor.cursor import Cursor 
+from lib.event.input.keyboard.keyboard import Keyboard
 from lib.errhandler.errors import UnexpectedResult
+from typing import Optional
 
 
 ########################################
@@ -33,7 +35,8 @@ class Terminal:
             cursor = Cursor(0, 0)
             screen = Screen(cursor)
             line = Line(cursor)
-            terminal.connect(screen, line, cursor)
+            keyboard = Keyboard(cursor)
+            terminal.connect(screen, line, cursor, keyboard)
             return terminal
         else:
             raise ValueError("Cannot start a Terminal object. (It seems the output medium is not a valid terminal, are you using a terminal?)")
@@ -126,10 +129,13 @@ class Terminal:
     ###################
     # Connect
     ###################
-    def connect(self, screen, line, cursor):
+    def connect(self, screen, line, cursor, keyboard: Optional[object]=None):
         """
         Connects abstract terminal control (TC) objects into one object connected to a single terminal. 
         """
         self.screen, self.line, self.cursor = screen, line, cursor
+        if keyboard != None:
+            self.keyboard = keyboard
+
 
 
