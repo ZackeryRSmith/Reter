@@ -17,8 +17,7 @@ class Cursor:
     Terminal cursor.
     """
     def __init__(self, posx, posy, visibility: Optional[bool]=True):
-        """ 
-        Constructor to initialize the object
+        """ Constructor to initialize the object
         
         :param int posx: Begining x position for cursor
         :param int posy: Begining y position for cursor

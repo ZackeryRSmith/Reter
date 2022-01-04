@@ -7,11 +7,20 @@ from lib.cursor.cursor import Cursor
 from lib.errhandler.errors import UnexpectedResult
 
 
+########################################
+# TERMINAL
+########################################
+
 class Terminal:
+    """Terminal manipulation object"""
     def __init__(self):
+        """Constructor to initialize object"""
         self.MEMORY = {}
 
 
+    ###################
+    # Quick start
+    ###################
     def quick_start(self) -> object:
         """
         Creates a Terminal object quickly, and in a unconfigurable manner. Good as long you don't need to over customize a TC object. Will also validate tty.
@@ -28,10 +37,11 @@ class Terminal:
             return terminal
         else:
             raise ValueError("Cannot start a Terminal object. (It seems the output medium is not a valid terminal, are you using a terminal?)")
-            # Need to fix error system (And make it look better)
-            #raise UnexpectedResult.UnexpectedResult("UnexpectedResult", "if self.is_valid_tty():", "Use a terminal", "Cannot quick start a Terminal object. (It seems the output medium is not a valid terminal, are you using a terminal?)")
 
 
+    ###################
+    # Cache tc attr
+    ###################
     def cache_tc_attr(self):
         """
         Cache terminal attributes to memory
@@ -42,6 +52,9 @@ class Terminal:
             print("Failed to cache tcattr. (It seems output medium is not a terminal, are you using a terminal?)")
 
 
+    ###################
+    # Is tty?
+    ###################
     def is_tty(self) -> bool:
         """
         Checks if output medium is a terminal
@@ -56,6 +69,9 @@ class Terminal:
             return False
     
 
+    ###################
+    # Is valid tty?
+    ###################
     def is_valid_tty(self) -> bool:
         """
         Checks if output medium is a terminal, if so then validate (Compatibility thing...)
@@ -80,6 +96,9 @@ class Terminal:
             return False
 
     
+    ###################
+    # Set tc attr
+    ###################
     def set_tc_attr(self):
         """
         Set the TC attributes, don't mess around with this unless you know what you are doing! A good amount of knowledge is needed to use this function.
@@ -87,6 +106,9 @@ class Terminal:
         pass
     
 
+    ###################
+    # Get tc attr
+    ###################
     def get_tc_attr(self):
         """
         Obtains terminal control (TC) attributes
@@ -101,8 +123,13 @@ class Terminal:
             return "Failed to get tcattr. (It seems output medium is not a terminal, are you using a terminal?)"
 
 
+    ###################
+    # Connect
+    ###################
     def connect(self, screen, line, cursor):
         """
         Connects abstract terminal control (TC) objects into one object connected to a single terminal. 
         """
         self.screen, self.line, self.cursor = screen, line, cursor
+
+

@@ -21,10 +21,11 @@ EOC = indicator.colour.formatting.eoc
 # ERROR
 ########################################
 
-# Could be fixed up to look better. I will pretty much copy rust error system...
+# Could be fixed up to look better. I will pretty much copy rust's error system...
 class Error(Exception):
     """Base class for other exceptions"""
     def __init__(self, errorName, codeInQuestion, fixes: Optional[str]=None, info: Optional[str]=None):
+        """Constructor to initialize object"""
         self.errorName = errorName
         self.codeInQuestion = codeInQuestion
         self.fixes = fixes

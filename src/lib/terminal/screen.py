@@ -15,6 +15,7 @@ from lib.cursor.cursor import Cursor
 
 class Screen:
     def __init__(self, cursor, height: Optional[int]=None, width: Optional[int]=None, linkCursor: Optional[bool]=False, autoCalibrate: Optional[bool]=True):
+        """Constructor to initialize object"""
         self.cursor = cursor
         if autoCalibrate:
             self.height = self.getDimensions(returnFormat="lines") if height == None else height
@@ -107,6 +108,7 @@ class Screen:
 
 class Line:
     def __init__(self, cursor):
+        """Constructor to initialize object"""
         self.cursor = cursor
                    
 
@@ -171,6 +173,7 @@ class Line:
                 splitValue[index] = Chunk(position, item)
             return splitValue
 
+
     def remove(self, lineNumber):
         """
         """
@@ -185,6 +188,7 @@ class Line:
 
 class Chunk:
     def __init__(self, position, value):
+        """Constructor to initialize object"""
         self.value = value
         self.formatting = {}
 
@@ -222,8 +226,7 @@ class Chunk:
         """
         Moves a chunk
         """
-        # This should be re-worked. There were quite of weird bugs that should not be overlooked although patched.
-
+        # This should be re-worked. There were quite of weird bugs that should not be overlooked.
         # Move cursor to ending chunk position
         cursor.setPos(self.position[2]+1, self.position[0])
         # Delete chunk
