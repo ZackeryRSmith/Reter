@@ -3,7 +3,7 @@
 ########################################
 
 from lib.style.colour import *
-from lib.style.keymapping import *  # Move this somewhere in /event/input/
+from lib.event.input.map.keys import *  
 
 
 ########################################
