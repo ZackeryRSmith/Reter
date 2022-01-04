@@ -33,7 +33,7 @@
 Start of about
 -->
 # Retry Terminal
-**Reter** alternatively **Terminal Retry** is a pure-python, terminal manipulation library inspired by [**crossterm**](https://github.com/crossterm-rs/crossterm#features) a terminal manipulation library for Rust. **Reter** makes it possible to write text-based interfaces (see [features](#features)). It supports all UNIX terminals *hopefully windows at some point* (not all terminals are tested, see [Tested Terminals](#tested-terminals) for more info).
+**Reter** alternatively **Terminal Retry** is a pure-python, terminal manipulation library inspired by [**crossterm**](https://github.com/crossterm-rs/crossterm#features); a terminal manipulation library for Rust. **Reter** makes it possible to write text-based interfaces (see [features](#features)). It supports all UNIX terminals *hopefully windows at some point* (not all terminals are tested, see [Tested Terminals](#tested-terminals) for more info).
 
 
 <!--
