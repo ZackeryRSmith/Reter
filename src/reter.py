@@ -39,6 +39,7 @@ __version__ = ".".join(map(str, __version_info__))
 
 from lib.terminal.terminal import Terminal
 from lib.terminal.screen import Screen
+from lib.event.input.keyboard.keyboard import Keyboard
 from lib.style.indicator import indicator
 from lib.errhandler.handle import *
 from lib.cursor.cursor import Cursor
@@ -50,7 +51,9 @@ from lib.cursor.cursor import Cursor
 
 def main():
     terminal = Terminal().quick_start()
-    print(terminal.get_tc_attr())
+    while True:
+        key = terminal.keyboard.capture_key()
+        print(indicator.parse(key))
 
 
 ########################################
