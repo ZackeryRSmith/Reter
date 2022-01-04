@@ -23,6 +23,7 @@ class Cursor:
         :param int posy: Begining y position for cursor
         :param bool visibility: True = Shown, False = Hidden
         """
+        self.MEMORY = {}  # An extra place to store some info
         self.posx = posx
         self.posy = posy
         self.visibility = visibility
@@ -40,7 +41,7 @@ class Cursor:
         pass
 
 
-    def changeVisibility(self, visibility):
+    def change_visibility(self, visibility):
         """
         Changes the visibility of cursor
 
@@ -53,7 +54,25 @@ class Cursor:
             sys.__stdout__.write("\x1b[?25l")
 
 
-    def getPos(self, xory: Optional[str]=None, updatePos: Optional[bool]=True):
+    def save_pos(self):
+        """
+        Gets, and saves the current cursor position. Can later be restored with restore_pos()!
+        """
+        self.MEMORY.update({"saved_pos":self.get_pos()})
+
+
+    def restore_pos(self):
+        """
+        Restores the most recently saved cursor position, saved with save_pos().
+        """
+        if self.MEMORY != {}:
+            self.setPos(self.MEMORY["saved_pos"][0], self.MEMORY["saved_pos"][1])
+        else:
+            # No position saved in memory  
+            pass
+
+
+    def get_pos(self, xory: Optional[str]=None, updatePos: Optional[bool]=True):
         """
         Obtains position of cursor. This can be funky on some terminal emulators, for me my daily driver Terminator you must change up some
         settings to get this code to work! This may be the same for your end-user. Make sure you keep this in mind while using getPos()!
