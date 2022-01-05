@@ -31,13 +31,12 @@ class Terminal:
         :return: Returns Terminal object with all TC objects pre-connected
         """
         if self.is_valid_tty():
-            terminal = Terminal()
             cursor = Cursor(0, 0)
             screen = Screen(cursor)
             line = Line(cursor)
             keyboard = Keyboard(cursor)
-            terminal.connect(screen, line, cursor, keyboard)
-            return terminal
+            self.connect(screen, line, cursor, keyboard)
+            return self
         else:
             raise ValueError("Cannot start a Terminal object. (It seems the output medium is not a valid terminal, are you using a terminal?)")
 
