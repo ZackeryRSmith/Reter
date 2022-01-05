@@ -16,7 +16,7 @@ class Cursor:
     """
     Terminal cursor.
     """
-    def __init__(self, posx, posy, visibility: Optional[bool]=True):
+    def __init__(self, posx, posy, visibility: Optional[bool]=True, blink: Optional[bool]=True):
         """ Constructor to initialize the object
         
         :param int posx: Begining x position for cursor
@@ -27,10 +27,16 @@ class Cursor:
         self.posx = posx
         self.posy = posy
         self.visibility = visibility
+        self.blink = blink
         if self.visibility:
-            self.changeVisibility(True)
+            self.change_visibility(True)
         else:
-            self.changeVisibility(False)
+            self.change_visibility(False)
+
+        if self.blink:
+            self.blink(True)
+        else:
+            self.blink(False)
 
 
     def link(self):
@@ -54,6 +60,17 @@ class Cursor:
             sys.__stdout__.write("\x1b[?25l")
 
 
+    def blink(self, blink):
+        """
+        Is currently the same thing as change_visibility(). Just use change_visibility as it is standardized!
+        """
+        self.visibility = visibility
+        if self.visibility:
+            sys.__stdout__.write("\x1b[?25h")
+        else:
+            sys.__stdout__.write("\x1b[?25l")
+    
+
     def save_pos(self):
         """
         Gets, and saves the current cursor position. Can later be restored with restore_pos()!
@@ -66,7 +83,7 @@ class Cursor:
         Restores the most recently saved cursor position, saved with save_pos().
         """
         if self.MEMORY != {}:
-            self.setPos(self.MEMORY["saved_pos"][0], self.MEMORY["saved_pos"][1])
+            self.set_pos(self.MEMORY["saved_pos"][0], self.MEMORY["saved_pos"][1])
         else:
             # No position saved in memory  
             pass
@@ -112,7 +129,7 @@ class Cursor:
                 pass
 
 
-    def setPos(self, x, y):
+    def set_pos(self, x, y):
         """
         Sets the position of cursor. If you are looking for changing the value and not setting the value look towards .move().
 
@@ -131,7 +148,7 @@ class Cursor:
         #sys.__stdout__.write("\x1b[%s;%sH" % (self.posy, self.posx))
 
 
-    def returnPos(self, currentPos: Optional[bool]=True):
+    def return_pos(self, currentPos: Optional[bool]=True):
         """
         Returns cursor position
 
@@ -141,7 +158,7 @@ class Cursor:
         :return: Returns cursor position saved in object (self) unless currentPos is true. Else current cursor position is calculated then returned
         """
         if currentPos:
-            self.getPos(updatePos=True)  # Gets current cursor position then updates object (self)
+            self.get_pos(updatePos=True)  # Gets current cursor position then updates object (self)
         return (self.posx, self.posy)
 
 
