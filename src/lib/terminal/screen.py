@@ -110,7 +110,27 @@ class Line:
     def __init__(self, cursor):
         """Constructor to initialize object"""
         self.cursor = cursor
-                   
+
+    
+    def delete(self, clear_type: Optional[str]="currentline"):
+        if clear_type == "all":
+            pass
+
+        elif clear_type == "fromcursordown":
+            sys.stdout.write("\x1b[0J")
+        
+        elif clear_type == "fromcursorup":
+            sys.stdout.write("\x1b[1J")
+
+        elif clear_type == "currentline":
+            sys.stdout.write("\x1b[2K")
+
+        elif clear_type == "untilnewline":
+            pass
+
+        else:
+            pass
+
 
     def returnLineNumber(self):
         """
