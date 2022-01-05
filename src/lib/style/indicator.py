@@ -135,10 +135,21 @@ class indicator:
         class formatting:
             # Bold
             bold = BOLD
+            
+            # Dim
+            dim = DIM 
+            # Italic
+            italic = ITALIC         
             # Underline
             underline = UNDERLINE
+            # Blink (Blinking text, how fun!)
+            blink = BLINK
             # Reverse (Not text! Reverses the BG Colour!)
             reverse = REVERSED                          
+            # Hide (*poof*, magic)
+            hide = HIDE
+            # Strikethrough (W̶h̶o̶ ̶w̶o̶u̶l̶d̶ ̶e̶v̶e̶r̶ ̶n̶e̶e̶d̶ ̶s̶t̶r̶i̶k̶e̶t̶h̶r̶o̶u̶g̶h̶)
+            strikethrough = STRIKETHROUGH
             # End of colour
             eoc = EOC
 
