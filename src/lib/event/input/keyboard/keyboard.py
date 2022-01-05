@@ -110,7 +110,7 @@ class Keyboard:
                 sys.stdout.write(str(key).replace("b", "", 1).replace("'", ""))
                 sys.stdout.flush()
                 stringToReturn+=str(key).replace("b", "", 1).replace("'", "")
-
+        
         print("", end="\n")  # Fixes next print printing on same line.
         return stringToReturn
 
