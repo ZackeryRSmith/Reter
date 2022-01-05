@@ -56,7 +56,7 @@ Start of features
     - Foreground color (16 base colors)
     - Background color (16 base colors)
     - 256 (ANSI) color support
-    - RGB color support
+    - RGB/True color support
     - Text attributes like bold, italic, underscore, crossed, etc
 - Terminal 
     - Clear (all lines, current line, from cursor down and up, until new line)
