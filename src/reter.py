@@ -38,11 +38,13 @@ __version__ = ".".join(map(str, __version_info__))
 ########################################
 
 from lib.terminal.terminal import Terminal
-from lib.terminal.screen import Screen
+from lib.terminal.screen import Screen, Line
 from lib.event.input.keyboard.keyboard import Keyboard
 from lib.style.indicator import indicator
 from lib.errhandler.handle import *
 from lib.cursor.cursor import Cursor
+# Misc imports
+import time
 
 
 ########################################
@@ -50,7 +52,14 @@ from lib.cursor.cursor import Cursor
 ########################################
 
 def main():
-    terminal = Terminal().quick_start()
+    #terminal = Terminal().quick_start()
+    # Vim autocomplete does not work with quick_start()
+    terminal = Terminal()
+    cursor = Cursor(0, 0)
+    screen = Screen(cursor)
+    line = Line(cursor)
+    keyboard = Keyboard(cursor)
+    terminal.connect(screen, line, cursor, keyboard)
     while True:
         key = terminal.keyboard.capture_key()
         print(indicator.parse(key))
