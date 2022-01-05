@@ -36,3 +36,14 @@ XMIT       = (b'\x04')  # ctrl+d
 ETX        = (b'\x03')  # ctrl+c
 
 
+# ANSI -> English
+keymap = {
+    b'\x1b[A':"uparrow", 
+    b'\x1b[B':"downarrow", 
+    b'\x1b[C':"rightarrow",
+    b'\x1b[D':"leftarrow",
+    b'\x7f':"backspace",
+    b'\r':"return",
+    b'\x0c':"formfeed",
+    b'\x04':"xmit",
+    b'\x03':"etx"}
