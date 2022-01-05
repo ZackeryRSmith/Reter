@@ -47,3 +47,52 @@ UNDERLINE      = "\u001b[4m"
 REVERSED       = "\u001b[7m"                                
 # End of colour
 EOC            = "\u001b[0m"
+
+
+## Colour (256 fg, 256 bg). !! NOT TRUE COLOUR !!
+def id_to_256(colour_id, layer):
+    """
+    Gives back the colour calculated using an id (Range: 0-255).
+
+    :param int colour_id: A value between 0 and 255, 0 being the darkest while 256 being the lightest. If 255 limit is exceeded a NoneType will be returned.
+    :param int layer: 0 being background (BG) while 1 being foreground (FG).
+
+    :rtype: bytes
+    :return: Returns a ANSI ESC code that when echoed, will tell the terminal to use said colour.
+    """
+    # Make sure colour_id and layer range is not exceeded
+    if colour_id > 255 or colour_id < 0 or layer > 1 or layer < 0:
+        # A range limit has been broken
+        return None
+    else:
+        if layer == 0:
+            # BG
+            return bytes(f'\x1b[48;5;{colour_id}m', 'utf-8')
+        else:
+            # FG
+            return bytes(f'\x1b[38;5;{colour_id}m', 'utf-8')
+
+
+
+## True Colour
+def rgb_to_ansi(red, blue, green, layer):
+    """
+    Gives back the colour calculated using RGB values
+
+    :param int red: Amount of red in the colour
+    :param int blue: Amount of blue in the colour
+    :param int green: Amount of green in the colour
+    
+    :rtype: bytes
+    :return: Returns a ANSI ESC code that when echoed will tell the terminal to use said colour
+    """
+    if layer > 1 or layer < 0:
+        # Range limit has been broken
+        return None
+    else:
+        if layer == 0:
+            # BG
+            return bytes(f'\x1b[48;2;{red};{green};{blue}m', 'utf-8')
+        else:
+            # FG
+            return bytes(f'\x1b[38;2;{red};{green};{blue}m', 'utf-8')
