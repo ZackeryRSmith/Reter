@@ -129,6 +129,20 @@ class Cursor:
                 pass
 
 
+    def prev_line(self):
+        """
+        Goes back to previous line, alternatively use move().
+        """
+        self.move(0, -1)
+    
+
+    def next_line(self):
+        """
+        Goes to next line, alternatively use move().
+        """
+        self.move(0, 1)
+
+
     def set_pos(self, x, y):
         """
         Sets the position of cursor. If you are looking for changing the value and not setting the value look towards .move().
