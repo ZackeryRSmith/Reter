@@ -22,6 +22,9 @@ class Cursor:
         :param int posx: Begining x position for cursor
         :param int posy: Begining y position for cursor
         :param bool visibility: True = Shown, False = Hidden
+        
+        :: Deprecated
+        :param bool blink: True = Cursor blinking, False = No cursor blinking
         """
         self.MEMORY = {}  # An extra place to store some info
         self.posx = posx
@@ -32,11 +35,13 @@ class Cursor:
             self.change_visibility(True)
         else:
             self.change_visibility(False)
-
+ 
+        ''' Deprecated
         if self.blink:
-            self.blink(True)
+            self.change_blink(True)
         else:
-            self.blink(False)
+            self.change_blink(False)
+        '''
 
 
     def link(self):
@@ -60,7 +65,8 @@ class Cursor:
             sys.__stdout__.write("\x1b[?25l")
 
 
-    def blink(self, blink):
+    ''' Deprecated
+    def change_blink(self, blink):
         """
         Is currently the same thing as change_visibility(). Just use change_visibility as it is standardized!
         """
@@ -69,7 +75,19 @@ class Cursor:
             sys.__stdout__.write("\x1b[?25h")
         else:
             sys.__stdout__.write("\x1b[?25l")
-    
+    '''
+
+
+    def home(self, universal: Optional[bool]=True):
+        """
+        Goes to home position
+        """
+        if universal:
+            self.move(0, -1)
+        else:
+            pass
+            #sys.stdout.write("\x1b[H")
+
 
     def save_pos(self):
         """
