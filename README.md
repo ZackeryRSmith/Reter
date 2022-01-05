@@ -71,7 +71,7 @@ Start of features
     - Input Events 
     - Mouse Events (press, release, position, button, drag)
     - Terminal Resize Events
-    - Advanced modifier (SHIFT | ALT | CTRL) support for both mouse and key events and
+    - Advanced modifier (SHIFT | ALT | CTRL) support for both mouse and key events
 
 
 <!--
