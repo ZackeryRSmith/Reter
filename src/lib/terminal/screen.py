@@ -113,6 +113,11 @@ class Line:
 
     
     def delete(self, clear_type: Optional[str]="currentline"):
+        """
+        Delete Current Line, From Cursor Down, From Cursor Up, or all.
+
+        :param str clear_type: Diffrent ways to delete text, I.e. "all", "fromcursordown", "fromcursorup", and "currentline". 
+        """
         if clear_type == "all":
             pass
 
@@ -124,7 +129,8 @@ class Line:
 
         elif clear_type == "currentline":
             sys.stdout.write("\x1b[2K")
-
+    
+        # May not ever be added
         elif clear_type == "untilnewline":
             pass
 
