@@ -3,7 +3,7 @@
 ########################################
 
 from lib.style.colour import *
-from lib.event.input.map.keys import *  
+from lib.event.input.map.keys import *
 
 
 ########################################
@@ -14,16 +14,24 @@ class indicator:
     ###################
     # Parse
     ###################
-    def parse(rawCharacter):
+    def parse(raw_character):
         """
         Parses a simple key output
 
-        :param str rawCharacter: Char outputted by key press, E.g. "b'h'"
+        :param str raw_character: Char outputted by key press, E.g. "b'h'"
         """
-        # This code needs to be added upon, although functional 
-        return str(rawCharacter).replace("b", "", 1).replace("'", "")
+        cleaned_char = str(raw_character).replace("b", "", 1).replace("'", "")
+        parsed_char = ""
+        if cleaned_char.startswith('\\') and cleaned_char[1] != '\\':  # Check for special char
+            for item in keymap:
+                if raw_character == item:
+                    return keymap[item]
+            print(cleaned_char)  # For debugging (Remove when all keys are mapped)
+        else:
+            parsed_char = cleaned_char
+        return parsed_char
+ 
 
-    
     ########################################
     # ARROW - Parent: indicator
     ########################################
