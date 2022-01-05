@@ -39,14 +39,31 @@ FGWHITE        = "\u001b[37m"
 FGLIGHTWHITE   = "\u001b[37;1m"
 BGWHITE        = "\u001b[47m"
 BGLIGHTWHITE   = "\u001b[47;1m"
+
+## Special formatting
+###################################################################
+#               Escape codes and names yoinked from,              #
+#  https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797  #
+#-----------------------------------------------------------------#
 # Bold
 BOLD           = "\u001b[1m"
+# Dim
+DIM            = "\u001b[2m"
+# Italic
+ITALIC         = "\u001b[3m"
 # Underline
 UNDERLINE      = "\u001b[4m"
+# Blink (Blink text, how fun!)
+BLINK          = "\u001b[5m"
 # Reverse (Not text! Reverses the BG Colour!)
-REVERSED       = "\u001b[7m"                                
+REVERSED       = "\u001b[7m"
+# Hide (*poof*, magic)
+HIDE           = "\u001b[8m"
+# Strikethrough (W̶h̶o̶ ̶w̶o̶u̶l̶d̶ ̶e̶v̶e̶r̶ ̶n̶e̶e̶d̶ ̶s̶t̶r̶i̶k̶e̶t̶h̶r̶o̶u̶g̶h̶)
+STRIKETHROUGH  = "\u001b[9m"
 # End of colour
 EOC            = "\u001b[0m"
+#-----------------------------------------------------------------#
 
 
 ## Colour (256 fg, 256 bg). !! NOT TRUE COLOUR !!
