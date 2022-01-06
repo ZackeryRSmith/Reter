@@ -146,3 +146,10 @@ Reter is built with documentation created by many good souls, credited below.
 ### ANSI ESC Codes
 * **Christian Petersen** - *[ANSI Gist](https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797)* 
 * **George Watson** - *[ANSI Table](https://www.physics.udel.edu/~watson/scen103/ascii.html)*
+
+### Stackoverflow
+*[stdin, stdout, and stderr](https://stackoverflow.com/questions/3385201/confused-about-stdin-stdout-and-stderr)*
+
+### Lecture(s)
+* **Brian Will** - *[Unix terminals and shells](https://www.youtube.com/watch?v=07Q9oqNLXB4&list=PLFAC320731F539902)*
+
