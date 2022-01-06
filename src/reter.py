@@ -41,6 +41,7 @@ from lib.terminal.terminal import Terminal
 from lib.terminal.screen import Screen, Line
 from lib.event.input.keyboard.keyboard import Keyboard
 from lib.style.indicator import indicator
+from lib.style.colour import rgb_to_ansi, id_to_256
 from lib.errhandler.handle import *
 from lib.cursor.cursor import Cursor
 # Misc imports
@@ -52,17 +53,12 @@ import time
 ########################################
 
 def main():
-    #terminal = Terminal().quick_start()
-    # Vim autocomplete does not work with quick_start()
-    terminal = Terminal()
-    cursor = Cursor(0, 0)
-    screen = Screen(cursor)
-    line = Line(cursor)
-    keyboard = Keyboard(cursor)
-    terminal.connect(screen, line, cursor, keyboard)
-    while True:
-        key = terminal.keyboard.capture_key()
-        print(indicator.parse(key))
+    terminal = Terminal().quick_start()
+    bts = indicator.byte_to_str  # Byte to string.. not the k-pop band
+    EOC = indicator.colour.formatting.eoc  # End of color
+    blink = indicator.colour.formatting.blink  # Blinking
+    bold = indicator.colour.formatting.bold  # Bold 
+    print(bts(rgb_to_ansi(255, 40, 53, 1))+blink+bold+"Hello, World!"+EOC)
 
 
 ########################################
