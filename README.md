@@ -64,14 +64,11 @@ Start of features
     - Set/get the terminal size
     - Exit current process
     - Alternate screen
-<!--    - Raw screen   -->
     - Set terminal title
     - Enable/disable line wrapping
 - Event 
     - Input Events 
-<!--    - Mouse Events (press, release, position, button, drag) -->
     - Terminal Resize Events
-<!--    - Advanced modifier (SHIFT | ALT | CTRL) support for both mouse and key events -->
     - Advanced key events
 
 
