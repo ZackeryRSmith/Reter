@@ -29,6 +29,39 @@
   </p>
 </div>
 
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-reter">About Reter</a>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#tested-terms">Tested Terminals</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#installation">Installation</a>
+      <ul>
+        <lu><a href="#pip">Pip Method</a></li>
+        <lu><a href="#build">Build</a></li>
+        <ul>
+          <li><a href="#prerequisites">Prerequisites</a></li>
+          <li><a href="#manual-install-guide">Build Guide</a></li>
+        </ul>  
+      </ul>
+    </li>
+    <li><a href="#projects-using-reter">Projects Using Reter</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
+
+
 <!--
 Start of about
 -->
