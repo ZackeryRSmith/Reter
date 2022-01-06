@@ -37,7 +37,7 @@ __version__ = ".".join(map(str, __version_info__))
 # IMPORTS
 ########################################
 
-from lib.terminal.terminal import Terminal
+from lib.terminal.term import Terminal 
 from lib.terminal.screen import Screen, Line
 from lib.event.input.keyboard.keyboard import Keyboard
 from lib.style.indicator import indicator
