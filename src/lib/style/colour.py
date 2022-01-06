@@ -92,13 +92,13 @@ def id_to_256(colour_id, layer):
 
 
 ## True Colour
-def rgb_to_ansi(red, blue, green, layer):
+def rgb_to_ansi(red, green, blue, layer):
     """
     Gives back the colour calculated using RGB values
 
     :param int red: Amount of red in the colour
-    :param int blue: Amount of blue in the colour
     :param int green: Amount of green in the colour
+    :param int blue: Amount of blue in the colour
     
     :rtype: bytes
     :return: Returns a ANSI ESC code that when echoed will tell the terminal to use said colour
