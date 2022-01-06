@@ -16,9 +16,9 @@ class indicator:
     ###################
     def parse(raw_character):
         """
-        Parses a simple key output
+        Parses a key output
 
-        :param str raw_character: Char outputted by key press, E.g. "b'h'"
+        :param str raw_character: Char outputted by key press, E.g. "b'h'" or "\x1b[A"
         """
         cleaned_char = str(raw_character).replace("b", "", 1).replace("'", "")
         parsed_char = ""
