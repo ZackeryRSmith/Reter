@@ -59,7 +59,11 @@ def main():
     blink = indicator.colour.formatting.blink  # Blinking
     bold = indicator.colour.formatting.bold  # Bold 
     print(bts(rgb_to_ansi(255, 40, 53, 1))+blink+bold+"Hello, World!"+EOC)
-
+    try:
+        while True:  # Just keep script running
+            pass
+    except KeyboardInterrupt:
+        terminal.exit()
 
 ########################################
 # RUN - FOR DEBUGGING REASONS
