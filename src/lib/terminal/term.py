@@ -19,7 +19,8 @@ class Terminal:
         """Constructor to initialize object"""
         self.MEMORY = {}
 
-
+    
+    # Documented | txt | 0.1b
     ###################
     # Quick start
     ###################
@@ -42,6 +43,7 @@ class Terminal:
             raise ValueError("Cannot start a Terminal object. (It seems the output medium is not a valid terminal, are you using a terminal?)")
 
 
+    # Documented | txt | 0.1b
     ###################
     # Cache tc attr
     ###################
@@ -55,6 +57,7 @@ class Terminal:
             print("Failed to cache tcattr. (It seems output medium is not a terminal, are you using a terminal?)")
 
 
+    # Documented | txt | 0.1b
     ###################
     # Is tty?
     ###################
@@ -72,6 +75,7 @@ class Terminal:
             return False
     
 
+    # Documented | txt | 0.1b
     ###################
     # Is valid tty?
     ###################
@@ -109,6 +113,7 @@ class Terminal:
         pass
     
 
+    # Documented | txt | v0.1b
     ###################
     # Get tc attr
     ###################
@@ -126,6 +131,7 @@ class Terminal:
             return "Failed to get tcattr. (It seems output medium is not a terminal, are you using a terminal?)"
 
 
+    # Documented | txt | v0.1b
     ###################
     # Create alt buffer
     ###################
@@ -136,6 +142,7 @@ class Terminal:
         sys.stdout.write("\033[?1049h\033[H")
         
     
+    # Documented | txt | v0.1b
     ###################
     # exit
     ###################
@@ -146,6 +153,7 @@ class Terminal:
         sys.stdout.write("\033[?1049l")  # Restore screen
 
 
+    # Documented | txt | v0.1b
     ###################
     # Connect
     ###################
