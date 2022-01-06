@@ -1,0 +1,42 @@
+:: Connect ::
+
+:Args: Legend: "-" - Required, "~" - Optional
+screen,    - TC object screen (reter.Screen(cursor))
+line,      - TC object line (reter.Line(cursor))
+cursor,    - TC object cursor (reter.Cursor())
+keyboard   ~ TC object keyboard (reter.Keyboard())
+
+
+:Desc:
+connect() connects up TC objects to the terminal.
+
+
+:Usage: Legend: "[]" - Optional
+```
+reter.Terminal.connect(screen, line, cursor, [keyboard])
+```
+
+
+:Example:
+```
+# Create terminal
+terminal = reter.Terminal()
+
+# Create cursor
+cursor = reter.Cursor()
+
+# Create screen
+screen = reter.Screen(cursor)
+
+# Create line
+line = reter.Line(cursor)
+
+# Create keyboard (Not required)
+keyboard = reter.Keyboard()
+
+# Connect all TC objects
+terminal.connect(screen, line, cursor, keyboard)
+```
+
+
+

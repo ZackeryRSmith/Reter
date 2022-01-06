@@ -1,0 +1,28 @@
+:: Create alt buffer ::
+
+:Args: 
+None
+
+
+:Desc: 
+create_alt_buffer() as it implies, will create (and enable) an alternate buffer. When done with alternate buffer, use the terminal function exit() to disable alt buffer and restore old buffer. If exit() is not used alternate buffer will become the main buffer.
+
+
+:Usage:
+```
+reter.Terminal().create_alt_buffer()
+```
+
+
+:Example:
+```
+# Initialize terminal (quick_start() automaticily starts a new buffer)
+terminal = reter.Terminal()
+cursor = reter.Cursor()
+screen = reter.Screen(cursor)
+line = reter.Line(cursor)
+terminal.connect(screen, line, cursor)
+
+# Start & enable new buffer
+terminal.create_alt_buffer()
+```

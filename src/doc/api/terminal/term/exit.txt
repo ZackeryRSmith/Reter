@@ -1,0 +1,24 @@
+:: Exit ::
+
+:Args: 
+None
+
+
+:Desc: 
+Will exit currently active alternate buffer, if no alternate buffer is running nothing will happen.
+
+
+:Usage:
+```
+reter.Terminal().exit()
+```
+
+
+:Example:
+```
+# Initialize terminal
+terminal = reter.Terminal().quick_start()
+
+# Exit current buffer
+print(terminal.exit)
+```
