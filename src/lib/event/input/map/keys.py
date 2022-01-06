@@ -73,6 +73,7 @@ keymap = {
     b'\x1d':"gs",           # ctrl+] | Group Separator
     b'\x1e':"rs",           # ctrl+^ | Record Separator
     b'\x1f':"us",           # ctrl+_ | Unit Separator
+    b'\x7f':"bs",           # delete | Backspace
     #-----------------------------------------------------------#
     b'\x1b[A':"uparrow", 
     b'\x1b[B':"downarrow", 
