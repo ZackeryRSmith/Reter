@@ -1,3 +1,5 @@
+### Planned release date 1/13/2022 (Everything in this repo is subject to change before release!)
+
 ![](http://ForTheBadge.com/images/badges/made-with-python.svg)
 
 ![](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)
@@ -29,6 +31,39 @@
   </p>
 </div>
 
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-reter">About Reter</a>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#tested-terms">Tested Terminals</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#installation">Installation</a>
+      <ul>
+        <lu><a href="#pip">Pip Method</a></li>
+        <lu><a href="#build">Build</a></li>
+        <ul>
+          <li><a href="#prerequisites">Prerequisites</a></li>
+          <li><a href="#manual-install-guide">Build Guide</a></li>
+        </ul>  
+      </ul>
+    </li>
+    <li><a href="#projects-using-reter">Projects Using Reter</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
+
+
 <!--
 Start of about
 -->
@@ -42,7 +77,7 @@ Start of features
 ## Features
 
 - Few dependencies
-- Full control over writing and flushing output buffer
+<!-- - Full control over writing and flushing output buffer -->
 - Is tty
 - Cursor 
     - Move the cursor N times (up, down, left, right)
@@ -59,19 +94,17 @@ Start of features
     - RGB/True color support
     - Text attributes like bold, italic, underscore, crossed, etc
 - Terminal 
-    - Clear (all lines, current line, from cursor down and up, until new line)
+    - Clear (all lines, current line, from cursor down and up)
     - Scroll up, down
     - Set/get the terminal size
     - Exit current process
     - Alternate screen
-    - Raw screen   
     - Set terminal title
     - Enable/disable line wrapping
 - Event 
     - Input Events 
-    - Mouse Events (press, release, position, button, drag)
     - Terminal Resize Events
-    - Advanced modifier (SHIFT | ALT | CTRL) support for both mouse and key events
+    - Advanced key events
 
 
 <!--
@@ -95,6 +128,8 @@ This library supports all UNIX terminals and POSIX systems; however, not every t
 Start of modules using reter
 -->
 ## Modules using Reter
+Nothing yet!
+<!--
 Here are some examples of Reter found in other modules
 
 <h2 align="center">VDTGraphic</h2>
@@ -119,18 +154,6 @@ Bo-Boxes allows the end-user to create combo boxes in the Unix Shell working on 
   
 More info on this library can be found at [BoBoxes github](https://github.com/ZackeryRSmith/Bo-Boxes/)
 </div>
-
-<!-- Not too sure sure if I will make this
-<h2 align="center">Cures</h2>
-<div align="center">
-  <a href="https://github.com/ZackeryRSmith/Cures/">
-    <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/Cures.jpg" alt="Cures logo" width="240" height="240">
-  </a>
-  
-Cures is a open-source python module created using reter. Cures is the open-source equivalent to Curses, a closed-source module not quite up-to-date with newer versions of python. Cures like Curses is a python module for providing the programmer with an abstraction of a display containing multiple non-overlapping windows of text. If that sounds complex don't worry, images are shown below with what 
->providing the programmer with an abstraction of a display containing multiple non-overlapping windows of text
-
-Really means! 
 -->
 
 <!--
