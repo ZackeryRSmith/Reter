@@ -66,6 +66,7 @@ def main():
     except KeyboardInterrupt:
         terminal.exit()
 
+
 ########################################
 # RUN - FOR DEBUGGING REASONS
 ########################################
