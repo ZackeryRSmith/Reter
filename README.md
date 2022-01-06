@@ -1,4 +1,4 @@
-### Planned release date 1/10/2022
+### Planned release date 1/10/2022 (Everything in this repo is subject to change before release!)
 
 ![](http://ForTheBadge.com/images/badges/made-with-python.svg)
 
