@@ -1,4 +1,4 @@
-from src.lib.errhandler.handle import Error
+from lib.errhandler.handle import Error
 
 
 ########################################

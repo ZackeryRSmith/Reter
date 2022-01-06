@@ -4,7 +4,7 @@
 
 import sys
 from typing import Optional
-from src.lib.style.indicator import indicator
+from lib.style.indicator import indicator
 
 
 ########################################

@@ -5,9 +5,9 @@
 import termios
 import tty
 import sys
-from src.lib.event.input.map.keys import *
-from src.lib.cursor.cursor import Cursor  # I could remove this dependency.. 
-from src.lib.style.indicator import indicator
+from lib.event.input.map.keys import *
+from lib.cursor.cursor import Cursor  # I could remove this dependency.. 
+from lib.style.indicator import indicator
 from typing import Optional
 
 

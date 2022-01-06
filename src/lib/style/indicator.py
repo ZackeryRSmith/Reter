@@ -2,8 +2,8 @@
 # IMPORT
 ########################################
 
-from src.lib.style.colour import *
-from src.lib.event.input.map.keys import *
+from lib.style.colour import *
+from lib.event.input.map.keys import *
 
 
 ########################################

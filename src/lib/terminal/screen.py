@@ -6,7 +6,7 @@ import re
 import sys
 import os
 from typing import Optional
-from src.lib.cursor.cursor import Cursor  
+from lib.cursor.cursor import Cursor  
 
 
 ########################################
