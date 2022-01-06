@@ -107,7 +107,7 @@ Here are some examples of Reter found in other modules
   
   More info on this library can be found at [VDTGraphic's github](https://github.com/ZackeryRSmith/VDTGraphics/)
 </div>
-
+<h2></h2>
 
 <h2 align="center">Bo-Boxes</h2>
 <div align="center">
@@ -119,7 +119,6 @@ Bo-Boxes allows the end-user to create combo boxes in the Unix Shell working on 
   
 More info on this library can be found at [BoBoxes github](https://github.com/ZackeryRSmith/Bo-Boxes/)
 </div>
-<h2></h2>
 
 <!-- Not too sure sure if I will make this
 <h2 align="center">Cures</h2>
