@@ -139,3 +139,10 @@ Start of thank you,
 ## Thank you,
 
 * **Zackery .R. Smith** - *Project owner & creator*
+
+## Resources
+Reter is built with documentation created by many good souls, credited below.
+
+### ANSI ESC Codes
+* **Christian Petersen** - *[ANSI Gist](https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797)* 
+* **George Watson** - *[ANSI Table](https://www.physics.udel.edu/~watson/scen103/ascii.html)*
