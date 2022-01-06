@@ -14,7 +14,7 @@ from lib.cursor.cursor import Cursor
 ########################################
 
 class Screen:
-    def __init__(self, cursor, height: Optional[int]=None, width: Optional[int]=None, link_cursor: Optional[bool]=False, auto_calibrate: Optional[bool]=True, clear_screen: Optional[bool]=True):
+    def __init__(self, cursor, height: Optional[int]=None, width: Optional[int]=None, link_cursor: Optional[bool]=False, auto_calibrate: Optional[bool]=True, clear_screen: Optional[bool]=True, wrap: Optional[bool]=True):
         """Constructor to initialize object"""
         self.cursor = cursor
         if auto_calibrate:
@@ -23,7 +23,12 @@ class Screen:
         else:
             self.height = height
             self.width = width
- 
+    
+        if wrap:
+            self.set_mode(7)  # Enable
+        else:
+            self.reset_mode(7)  # Disable
+
         # Does nothing as of now - Not needed really, will most likely be removed in final version
         if link_cursor:
             # Link cursor to screen
