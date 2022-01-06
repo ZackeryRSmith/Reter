@@ -97,6 +97,18 @@ Start of modules using reter
 ## Modules using Reter
 Here are some examples of Reter found in other modules
 
+<h2 align="center">VDTGraphic</h2>
+<div align="center">
+  <a href="https://github.com/ZackeryRSmith/VDTGraphics/">
+    <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/VDTGraphic/VDTGraphic.jpg" alt="VDTGraphics logo" width="240" height="140">
+  </a>
+  
+  **VDTGraphic** is a python library to build rich terminal user interfaces and dashboards. It is heavily inspired by the Rust library [tui-rs](https://github.com/fdehau/tui-rs)
+  
+  More info on this library can be found at [VDTGraphic's github](https://github.com/ZackeryRSmith/VDTGraphics/)
+</div>
+
+
 <h2 align="center">Bo-Boxes</h2>
 <div align="center">
   <a href="https://github.com/ZackeryRSmith/Bo-Boxes/">
@@ -122,17 +134,6 @@ Cures is a open-source python module created using reter. Cures is the open-sour
 Really means! 
 -->
 
-<h2 align="center">VDTGraphic</h2>
-<div align="center">
-  <a href="https://github.com/ZackeryRSmith/VDTGraphics/">
-    <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/VDTGraphic/VDTGraphic.jpg" alt="VDTGraphics logo" width="240" height="140">
-  </a>
-  
-  **VDTGraphic** is a python library to build rich terminal user interfaces and dashboards. It is heavily inspired by the Rust library [tui-rs](https://github.com/fdehau/tui-rs)
-  
-  More info on this library can be found at [VDTGraphic's github](https://github.com/ZackeryRSmith/VDTGraphics/)
-</div>
-  
 <!--
 Start of thank you,
 -->
