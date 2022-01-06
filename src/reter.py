@@ -61,7 +61,8 @@ def main():
     print(bts(rgb_to_ansi(255, 40, 53, 1))+blink+bold+"Hello, World!"+EOC)
     try:
         while True:  # Just keep script running
-            pass
+            key = terminal.keyboard.capture_key()
+            print(indicator.parse(key))
     except KeyboardInterrupt:
         terminal.exit()
 
