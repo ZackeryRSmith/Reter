@@ -42,7 +42,7 @@ Start of features
 ## Features
 
 - Few dependencies
-- Full control over writing and flushing output buffer
+<!-- - Full control over writing and flushing output buffer -->
 - Is tty
 - Cursor 
     - Move the cursor N times (up, down, left, right)
@@ -59,19 +59,20 @@ Start of features
     - RGB/True color support
     - Text attributes like bold, italic, underscore, crossed, etc
 - Terminal 
-    - Clear (all lines, current line, from cursor down and up, until new line)
+    - Clear (all lines, current line, from cursor down and up)
     - Scroll up, down
     - Set/get the terminal size
     - Exit current process
     - Alternate screen
-    - Raw screen   
+<!--    - Raw screen   -->
     - Set terminal title
     - Enable/disable line wrapping
 - Event 
     - Input Events 
-    - Mouse Events (press, release, position, button, drag)
+<!--    - Mouse Events (press, release, position, button, drag) -->
     - Terminal Resize Events
-    - Advanced modifier (SHIFT | ALT | CTRL) support for both mouse and key events
+<!--    - Advanced modifier (SHIFT | ALT | CTRL) support for both mouse and key events -->
+    - Advanced key events
 
 
 <!--
