@@ -14,80 +14,81 @@ from lib.cursor.cursor import Cursor
 ########################################
 
 class Screen:
-    def __init__(self, cursor, height: Optional[int]=None, width: Optional[int]=None, linkCursor: Optional[bool]=False, autoCalibrate: Optional[bool]=True):
+    def __init__(self, cursor, height: Optional[int]=None, width: Optional[int]=None, link_cursor: Optional[bool]=False, auto_calibrate: Optional[bool]=True, clear_screen: Optional[bool]=True):
         """Constructor to initialize object"""
         self.cursor = cursor
-        if autoCalibrate:
-            self.height = self.getDimensions(returnFormat="lines") if height == None else height
-            self.width = self.getDimensions(returnFormat="columns") if width == None else width
+        if auto_calibrate:
+            self.height = (self.get_dimensions(return_format="lines") if clear_screen == True else self.get_dimensions(return_format="lines", clear_screen=False)) if height == None else height
+            self.width = (self.get_dimensions(return_format="columns") if clear_screen == True else self.get_dimensions(return_format="columns", clear_screen=False)) if width == None else width
         else:
             self.height = height
             self.width = width
  
         # Does nothing as of now - Not needed really, will most likely be removed in final version
-        if linkCursor:
+        if link_cursor:
             # Link cursor to screen
             self.cursor.link()
 
 
-    def returnDimensions(self, returnFormat: Optional[str]="WxH", recalibrateDimensions: Optional[bool]=True):
+    def return_dimensions(self, return_format: Optional[str]="WxH", recalibrate_dimensions: Optional[bool]=True):
         """
         Returns current set dimensions for screen object. To update dimensions or fetch new ones use getDimensions().
 
-        :param str returnFormat: The format in which to be retuned in
+        :param str return_format: The format in which to be retuned in
         """
-        if returnFormat == "WxH":
-            if recalibrateDimensions:
-                return self.getDimensions("WxH")
-        elif returnFormat == "HxW":
-            if recalibrateDimensions:
-                return self.getDimensions("HxW")
+        if return_format == "WxH":
+            if recalibrate_dimensions:
+                return self.get_dimensions("WxH")
+        elif return_format == "HxW":
+            if recalibrate_dimensions:
+                return self.get_dimensions("HxW")
         else:
             pass
 
 
-    def getDimensions(self, returnFormat: Optional[str]="WxH", clearScreen: Optional[bool]=True):
+    def get_dimensions(self, return_format: Optional[str]="WxH", clear_screen: Optional[bool]=True):
         """
         Gets current screen dimensions
         
-        :param str returnFormat: The format in which to be retuned in
-        :param bool clearScreen: If false screen will not be cleared when checking dimensions. This can cause some weird visual bugs if not expected and dealt with manually!!
+        :param str return_format: The format in which to be retuned in
+        :param bool clear_screen: If false screen will not be cleared when checking dimensions. This can cause some weird visual bugs if not expected and dealt with manually!!
         
         :rtype: By default a string will be returned.
-        :return: Return differs depending on the value of `returnFormat`. By default (Width x Height) will be returned.
+        :return: Return differs depending on the value of `return_format`. By default (Width x Height) will be returned.
         """
-        if clearScreen:
+        if clear_screen:
             os.system("clear")
         terminal_size = os.get_terminal_size()
         self.width = terminal_size.columns
         self.height = terminal_size.lines
-        if returnFormat == "WxH":
+        if return_format == "WxH":
             return str(terminal_size.columns)+"x"+str(terminal_size.lines)
 
-        elif returnFormat == "HxW":
+        elif return_format == "HxW":
             return str(terminal_size.lines)+"x"+str(terminal_size.columns)
         
-        elif returnFormat == "xy":
+        elif return_format == "xy":
             return (terminal_size.columns, terminal_size.lines)
         
-        elif returnFormat == "yx":
+        elif return_format == "yx":
             return (terminal_size.lines, terminal_size.columns)
         
-        elif returnFormat == "x":
+        elif return_format == "x":
             return terminal_size.columns
         
-        elif returnFormat == "y":
+        elif return_format == "y":
             return terminal_size.lines
         
-        elif returnFormat == None:
+        elif return_format == None:
             return (terminal_size.lines, terminal_size.columns)
         
         else:
             return (terminal_size.lines, terminal_size.columns)
 
 
-    def setDimensions(self, columns, lines):
+    def set_dimensions(self, columns, lines):
         """
+        Set dimensions of screen
         """
         pass
 
@@ -97,7 +98,7 @@ class Screen:
         Cleans off screen of all text. Be warned this also cleans the cachedScreen variable, if needed you may save cachedScreen to another
         variable... It's a double cache how fun!!
         """
-        self.cachedScreen = ""
+        self.cached_screen = ""
         os.system("clear")
 
 
@@ -138,17 +139,17 @@ class Line:
             pass
 
 
-    def returnLineNumber(self):
+    def return_line_number(self):
         """
         Gets current line number
         
         :rtype: int
         :return: Returns current line number cursor sits on
         """
-        return self.cursor.getPos("y")
+        return self.cursor.get_pos("y")
 
 
-    def chunkIt(self, screen, pattern, lineNumber, maxChunk: Optional[int]=None):
+    def chunk_it(self, screen, pattern, line_number, max_chunk: Optional[int]=None):
         """
         The chunkIt function will split by a pattern (kinda like str.split()), it will store these chunks as Chunk(). The chunk object can
         be moved, and minuplated to how you like. For more clarification here is an example. Lets say we have some text printed on the
@@ -164,10 +165,10 @@ class Line:
 
         :param int lineNumber: Line in which to chunk. By default it will chunk where the cursor is located
         """
-        if lineNumber == None:
-            lineNumber = self.returnLineNumber()
+        if line_number == None:
+            line_number = self.return_line_number()
         try:
-            rawValue = screen.cachedScreen.split("\n")[lineNumber-1]
+            rawValue = screen.cached_screen.split("\n")[lineNumber-1]
         except AttributeError:
             # Fix this error to use custom error handler (/errhandler/)
             sys.exit(indicator.colour.formatting.bold+indicator.colour.formatting.underline+"Hey it seems you did not pass a screen object... You have passed a '%s' object" % (type(screen)))
@@ -185,25 +186,25 @@ class Line:
             pass
         else:
             # Uses "".split() to split string (Taking the easy way out.. this code is subject to change!)
-            splitValue = (rawValue.split(pattern) if maxChunk == None else rawValue.split(pattern, maxChunk))
+            split_value = (raw_value.split(pattern) if max_chunk == None else raw_value.split(pattern, max_chunk))
             # Remove random items and whitspace from splitValue
-            removeSpace = [x.strip(' ') for x in splitValue]
-            removeRandom = [x for x in removeSpace if not x.startswith('\x1b')]
-            deleteEmpty = [item for item in removeRandom if item.strip()]
-            splitValue = deleteEmpty
+            remove_space = [x.strip(' ') for x in split_value]
+            remove_random = [x for x in remove_space if not x.startswith('\x1b')]
+            delete_empty = [item for item in remove_random if item.strip()]
+            split_value = delete_empty
             # Convert list of strings to a list of chunk objects
-            for index, item in enumerate(splitValue):
+            for index, item in enumerate(split_value):
                 # Get positions of items on screen
-                for match in re.finditer(splitValue[index], rawValue):  # A wee bit of re
-                    position = (lineNumber, match.start(), match.end())
-                splitValue[index] = Chunk(position, item)
-            return splitValue
+                for match in re.finditer(split_value[index], raw_value):  # A wee bit of re
+                    position = (line_number, match.start(), match.end())
+                split_value[index] = Chunk(position, item)
+            return split_value
 
 
-    def remove(self, lineNumber):
+    def remove(self):
         """
+        Remove an entire chunk
         """
-        # Delete entire chunk (Line deletion needs to be implemented first)
         pass
 
 
@@ -219,7 +220,7 @@ class Chunk:
         self.formatting = {}
 
 
-    def setColour(self, cursor, fg: Optional[str]=None, bg: Optional[str]=None):
+    def set_colour(self, cursor, fg: Optional[str]=None, bg: Optional[str]=None):
         """
         Sets an entire chunks colour. FG and BG are supported.. additional slots may be added in the future!
 
@@ -227,13 +228,13 @@ class Chunk:
         :param str fg: Foreground colour
         :param str bg: Background colour
         """
-        initPos = cursor.getPos()
+        init_pos = cursor.get_pos() 
         stripped = self.value.rstrip()
-        cursor.setPos(self.position[1]+1, self.position[0]) 
+        cursor.set_pos(self.position[1]+1, self.position[0]) 
         # stdout.write() issue. https://github.com/ZackeryRSmith/Reter/issues/2
         #sys.stdout.write(("" if fg == None else fg)+("" if bg == None else bg)+stripped+indicator.colour.formatting.eoc)
         print(("" if fg == None else fg)+("" if bg == None else bg)+stripped+indicator.colour.formatting.eoc)
-        cursor.setPos(initPos[0], initPos[1])
+        cursor.set_pos(initPos[0], initPos[1])
         self.formatting.update({
             "colour": {
                 "fg":fg,
@@ -242,7 +243,7 @@ class Chunk:
         })
 
 
-    def setPos(self):
+    def set_pos(self):
         """
         """
         pass
@@ -253,15 +254,16 @@ class Chunk:
         Moves a chunk
         """
         # This should be re-worked. There were quite of weird bugs that should not be overlooked.
+        
         # Move cursor to ending chunk position
-        cursor.setPos(self.position[2]+1, self.position[0])
+        cursor.set_pos(self.position[2]+1, self.position[0])
         # Delete chunk
         for i in range(self.position[1], self.position[2]):
             sys.__stdout__.write("\b")
             sys.__stdout__.write(" ")
             sys.__stdout__.write("\b")
         # Move cursor to starting chunk position
-        cursor.setPos(self.position[1]+1, self.position[0])
+        cursor.set_pos(self.position[1]+1, self.position[0])
         # Move cursor to desired position
         print(" " if x > 1 else "", end="")  # If x is bigger then 1 some weird things happen. This fixes it
         cursor.move(x-1, y) if self.position[1] == 0 else cursor.move(x, y)  # Turnary operator fixes some formatting bugs
@@ -271,14 +273,14 @@ class Chunk:
         self.position = (self.position[0]+y, self.position[1]+x, self.position[2]+x)
 
 
-    def returnValue(self):
+    def return_value(self):
         """
         Returns value stored in chunk
         """
         return self.value
     
 
-    def returnPosition(self):
+    def return_pos(self):
         """
         Returns position of value stored in chunk
         
@@ -287,7 +289,4 @@ class Chunk:
         """
         return self.position
 
-    
-    def is_focused(self):
-        pass
     
