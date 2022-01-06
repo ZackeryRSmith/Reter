@@ -31,6 +31,7 @@ class Terminal:
         :return: Returns Terminal object with all TC objects pre-connected
         """
         if self.is_valid_tty():
+            self.create_alt_buffer()
             cursor = Cursor(0, 0)
             screen = Screen(cursor)
             line = Line(cursor)
@@ -132,14 +133,17 @@ class Terminal:
         """
         Creates, and activates an alternate buffer
         """
-        print("\033[?1049h\033[H")
+        sys.stdout.write("\033[?1049h\033[H")
         
     
+    ###################
+    # exit
+    ###################
     def exit(self):
         """
         Exits current screen buffer
         """
-        print("\033[?1049l")  # Restore screen
+        sys.stdout.write("\033[?1049l")  # Restore screen
 
 
     ###################
