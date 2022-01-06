@@ -86,11 +86,37 @@ class Screen:
             return (terminal_size.lines, terminal_size.columns)
 
 
-    def set_dimensions(self, columns, lines):
+    def set_mode(self, value):
         """
-        Set dimensions of screen
+        Set screen width and type of screen
+
+        :param int value: Uses value for presets defined by a terminal, read docs for more info. All presets are listed below
+            * 0 : 40 x 25 monochrome (text)
+            * 1 : 40 x 25 color (text)
+            * 2 : 80 x 25 monochrome (text)
+            * 3 : 80 x 25 color (text)
+            * 4 : 320 x 200 4-color (graphics)
+            * 5 : 320 x 200 monochrome (graphics)
+            * 6 : 640 x 200 monochrome (graphics)
+            * 7 : Enables line wrapping
+            * 13 : 320 x 200 color (graphics)
+            * 14 : 320 x 200 color (graphics)
+            * 15 : 640 x 350 monochrome (2-color graphics)
+            * 16 : 640 x 350 color (16-color graphics)
+            * 17 : 640 x 480 monochrome (2-color graphics)
+            * 18 : 640 x 480 color (16-color graphics)
+            * 19 (Default) : 320 x 200 color (256-color graphics)
         """
-        pass
+        sys.stdout.write(f"\x1b[={value}h")
+
+
+    def reset_mode(self, value):
+        """
+        Resets the mode by using the same values that set_mode() uses, except for 7, which disables line wrapping.
+
+        :param int value: Value of mode to reset
+        """
+        sys.stdout.write(f"\x1b[={value}l")
 
 
     def wipe(self):
