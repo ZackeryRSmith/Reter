@@ -139,6 +139,7 @@ Start of thank you,
 ## Thank you,
 
 * **Zackery .R. Smith** - *Project owner & creator*
+* **Timon Post** - *Author of Crossterm*
 
 ## Resources
 Reter is built with documentation created by many good souls, credited below.
