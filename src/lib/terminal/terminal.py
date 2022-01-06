@@ -126,6 +126,23 @@ class Terminal:
 
 
     ###################
+    # Create alt buffer
+    ###################
+    def create_alt_buffer(self):
+        """
+        Creates, and activates an alternate buffer
+        """
+        print("\033[?1049h\033[H")
+        
+    
+    def exit(self):
+        """
+        Exits current screen buffer
+        """
+        print("\033[?1049l")  # Restore screen
+
+
+    ###################
     # Connect
     ###################
     def connect(self, screen, line, cursor, keyboard: Optional[object]=None):
