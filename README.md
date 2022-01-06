@@ -91,7 +91,9 @@ Start of tested terminals
 
 This library supports all UNIX terminals and POSIX systems; however, not every terminal in the known universe have been tested. If you have used this library for a terminal other than the above list without issues *(or with issues)*, then feel free to contact me *(or create an issue)* It would help drastically and I would really appreciate it!
 
-
+<!--
+Start of modules using reter
+-->
 ## Modules using Reter
 Here are some examples of Reter found in other modules
 
@@ -104,7 +106,7 @@ Here are some examples of Reter found in other modules
 Bo-Boxes allows the end-user to create combo boxes in the Unix Shell working on almost every terminal. Bo-Boxes has a very modular end-user theming system allowing you to customize to your needs.
   
 More info on this library can be found at [BoBoxes github](https://github.com/ZackeryRSmith/Bo-Boxes/)
-  
+</div>
 <h2></h2>
 
 <!-- Not too sure sure if I will make this
@@ -126,7 +128,14 @@ Really means!
     <img src="https://github.com/ZackeryRSmith/Reter/blob/main/md-assets/VDTGraphic/VDTGraphic.jpg" alt="VDTGraphics logo" width="240" height="140">
   </a>
   
-**VDTGraphic** is a python library to build rich terminal user interfaces and dashboards. It is heavily inspired by the Rust library [tui-rs](https://github.com/fdehau/tui-rs)
+  **VDTGraphic** is a python library to build rich terminal user interfaces and dashboards. It is heavily inspired by the Rust library [tui-rs](https://github.com/fdehau/tui-rs)
   
-More info on this library can be found at [VDTGraphic's github](https://github.com/ZackeryRSmith/VDTGraphics/)
+  More info on this library can be found at [VDTGraphic's github](https://github.com/ZackeryRSmith/VDTGraphics/)
+</div>
   
+<!--
+Start of thank you,
+-->
+## Thank you,
+
+* **Zackery .R. Smith** - *Project owner & creator*
