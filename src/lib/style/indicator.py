@@ -30,7 +30,17 @@ class indicator:
         else:
             parsed_char = cleaned_char
         return parsed_char
- 
+    
+
+    ###################
+    # Byte to string
+    ###################
+    def byte_to_str(byte) -> str:
+        """
+        Byte to raw string
+        """
+        return byte.decode('utf-8')
+
 
     ########################################
     # ARROW - Parent: indicator
