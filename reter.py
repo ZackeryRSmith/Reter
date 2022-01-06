@@ -37,13 +37,13 @@ __version__ = ".".join(map(str, __version_info__))
 # IMPORTS
 ########################################
 
-from lib.terminal.terminal import Terminal
-from lib.terminal.screen import Screen, Line
-from lib.event.input.keyboard.keyboard import Keyboard
-from lib.style.indicator import indicator
-from lib.style.colour import rgb_to_ansi, id_to_256
-from lib.errhandler.handle import *
-from lib.cursor.cursor import Cursor
+from src.lib.terminal.terminal import Terminal
+from src.lib.terminal.screen import Screen, Line
+from src.lib.event.input.keyboard.keyboard import Keyboard
+from src.lib.style.indicator import indicator
+from src.lib.style.colour import rgb_to_ansi, id_to_256
+from src.lib.errhandler.handle import *
+from src.lib.cursor.cursor import Cursor
 # Misc imports
 import time
 
