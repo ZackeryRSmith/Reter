@@ -2,10 +2,10 @@ import os
 import sys
 import termios
 import tty
-from lib.terminal.screen import Screen, Line
-from lib.cursor.cursor import Cursor 
-from lib.event.input.keyboard.keyboard import Keyboard
-from lib.errhandler.errors import UnexpectedResult
+from src.lib.terminal.screen import Screen, Line
+from src.lib.cursor.cursor import Cursor 
+from src.lib.event.input.keyboard.keyboard import Keyboard
+from src.lib.errhandler.errors import UnexpectedResult
 from typing import Optional
 
 
