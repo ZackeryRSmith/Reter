@@ -33,7 +33,7 @@ class Terminal:
         if self.is_valid_tty():
             self.create_alt_buffer()
             cursor = Cursor(0, 0)
-            screen = Screen(cursor)
+            screen = Screen(cursor, clear_screen=False)
             line = Line(cursor)
             keyboard = Keyboard(cursor)
             self.connect(screen, line, cursor, keyboard)
