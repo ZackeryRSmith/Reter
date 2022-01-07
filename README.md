@@ -77,6 +77,7 @@ Start of features
 ### Features <a name="features" />
 
 - Few dependencies
+- Full control over writing and flushing output buffer
 - Is tty
 - Cursor 
     - Move the cursor N times (up, down, left, right)
