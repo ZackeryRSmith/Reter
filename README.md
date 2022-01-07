@@ -144,7 +144,7 @@ Will be filled out soon
 <!--
 Start of modules using reter
 -->
-### Modules using Reter
+## Modules using Reter
 Nothing yet!
 <!--
 Here are some examples of Reter found in other modules
@@ -176,18 +176,18 @@ More info on this library can be found at [BoBoxes github](https://github.com/Za
 <!--
 Start of thank you,
 -->
-### Thank you, <a name="thanks" />
+## Thank you, <a name="thanks" />
 
 * **Zackery .R. Smith** - *Project owner & creator*
 * **Timon Post** - *Author of Crossterm*
 
-#### ANSI ESC Codes <a name="ansi-codes" />
+### ANSI ESC Codes <a name="ansi-codes" />
 * **Christian Petersen** - *[ANSI Gist](https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797)* 
 * **George Watson** - *[ANSI Table](https://www.physics.udel.edu/~watson/scen103/ascii.html)*
 
-#### Stackoverflow <a name="stack" />
+### Stackoverflow <a name="stack" />
 *[stdin, stdout, and stderr](https://stackoverflow.com/questions/3385201/confused-about-stdin-stdout-and-stderr)*
 
-#### Lecture(s) <a name="lectures" />
+### Lecture(s) <a name="lectures" />
 * **Brian Will** - *[Unix terminals and shells](https://www.youtube.com/watch?v=07Q9oqNLXB4&list=PLFAC320731F539902)*
 
