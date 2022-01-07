@@ -95,13 +95,12 @@ Start of features
     - Text attributes like bold, italic, underscore, crossed, etc
 - Terminal 
     - Clear (all lines, current line, from cursor down and up)
-    - Scroll up, down
     - Set/get the terminal size
-    - Exit current process
+    - Exit current buffer
     - Alternate screen
     - Set terminal title
     - Enable/disable line wrapping
-- Event 
+- Event
     - Input Events 
     - Terminal Resize Events
     - Advanced key events
