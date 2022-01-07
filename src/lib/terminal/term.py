@@ -32,7 +32,8 @@ class Terminal:
         :return: Returns Terminal object with all TC objects pre-connected
         """
         if self.is_valid_tty():
-            self.create_alt_buffer()
+            self.create_alt_buffer()  # Create buffer
+            self.set_mode("cbreak")  # Make terminal readable
             cursor = Cursor(0, 0)
             screen = Screen(cursor, clear_screen=False)
             line = Line(cursor)
@@ -42,6 +43,27 @@ class Terminal:
         else:
             raise ValueError("Cannot start a Terminal object. (It seems the output medium is not a valid terminal, are you using a terminal?)")
 
+
+    ###################
+    # Set mode
+    ###################
+    def set_mode(self, mode):
+        """
+        Set terminal in 'raw', 'cooked', or 'cbreak' mode.
+        
+        :param str mode: The mode to set for terminal I.e. 'raw', 'cooked', or 'cbreak'
+        """
+        if mode == "raw":
+            pass
+        elif mode == "cooked":
+            pass
+        elif mode == "cbreak":
+            self.fd = sys.stdin.fileno()
+            self.old_settings = termios.tcgetattr(self.fd)
+            tty.setcbreak(self.fd)
+        else:
+            pass
+    
 
     # Documented | txt | 0.1b
     ###################
@@ -151,6 +173,7 @@ class Terminal:
         Exits current screen buffer
         """
         sys.stdout.write("\033[?1049l")  # Restore screen
+        termios.tcsetattr(self.fd, termios.TCSADRAIN, self.old_settings)  # Restore old stdout settings
 
 
     # Documented | txt | v0.1b
