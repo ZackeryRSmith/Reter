@@ -69,7 +69,7 @@ def main():
         print(": Cached Buffer :\n"+terminal.output.cached_buffer)
         time.sleep(3)
         terminal.exit()
-
+    
 
 ########################################
 # RUN - FOR DEBUGGING REASONS
