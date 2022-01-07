@@ -46,8 +46,8 @@
     <li>
       <a href="#installation">Installation</a>
       <ul>
-        <lu><a href="#pip">Pip Method</a></li>
-        <lu><a href="#build">Build</a></li>
+        <li><a href="#pip">Pip Method</a></li>
+        <lu><a href="#build">Build</a></lu>
         <ul>
           <li><a href="#prerequisites">Prerequisites</a></li>
           <li><a href="#manual-install-guide">Build Guide</a></li>
@@ -67,17 +67,16 @@
 <!--
 Start of about
 -->
-# Retry Terminal
+## Retry Terminal <a name="about-reter" />
 **Reter** alternatively **Terminal Retry** is a pure-python, terminal manipulation library inspired by [**crossterm**](https://github.com/crossterm-rs/crossterm#features) a terminal manipulation library for Rust. **Reter** makes it possible to write text-based interfaces (see [features](#features)). It supports all UNIX terminals *hopefully windows at some point* (not all terminals are tested, see [Tested Terminals](#tested-terminals) for more info).
 
 
 <!--
 Start of features
 -->
-## Features
+### Features <a name="features" />
 
 - Few dependencies
-<!-- - Full control over writing and flushing output buffer -->
 - Is tty
 - Cursor 
     - Move the cursor N times (up, down, left, right)
@@ -110,7 +109,7 @@ Start of features
 <!--
 Start of tested terminals
 -->
-### Tested Terminals
+### Tested Terminals <a name="tested-terms" />
 
 - Ubuntu Desktop Terminal
     - Ubuntu 17.10
@@ -123,11 +122,24 @@ Start of tested terminals
 - RXVT Color Terminal
 
 This library supports all UNIX terminals and POSIX systems; however, not every terminal in the known universe have been tested. If you have used this library for a terminal other than the above list without issues *(or with issues)*, then feel free to contact me *(or create an issue)* It would help drastically and I would really appreciate it!
+  
+## Installation <a name="installation" />
+Want to use Reter, first let me thank you for choosing Reter! Now without further ado lets get into it,
+  
+### Pip <a name="pip" />
+###### Not functional until planned release date!
+As of now pip is the only *easy* way to install Reter. Will be ported to more package managers in time.
+```sh
+pip install reter
+```
+  
+### Build <a name="build" />
+Will be filled out soon
 
 <!--
 Start of modules using reter
 -->
-## Modules using Reter
+### Modules using Reter
 Nothing yet!
 <!--
 Here are some examples of Reter found in other modules
@@ -159,21 +171,21 @@ More info on this library can be found at [BoBoxes github](https://github.com/Za
 <!--
 Start of thank you,
 -->
-## Thank you,
+### Thank you,
 
 * **Zackery .R. Smith** - *Project owner & creator*
 * **Timon Post** - *Author of Crossterm*
 
-## Resources
+#### Resources
 Reter is built with documentation created by many good souls, credited below.
 
-### ANSI ESC Codes
+##### ANSI ESC Codes
 * **Christian Petersen** - *[ANSI Gist](https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797)* 
 * **George Watson** - *[ANSI Table](https://www.physics.udel.edu/~watson/scen103/ascii.html)*
 
-### Stackoverflow
+##### Stackoverflow
 *[stdin, stdout, and stderr](https://stackoverflow.com/questions/3385201/confused-about-stdin-stdout-and-stderr)*
 
-### Lecture(s)
+##### Lecture(s)
 * **Brian Will** - *[Unix terminals and shells](https://www.youtube.com/watch?v=07Q9oqNLXB4&list=PLFAC320731F539902)*
 
