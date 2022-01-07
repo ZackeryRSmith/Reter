@@ -27,7 +27,7 @@ from typing import (
 
 
 ########################################
-# TERMINAL
+# OUTPUT REDIRECT
 ########################################
 class OutputRedirect(object):
     def __init__(self):
