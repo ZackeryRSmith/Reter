@@ -65,6 +65,9 @@ def main():
             key = terminal.keyboard.capture_key()
             print(indicator.parse(key))
     except KeyboardInterrupt:
+        terminal.screen.wipe()
+        print(": Cached Buffer :\n"+terminal.output.cached_buffer)
+        time.sleep(3)
         terminal.exit()
 
 
