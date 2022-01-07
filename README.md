@@ -46,8 +46,8 @@
     <li>
       <a href="#installation">Installation</a>
       <ul>
-        <lu><a href="#pip">Pip Method</a></li>
-        <lu><a href="#build">Build</a></li>
+        <li><a href="#pip">Pip Method</a></li>
+        <lu><a href="#build">Build</a></lu>
         <ul>
           <li><a href="#prerequisites">Prerequisites</a></li>
           <li><a href="#manual-install-guide">Build Guide</a></li>
@@ -123,16 +123,18 @@ Start of tested terminals
 
 This library supports all UNIX terminals and POSIX systems; however, not every terminal in the known universe have been tested. If you have used this library for a terminal other than the above list without issues *(or with issues)*, then feel free to contact me *(or create an issue)* It would help drastically and I would really appreciate it!
   
-## Installation
+## Installation <a name="installation" />
 Want to use Reter, first let me thank you for choosing Reter! Now without further ado lets get into it,
   
 ### Pip <a name="pip" />
+###### Not functional until planned release date!
 As of now pip is the only *easy* way to install Reter. Will be ported to more package managers in time.
 ```sh
 pip install reter
 ```
   
-### Build
+### Build <a name="build" />
+Will be filled out soon
 
 <!--
 Start of modules using reter
