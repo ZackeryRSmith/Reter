@@ -30,6 +30,7 @@ from typing import (
 # OUTPUT REDIRECT
 ########################################
 class OutputRedirect(object):
+    """Built-in object for stdout redirects"""
     def __init__(self):
         self.name = sys.__stdout__.name  # Redirect name ("stdout" in most cases)
         self.mode = sys.__stdout__.mode  # Current mode
@@ -41,9 +42,9 @@ class OutputRedirect(object):
         self.newlines = sys.__stdout__.newlines  # Is newlines?
         self.cached_buffer = ""  # Cached screen variable
 
-    def write(self, s: AnyStr):
+    def write(self, s: AnyStr, dc: Optional[bool]=False):
         """
-        Just standard out but with a capturing system
+        Just the stdout write function, but with a capturing system
 
         :: IMPORTANT
         : Make sure you add "\\n" to the end of your string, if you don't visual bugs will occur. 
@@ -55,25 +56,55 @@ class OutputRedirect(object):
         : the `IMPORTANT` section found above!
         
         :param str s: String to write
+        :param str dc: if dc (Don't cache) is True, output will be shown on the screen (to the user), but the written line won't show in the cached_buffer variable. This can cause issues, this parameter should be left untouched, unless you know what you are doing. 
         """
-        self.cached_buffer += s
+        if dc != True:  # If dc (don't cache) is false, it means we will cache the string
+            self.cached_buffer += s
         sys.__stdout__.write(str(s))
     
-    def writelines(self, lines: Iterable[AnyStr]):
-        for line in lines:
-            self.cached_buffer += line
+    def writelines(self, lines: Iterable[AnyStr], dc: Optional[bool]=False):
+        """
+        Just the stdout writelines function, but with a capturing system
+        
+        :param str lines: A list of strings
+        :param str dc: if dc (Don't cache) is True, output will be shown on the screen (to the user), but the written line won't show in the cached_buffer variable. This can cause issues, this parameter should be left untouched, unless you know what you are doing. 
+        """
+        if dc != True:  # If dc (don't cache) is false, it means we will cache the string
+            for line in lines:
+                self.cached_buffer += line
         sys.__stdout__.writelines(lines)
-
+    
     def writable(self) -> bool:
-        sys.__stdout__.writable()
+        """
+        Check if stdout is writable
+
+        :rtype: bool
+        :return: True, or False
+        """
+        return sys.__stdout__.writable()
 
     def isatty(self) -> bool:
-        sys.__stdout__.isatty()
+        """
+        Check if stdout is connected to a tty
+
+        :rtype: bool
+        :return: True, or False
+        """
+        return sys.__stdout__.isatty()
 
     def fileno(self) -> int:
-        sys.__stdout__.fileno()
+        """
+        Get file descripter
+
+        :rtype: int
+        :return: File descripter 0, 1, or 2
+        """
+        return sys.__stdout__.fileno()
 
     def flush(self):
+        """
+        Flush everything, meaning that it will write everything in the buffer to the terminal, even if normally it would wait before doing so
+        """
         sys.__stdout__.flush()
 
 
@@ -96,7 +127,7 @@ class Terminal:
     ###################
     def quick_start(self) -> object:
         """
-        Creates a Terminal object quickly, and in a unconfigurable manner. Good as long you don't need to over customize a TC object. Will also validate tty.
+        Creates a Terminal object quickly, and in a unconfigurable manner. Good as long you don't need to over customize a TC object.
 
         :rtype: object
         :return: Returns Terminal object with all TC objects pre-connected
@@ -130,16 +161,14 @@ class Terminal:
     ###################
     def set_mode(self, m: AnyStr):
         """
-        !:! NOT FINISHED !:!
+        Set terminal in 'raw', or 'cbreak' mode.
         
-        Set terminal in 'raw', 'cooked', or 'cbreak' mode.
-        
-        :param str mode: The mode to set for terminal I.e. 'raw', 'cooked', or 'cbreak'
+        :param str mode: The mode to set for terminal I.e. 'raw', or 'cbreak'
         """
         if m == "raw":
-            pass
-        elif m == "cooked":
-            pass
+            self.fd = sys.stdin.fileno()
+            self.saved_settings = termios.tcgetattr(self.fd)
+            tty.setraw(self.fd)
         elif m == "cbreak":
             self.fd = sys.stdin.fileno()
             self.saved_settings = termios.tcgetattr(self.fd)
@@ -211,11 +240,14 @@ class Terminal:
     ###################
     # Set tc attr
     ###################
-    def set_tc_attr(self):
+    def set_tc_attr(self, fd: int, when: int, attributes: list):
         """
         Set the TC attributes, don't mess around with this unless you know what you are doing! A good amount of knowledge is needed to use this function.
+        
+        :param int fd: File descripter
+        :param int when: When should change shall occur I.e. "TCSANOW", "TCSADRAIN", "TCSAFLUSH". More info at https://stackoverflow.com/questions/49684768/tcsetattr-what-are-the-differences-between-tcsanow-tcsadrain-tcsaflush-and
         """
-        pass
+        termios.tcsetattr(fd, when, attributes)  # Set attributes
     
 
     # Documented | txt | v0.1b
