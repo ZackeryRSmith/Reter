@@ -1,4 +1,4 @@
-### Planned release date 1/13/2022 (Everything in this repo is subject to change before release!)
+### Planned beta release date 1/13/2022 (Everything in this repo is subject to change before release!)
 
 ![](http://ForTheBadge.com/images/badges/made-with-python.svg)
 
@@ -47,7 +47,7 @@
       <a href="#installation">Installation</a>
       <ul>
         <li><a href="#pip">Pip Method</a></li>
-        <lu><a href="#build">Build</a></lu>
+        <li><a href="#build">Build</a></lu>
         <ul>
           <li><a href="#prerequisites">Prerequisites</a></li>
           <li><a href="#manual-install-guide">Build Guide</a></li>
@@ -59,7 +59,12 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#thanks">Thanks</a></lu>
+    <ul>
+      <li><a href="#ansi-codes">Ansi Esc Codes</a></li>
+      <li><a href="#stack">Stackoverflow</a></li>
+      <li><a href="#lectures">Lectures</a></li>
+    </ul>
   </ol>
 </details>
 
@@ -95,13 +100,12 @@ Start of features
     - Text attributes like bold, italic, underscore, crossed, etc
 - Terminal 
     - Clear (all lines, current line, from cursor down and up)
-    - Scroll up, down
     - Set/get the terminal size
-    - Exit current process
+    - Exit current buffer
     - Alternate screen
     - Set terminal title
     - Enable/disable line wrapping
-- Event 
+- Event
     - Input Events 
     - Terminal Resize Events
     - Advanced key events
@@ -140,7 +144,7 @@ Will be filled out soon
 <!--
 Start of modules using reter
 -->
-### Modules using Reter
+## Modules using Reter
 Nothing yet!
 <!--
 Here are some examples of Reter found in other modules
@@ -172,21 +176,18 @@ More info on this library can be found at [BoBoxes github](https://github.com/Za
 <!--
 Start of thank you,
 -->
-### Thank you,
+## Thank you, <a name="thanks" />
 
 * **Zackery .R. Smith** - *Project owner & creator*
 * **Timon Post** - *Author of Crossterm*
 
-#### Resources
-Reter is built with documentation created by many good souls, credited below.
-
-##### ANSI ESC Codes
+### ANSI ESC Codes <a name="ansi-codes" />
 * **Christian Petersen** - *[ANSI Gist](https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797)* 
 * **George Watson** - *[ANSI Table](https://www.physics.udel.edu/~watson/scen103/ascii.html)*
 
-##### Stackoverflow
+### Stackoverflow <a name="stack" />
 *[stdin, stdout, and stderr](https://stackoverflow.com/questions/3385201/confused-about-stdin-stdout-and-stderr)*
 
-##### Lecture(s)
+### Lecture(s) <a name="lectures" />
 * **Brian Will** - *[Unix terminals and shells](https://www.youtube.com/watch?v=07Q9oqNLXB4&list=PLFAC320731F539902)*
 
