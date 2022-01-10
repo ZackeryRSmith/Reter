@@ -2,6 +2,7 @@ import os
 import sys
 import termios
 import tty
+import signal
 from lib.terminal.screen import Screen, Line
 from lib.cursor.cursor import Cursor 
 from lib.event.input.keyboard.keyboard import Keyboard
@@ -42,7 +43,7 @@ class OutputRedirect(object):
         self.newlines = sys.__stdout__.newlines  # Is newlines?
         self.cached_buffer = ""  # Cached screen variable
 
-    def write(self, s: AnyStr, dc: Optional[bool]=False):
+    def write(self, s: AnyStr, dc: Optional[bool]=False, flush: Optional[bool]=True):
         """
         Just the stdout write function, but with a capturing system
 
@@ -56,12 +57,15 @@ class OutputRedirect(object):
         : the `IMPORTANT` section found above!
         
         :param str s: String to write
-        :param str dc: if dc (Don't cache) is True, output will be shown on the screen (to the user), but the written line won't show in the cached_buffer variable. This can cause issues, this parameter should be left untouched, unless you know what you are doing. 
+        :param bool dc: if dc (Don't cache) is True, output will be shown on the screen (to the user), but the written line won't show in the cached_buffer variable. This can cause issues, this parameter should be left untouched, unless you know what you are doing. 
+        :param bool flush: Flushes buffer to output no matter what
         """
         if dc != True:  # If dc (don't cache) is false, it means we will cache the string
             self.cached_buffer += s
         sys.__stdout__.write(str(s))
-    
+        if flush:
+            sys.__stdout__.flush()
+
     def writelines(self, lines: Iterable[AnyStr], dc: Optional[bool]=False):
         """
         Just the stdout writelines function, but with a capturing system
@@ -134,12 +138,13 @@ class Terminal:
         """
         if self.is_valid_tty():
             self.create_alt_buffer()  # Create buffer
+            signal.signal(signal.SIGWINCH, self.resize_handler)
             output = OutputRedirect()
             self.redirect_stdout(output)
             cursor = Cursor(0, 0)
             screen = Screen(cursor, clear_screen=False)
             line = Line(cursor)
-            keyboard = Keyboard(cursor)
+            keyboard = Keyboard(screen, line, cursor)
             self.connect(screen, line, cursor, keyboard, output)
             return self
         else:
@@ -154,6 +159,17 @@ class Terminal:
         Redirect stdout to an object, to go back to default pass in sys.__stdout__
         """
         sys.stdout = o
+
+    
+    ###################
+    # Resize handler
+    ###################
+    def resize_handler(self, signum, frame):
+        # This does work... thing is I am having a *great* time getting
+        # this to a end-user usable state. I could just fix resizing issues
+        # within this function by default. But, I want a end user to tell when
+        # their window has been resized.
+        pass
 
 
     ###################
@@ -277,7 +293,7 @@ class Terminal:
         Creates, and activates an alternate buffer
         """
         sys.stdout.write("\033[?1049h\033[H")
-        
+
     
     # Documented | txt | v0.1b
     ###################
