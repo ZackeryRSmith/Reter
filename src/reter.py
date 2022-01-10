@@ -53,29 +53,19 @@ import os
 # MAIN - FOR DEBUGGING REASONS
 ########################################
 
-def main():
+def __main():
     terminal = Terminal().quick_start()
-    bts = indicator.byte_to_str  # Byte to string.. not the k-pop band
-    EOC = indicator.colour.formatting.eoc  # End of color
-    blink = indicator.colour.formatting.blink  # Blinking
-    bold = indicator.colour.formatting.bold  # Bold 
-    print(bts(rgb_to_ansi(255, 40, 53, 1))+blink+bold+"Hello, World!"+EOC)
     try:
-        while True:  # Just keep script running
-            key = terminal.keyboard.capture_key()
-            print(indicator.parse(key))
+        print(terminal.keyboard.capture_input())
     except KeyboardInterrupt:
-        terminal.screen.wipe()
-        print(": Cached Buffer :\n"+terminal.output.cached_buffer)
-        time.sleep(3)
         terminal.exit()
-    
+
 
 ########################################
 # RUN - FOR DEBUGGING REASONS
 ########################################
 
 if __name__=='__main__':
-    main()
+    __main()
 
 
