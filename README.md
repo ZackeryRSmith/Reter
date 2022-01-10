@@ -44,12 +44,7 @@
     <li>
       <a href="#installation">Installation</a>
       <ul>
-        <li><a href="#pip">Pip Method</a></li>
-        <li><a href="#build">Build</a></lu>
-        <ul>
-          <li><a href="#prerequisites">Prerequisites</a></li>
-          <li><a href="#manual-install-guide">Build Guide</a></li>
-        </ul>  
+        <li><a href="#pip">Pip</a></li>
       </ul>
     </li>
     <li><a href="#projects-using-reter">Projects Using Reter</a></li>
@@ -130,15 +125,14 @@ This library supports all UNIX terminals and POSIX systems; however, not every t
 Want to use Reter, first let me thank you for choosing Reter! Now without further ado lets get into it,
   
 ### Pip <a name="pip" />
-###### Not functional until planned release date!
-As of now pip is the only *easy* way to install Reter. Will be ported to more package managers in time.
+As of now pip is the only *easy* way to install Reter. 
+! LET IT BE KNOWN !
+This is a very early (beta) version of reter, without docs or anything!
 ```sh
-pip install reter
+pip install -i https://test.pypi.org/simple/ reter
 ```
-  
-### Build <a name="build" />
-Will be filled out soon
-
+ 
+ 
 <!--
 Start of modules using reter
 -->
