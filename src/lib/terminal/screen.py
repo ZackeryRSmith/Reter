@@ -66,22 +66,22 @@ class Screen:
         terminal_size = os.get_terminal_size()
         self.width = terminal_size.columns
         self.height = terminal_size.lines
-        if return_format == "WxH":
+        if return_format == "CxL":
             return str(terminal_size.columns)+"x"+str(terminal_size.lines)
 
-        elif return_format == "HxW":
+        elif return_format == "LxC":
             return str(terminal_size.lines)+"x"+str(terminal_size.columns)
         
-        elif return_format == "xy":
+        elif return_format == "cl":
             return (terminal_size.columns, terminal_size.lines)
         
-        elif return_format == "yx":
+        elif return_format == "lc":
             return (terminal_size.lines, terminal_size.columns)
         
-        elif return_format == "x":
+        elif return_format == "columns":
             return terminal_size.columns
         
-        elif return_format == "y":
+        elif return_format == "lines":
             return terminal_size.lines
         
         elif return_format == None:
@@ -148,7 +148,7 @@ class Line:
         """
         Delete Current Line, From Cursor Down, From Cursor Up, or all.
 
-        :param str clear_type: Diffrent ways to delete text, I.e. "all", "fromcursordown", "fromcursorup", and "currentline". 
+        :param str clear_type: Diffrent ways to delete text, I.e. "all", "fromcursordown", "fromcursorup", and "currentline", "untilnewline". 
         """
         if clear_type == "all":
             pass
@@ -164,7 +164,7 @@ class Line:
     
         # May not ever be added
         elif clear_type == "untilnewline":
-            pass
+            sys.stdout.write("\x1b[K")
 
         else:
             pass
