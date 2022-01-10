@@ -4,6 +4,10 @@
 
 from lib.style.colour import *
 from lib.event.input.map.keys import *
+from typing import (
+    AnyStr,
+    Optional
+)
 
 
 ########################################
@@ -14,19 +18,22 @@ class indicator:
     ###################
     # Parse
     ###################
-    def parse(raw_character):
+    def parse(c: AnyStr, rt: Optional[bool]=False):
         """
         Parses a key output
 
         :param str raw_character: Char outputted by key press, E.g. "b'h'" or "\x1b[A"
+        :param bool rt: Regular Type, if True this will only output regular chars like "a", "b", or "c" not "\\x1b[1"
         """
-        cleaned_char = str(raw_character).replace("b", "", 1).replace("'", "")
+        cleaned_char = str(c).replace("b", "", 1).replace("'", "")
         parsed_char = ""
-        if cleaned_char.startswith('\\') and cleaned_char[1] != '\\':  # Check for special char
-            for item in keymap:
-                if raw_character == item:
-                    return keymap[item]
-            print(cleaned_char)  # For debugging (Remove when all keys are mapped)
+        if cleaned_char.startswith('\\') and cleaned_char[1] != '\\':
+            if rt == False:
+                # Check for special char
+                for item in keymap:
+                    if c == item:
+                        return keymap[item]
+                print(cleaned_char)  # For debugging (Remove when all keys are mapped)
         else:
             parsed_char = cleaned_char
         return parsed_char
