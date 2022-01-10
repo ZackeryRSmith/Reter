@@ -6,6 +6,7 @@ import sys
 from typing import Optional
 import termios
 import tty
+import re
 
 
 ########################################
@@ -110,7 +111,7 @@ class Cursor:
     def get_pos(self, xory: Optional[str]=None, updatePos: Optional[bool]=True):
         """
         Obtains position of cursor. This can be funky on some terminal emulators, for me my daily driver Terminator you must change up some
-        settings to get this code to work! This may be the same for your end-user. Make sure you keep this in mind while using getPos()!
+        settings to get this code to work! This may be the same for your end-user. Make sure you keep this in mind while using get_pos()!
         
         :param str xory: Choose what to return "x", or "y". Default None (Meaning it will return both x and y)
         :param bool updatePos: Auto Updates cursor position after fetching row and col. Default is True
@@ -175,7 +176,7 @@ class Cursor:
         #   or shoot me an email!
  
         # Get the distance between current postion, and the position to set
-        currentPos = self.getPos()
+        currentPos = self.get_pos()
         self.move(int(x)-int(currentPos[0]), int(y)-int(currentPos[1]))
         #sys.__stdout__.write("\x1b[%s;%sH" % (self.posy, self.posx))
 
