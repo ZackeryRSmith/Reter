@@ -16,7 +16,9 @@ from typing import Optional
 ########################################
 
 class Keyboard:
-    def __init__(self, cursor):
+    def __init__(self, screen, line, cursor):
+        self.screen = screen
+        self.line = line
         self.cursor = cursor
         
         
@@ -78,39 +80,69 @@ class Keyboard:
         :rtype: String
         :return: Returns a string (String is used to ignore escape characters and ANSI in general.. also it makes my life easy...)
         """
-        stringToReturn = ""
-        self.cursor.setPos(0, 0)  # Could fix this to receive a terminal object
-        while True:
-            # Make sure limit if supplied is met
-            if len(stringToReturn) >= limit:
-                break # Making a more customizable system would be nice
+        return_string = ""  # The final string to return
+        char_list = []  # A list of every character
+        pointer = 0  # Tells us where we are on the string (And screen in general)
+        
+        self.cursor.set_pos(0, 0)
+        # Allows us to keep compatibility between terminals
+        width_max = self.screen.width
+        while True: 
             key = self.capture_key()
-            if key == indicator.arrow.right:
-                self.cursor.move(1, 0)
-                continue
-            elif key == indicator.arrow.left:
+            # Check if enter has been pressed
+            if key == indicator.escape.enter:
+                break
+            
+            elif key == indicator.arrow.left:  # Allows for moving around the string
+                if self.cursor.get_pos()[0] != 1:  # Check if we are too far left
+                    pointer -= 1
                 self.cursor.move(-1, 0)
                 continue
-            elif key == UPARROW:
+            
+            elif key == indicator.arrow.right: # Allows for moving around the string
+                if self.cursor.get_pos()[0] != width_max:  # Check if we are too far right
+                    pointer += 1
+                self.cursor.move(1, 0)
                 continue
-            elif key == DOWNARROW:
-                continue
-            elif key == BACKSPACE:
-                stringToReturn = stringToReturn[0:-1]  # Remove character from final return string
-                sys.stdout.write("\b")  # Backup a character
-                sys.stdout.write(" ")  # Replace character with blankspace
-                sys.stdout.write("\b")  # Move back the cursor again.
-                sys.stdout.flush()  # Refresh line
-                continue  # Loop back the while loop (Stops the program from registering backspace escape code)
-            elif key == RETURN:
-                break
-            if blind:
-                stringToReturn+=str(key).replace("b", "", 1).replace("'", "")
-            else:
-                sys.stdout.write(str(key).replace("b", "", 1).replace("'", ""))
-                sys.stdout.flush()
-                stringToReturn+=str(key).replace("b", "", 1).replace("'", "")
-        
-        print("", end="\n")  # Fixes next print printing on same line.
-        return stringToReturn
+            
+            elif key == indicator.escape.backspace:
+                _current_column = self.cursor.get_pos()[0]  # Do it once, optimizing this code!
 
+                if _current_column != 1:  # Make sure we aren't too far left
+                    pointer -= 1
+                
+                #### Do the deleting visually ####
+                ## :WARNING: This function is heavy on some terminals, I.e. Terminator, Gnome-Terminal.
+                ## :OPTIMISE: This code needs some serious optimizing, it works just fine on basic terminals
+                ##            but, that's not good enough. I want this code to run good on terminals that are Gnome based and such
+                _look_ahead = char_list[pointer+1:]
+                self.cursor.move(len(_look_ahead), 0)
+                print("\b \b"*(len(_look_ahead)+1), end="", flush=True)
+                _temp_pos = self.cursor.get_pos()
+                print("".join(_look_ahead), end="", flush=True)
+                self.cursor.set_pos(_temp_pos[0], _temp_pos[1])
+                #################################
+                
+                #### Do the deleting internally ####
+                ## We do the deleting AFTER doing it visually, this stops weird conflict
+                if len(char_list) >= _current_column-1:  # Check if we are on a character
+                    # We minus _current_column by two so we comply with index format 0.. not 1..
+                    # Now why not one? Well _current_column returns column+1 to comply with the 
+                    # terminal. Meaning we have to -2, to get the correct format!
+                    char_list.pop(_current_column-2)  # Do the deleting internally
+                ####################################
+                continue
+
+            else: # Just a normal key press
+                # We grab length here, this is because a key like ctrl+d
+                # Would write many characters at once. This small addition
+                # fixes that.
+                pointer += len(indicator.parse(key, True))
+            
+            char_list.append(indicator.parse(key, True))
+            print(indicator.parse(key, True), end="", flush=True)
+        # Create a string using char_list
+        for c in char_list:
+            return_string += c
+        print("", end="\n", flush=True)  # Fixes a newline issue
+        return return_string
