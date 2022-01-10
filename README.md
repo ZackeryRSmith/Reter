@@ -1,5 +1,3 @@
-### Planned beta release date 1/13/2022 (Everything in this repo is subject to change before release!)
-
 ![](http://ForTheBadge.com/images/badges/made-with-python.svg)
 
 ![](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)
