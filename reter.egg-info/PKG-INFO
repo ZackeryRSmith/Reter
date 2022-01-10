@@ -1,11 +1,11 @@
 Metadata-Version: 2.1
 Name: reter
-Version: 0.0.1
+Version: 0.0.3
 Summary: A unix/posix terminal manipulation library for python3
 Home-page: https://github.com/ZackeryRSmith/Reter
-Author: Real Python
-Author-email: info@realpython.com
-License: MIT
+Author: Zackery .R. Smith
+Author-email: zackery.smith82307@gmail.com
+License: GNU
 Description: ![](http://ForTheBadge.com/images/badges/made-with-python.svg)
         
         ![](https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white)

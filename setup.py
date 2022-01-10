@@ -9,14 +9,14 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="reter",
-    version="0.0.1",
+    version="0.0.3",
     description="A unix/posix terminal manipulation library for python3",
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/ZackeryRSmith/Reter",
-    author="Real Python",
-    author_email="info@realpython.com",
-    license="MIT",
+    author="Zackery .R. Smith",
+    author_email="zackery.smith82307@gmail.com",
+    license="GNU",
     classifiers=[
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Programming Language :: Python :: 3",
