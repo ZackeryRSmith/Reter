@@ -44,21 +44,19 @@ from lib.style.indicator import indicator
 from lib.style.colour import rgb_to_ansi, id_to_256
 from lib.errhandler.handle import *
 from lib.cursor.cursor import Cursor
-# Misc imports
-import time
-import os
 
 
 ########################################
 # MAIN - FOR DEBUGGING REASONS
 ########################################
 
-def __main():
-    terminal = Terminal().quick_start()
-    try:
-        print(terminal.keyboard.capture_input())
-    except KeyboardInterrupt:
-        terminal.exit()
+def main():
+    from lib.terminal.term import Terminal 
+    from lib.terminal.screen import Screen, Line
+    from lib.event.input.keyboard.keyboard import Keyboard
+    from lib.style.indicator import indicator
+    from lib.style.colour import rgb_to_ansi, id_to_256
+    from lib.cursor.cursor import Cursor
 
 
 ########################################
@@ -66,6 +64,6 @@ def __main():
 ########################################
 
 if __name__=='__main__':
-    __main()
+    main()
 
 
