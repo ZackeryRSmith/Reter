@@ -1,0 +1,27 @@
+:: Cache tc attr ::
+
+:Args: 
+None
+
+
+:Desc: 
+cache_tc_attr(), as it implies will cache the terminal attributes to memory (Terminal().MEMORY). Memory gets cleared every new instance of reter, or a terminal object. If you want to save MEMORY to a file use save memory (Terminal().save_memory())
+
+
+:Usage:
+```
+reter.Terminal().cache_tc_attr()
+```
+
+
+:Example:
+```
+# Initialize terminal
+terminal = reter.Terminal().quick_start()
+
+# Cache tc attributes
+terminal.cache_tc_attr()
+
+# Print tc attributes
+print(terminal.MEMORY)
+```

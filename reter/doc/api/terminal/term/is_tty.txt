@@ -1,0 +1,32 @@
+:: Is tty ::
+
+:Args: 
+None
+
+
+:Return:
+Returns a bool, True or False.
+
+
+:Desc: 
+is_tty(), will check if the output medium is a terminal. The tty will not get validated however, meaning issues may arise due to incompatibility. 
+
+
+:Usage:
+```
+reter.Terminal().is_tty()
+```
+
+
+:Example:
+```
+# Initialize terminal (Manually, quick_start() checks for valid tty automatically)
+terminal = reter.Terminal()
+cursor = reter.Cursor()
+screen = reter.Screen(cursor)
+line = reter.Line(cursor)
+terminal.connect(screen, line, cursor)  # Connect TC objects to terminal
+
+# Check for tty 
+print(terminal.is_tty())
+```

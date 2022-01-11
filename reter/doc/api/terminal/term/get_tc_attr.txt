@@ -1,0 +1,24 @@
+:: Get tc attr ::
+
+:Args: 
+None
+
+
+:Desc: 
+get_tc_attr() as it implies, will get the current attributes for tty, this works whether tty is valid or not.
+
+
+:Usage:
+```
+reter.Terminal().get_tc_attr()
+```
+
+
+:Example:
+```
+# Initialize terminal
+terminal = reter.Terminal().quick_start()
+
+# Cache tc attributes
+terminal.get_tc_attr()
+```
