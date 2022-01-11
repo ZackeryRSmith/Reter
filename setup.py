@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Note: To use the 'upload' functionality of this file, you must:
-#   $ pipenv install twine --dev
+# $ python3 setup.py build
 
 import io
 import os
