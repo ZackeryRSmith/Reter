@@ -4,6 +4,7 @@
 
 from reter.lib.style.colour import *
 from reter.lib.event.input.map.keys import *
+import re
 from typing import (
     AnyStr,
     Optional
@@ -22,7 +23,7 @@ class indicator:
         """
         Parses a key output
 
-        :param str raw_character: Char outputted by key press, E.g. "b'h'" or "\x1b[A"
+        :param str c: Char outputted by key press, E.g. "b'h'" or "\x1b[A"
         :param bool rt: Regular Type, if True this will only output regular chars like "a", "b", or "c" not "\\x1b[1"
         """
         cleaned_char = str(c).replace("b", "", 1).replace("'", "")
@@ -38,6 +39,19 @@ class indicator:
             parsed_char = cleaned_char
         return parsed_char
     
+
+    ###################
+    # Clean
+    ###################
+    def clean(s: AnyStr, esc: bytes):
+        """
+        Cleans off string off all ANSI ESC codes. If the detection does not pick up the ESC code you may supply one your self.
+
+        :param str s: String to be cleaned
+        :param bytes esc: The ESC code to be cleaned
+        """
+        return str(s).replace(esc.decode("utf-8"))
+
 
     ###################
     # Byte to string
