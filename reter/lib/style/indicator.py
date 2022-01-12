@@ -5,6 +5,7 @@
 from reter.lib.style.colour import *
 from reter.lib.event.input.map.keys import *
 import re
+import string
 from typing import (
     AnyStr,
     Optional
@@ -43,14 +44,17 @@ class indicator:
     ###################
     # Clean
     ###################
-    def clean(s: AnyStr, esc: bytes):
+    def clean(s: AnyStr, esc: Optional[bytes]):
         """
         Cleans off string off all ANSI ESC codes. If the detection does not pick up the ESC code you may supply one your self.
 
         :param str s: String to be cleaned
-        :param bytes esc: The ESC code to be cleaned
+        :param bytes esc: The ESC code to be cleaned (Optional, but you may supply it ONLY if it doesn't get auto detected)
         """
-        return str(s).replace(esc.decode("utf-8"))
+        if esc != None:
+            return str(s).replace(esc.decode("utf-8"))
+        else:
+            return "".join(char for char in s if char not in string.printable)
 
 
     ###################
