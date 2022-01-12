@@ -110,6 +110,8 @@ class Keyboard:
 
                 if _current_column != 1:  # Make sure we aren't too far left
                     pointer -= 1
+                else:
+                    continue
                 
                 #### Do the deleting visually ####
                 ## :WARNING: This function is heavy on some terminals, I.e. Terminator, Gnome-Terminal.
