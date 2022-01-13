@@ -131,7 +131,7 @@ As of now pip is the only *easy* way to install Reter.
 
 This is a very early (beta) version of reter, without docs or anything!
 ```sh
-pip install reter==1.0.6
+pip install reter
 ```
  
  
