@@ -124,11 +124,6 @@ This library supports all UNIX terminals and POSIX systems; however, not every t
   
 ## Installation <a name="installation" />
 Want to use Reter, first let me thank you for choosing Reter! Now without further ado lets get into it,
-  
-### Pip <a name="pip" />
-As of now pip is the only *easy* way to install Reter. 
-
-! LET IT BE KNOWN !
 
 This is a very early (beta) version of reter, without docs or anything!
 ```sh
