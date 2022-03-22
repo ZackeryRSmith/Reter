@@ -1,5 +1,5 @@
 # No documentation.
-I have yet to add much documentation or examples. I will change this though I don't plan on adding many features to Reter due to another project I am working on. 
+I have yet to add much documentation or examples. I will change this, though I don't plan on adding many features to Reter due to another project I am working on. 
 
 ![](http://ForTheBadge.com/images/badges/made-with-python.svg)
 
